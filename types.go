@@ -2,8 +2,10 @@
 This is free and unencumbered software released into the public domain. For more
 information, see <http://unlicense.org/> or the accompanying UNLICENSE file.
 */
+
 package gedcom
 
+// Gedcom is the top level structure.
 type Gedcom struct {
 	Header           *Header
 	SubmissionRecord *SubmissionRecord
@@ -16,12 +18,14 @@ type Gedcom struct {
 	Trailer          *Trailer
 }
 
+// Header is the heading of the Gedcom file.
 type Header struct {
 	SourceSystem SystemRecord
 }
 
+// SystemRecord is the administrative information about the data.
 type SystemRecord struct {
-	Id              string
+	ID              string
 	Version         string
 	ProductName     string
 	BusinessName    string
@@ -31,13 +35,16 @@ type SystemRecord struct {
 	SourceCopyright string
 }
 
+// SubmissionRecord ...
 type SubmissionRecord struct {
 	Xref string
 }
 
+// The Trailer doesn't do anything but mark the end of the file.
 type Trailer struct {
 }
 
+// FamilyRecord describes a family unit.
 type FamilyRecord struct {
 	Xref    string
 	Husband *IndividualRecord
@@ -46,6 +53,7 @@ type FamilyRecord struct {
 	Event   []*EventRecord
 }
 
+// IndividualRecord describes a single person.
 type IndividualRecord struct {
 	Xref      string
 	Name      []*NameRecord
@@ -56,12 +64,15 @@ type IndividualRecord struct {
 	Family    []*FamilyLinkRecord
 }
 
+// MediaRecord is currently not implemented.
 type MediaRecord struct {
 }
 
+// RepositoryRecord is currently not implemented.
 type RepositoryRecord struct {
 }
 
+// SourceRecord describes a single source document.
 type SourceRecord struct {
 	Xref        string
 	Title       string
@@ -73,6 +84,7 @@ type SourceRecord struct {
 	Note        []*NoteRecord
 }
 
+// CitationRecord links another record and a source.
 type CitationRecord struct {
 	Source *SourceRecord
 	Page   string
@@ -82,20 +94,24 @@ type CitationRecord struct {
 	Note   []*NoteRecord
 }
 
+// SubmitterRecord is not yet implemented.
 type SubmitterRecord struct {
 }
 
+// NameRecord describes a person's name.
 type NameRecord struct {
 	Name     string
 	Citation []*CitationRecord
 	Note     []*NoteRecord
 }
 
+// DataRecord ...
 type DataRecord struct {
 	Date string
 	Text []string
 }
 
+// EventRecord describes a life event.
 type EventRecord struct {
 	Tag      string
 	Value    string
@@ -111,23 +127,27 @@ type EventRecord struct {
 	Note     []*NoteRecord
 }
 
+// NoteRecord describes a text note.
 type NoteRecord struct {
 	Note     string
 	Citation []*CitationRecord
 }
 
+// PlaceRecord describes a location.
 type PlaceRecord struct {
 	Name     string
 	Citation []*CitationRecord
 	Note     []*NoteRecord
 }
 
+// FamilyLinkRecord ...
 type FamilyLinkRecord struct {
 	Family *FamilyRecord
 	Type   string
 	Note   []*NoteRecord
 }
 
+// AddressRecord describes and address.
 type AddressRecord struct {
 	Full       string
 	Line1      string
