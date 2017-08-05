@@ -6,10 +6,11 @@ package gedcom
 
 import (
 	"bytes"
-	"github.com/davecgh/go-spew/spew"
 	"io/ioutil"
 	"reflect"
 	"testing"
+
+	"github.com/davecgh/go-spew/spew"
 )
 
 var (

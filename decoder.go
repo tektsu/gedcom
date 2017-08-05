@@ -163,7 +163,7 @@ func makeRootParser(d *Decoder, g *Gedcom) parser {
 			case "SOUR":
 				obj := d.source(xref)
 				g.Source = append(g.Source, obj)
-				//d.pushParser(makeSourceParser(d, s, level))
+				d.pushParser(makeSourceParser(d, obj, level))
 			}
 		}
 		return nil
@@ -236,10 +236,28 @@ func makeSourceParser(d *Decoder, s *SourceRecord, minLevel int) parser {
 			s.Title = value
 			d.pushParser(makeTextParser(d, &s.Title, level))
 
+		case "AUTH":
+			s.Author = value
+			d.pushParser(makeTextParser(d, &s.Author, level))
+
+		case "ABBR":
+			s.Abbr = value
+			d.pushParser(makeTextParser(d, &s.Abbr, level))
+
+		case "PUBL":
+			s.Publication = value
+			d.pushParser(makeTextParser(d, &s.Publication, level))
+
+		case "TEXT":
+			s.Text = value
+			d.pushParser(makeTextParser(d, &s.Text, level))
+
 		case "NOTE":
 			r := &NoteRecord{Note: value}
 			s.Note = append(s.Note, r)
 			d.pushParser(makeNoteParser(d, r, level))
+
+		case "OBJE":
 		}
 
 		return nil

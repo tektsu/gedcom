@@ -63,10 +63,14 @@ type RepositoryRecord struct {
 }
 
 type SourceRecord struct {
-	Xref  string
-	Title string
-	Media []*MediaRecord
-	Note  []*NoteRecord
+	Xref        string
+	Title       string
+	Author      string
+	Abbr        string
+	Publication string
+	Text        string
+	Media       []*MediaRecord
+	Note        []*NoteRecord
 }
 
 type CitationRecord struct {
