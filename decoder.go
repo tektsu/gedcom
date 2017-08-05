@@ -2,6 +2,7 @@
 This is free and unencumbered software released into the public domain. For more
 information, see <http://unlicense.org/> or the accompanying UNLICENSE file.
 */
+
 package gedcom
 
 import (
@@ -110,9 +111,8 @@ func (d *Decoder) individual(xref string) *IndividualRecord {
 		rec := &IndividualRecord{Xref: xref}
 		d.refs[rec.Xref] = rec
 		return rec
-	} else {
-		return ref
 	}
+	return ref
 }
 
 func (d *Decoder) family(xref string) *FamilyRecord {
@@ -125,9 +125,8 @@ func (d *Decoder) family(xref string) *FamilyRecord {
 		rec := &FamilyRecord{Xref: xref}
 		d.refs[rec.Xref] = rec
 		return rec
-	} else {
-		return ref
 	}
+	return ref
 }
 
 func (d *Decoder) source(xref string) *SourceRecord {
@@ -140,9 +139,8 @@ func (d *Decoder) source(xref string) *SourceRecord {
 		rec := &SourceRecord{Xref: xref}
 		d.refs[rec.Xref] = rec
 		return rec
-	} else {
-		return ref
 	}
+	return ref
 }
 
 func makeRootParser(d *Decoder, g *Gedcom) parser {
