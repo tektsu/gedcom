@@ -157,10 +157,6 @@ func (s *scanner) nextTag(data []byte) (offset int, err error) {
 			default:
 				continue
 			}
-
-			if s.parseState == stateEnd {
-				break
-			}
 		}
 	}
 
