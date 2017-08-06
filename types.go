@@ -88,6 +88,7 @@ type SourceRecord struct {
 	DateViewed  string
 	URL         string
 	DocLocation string
+	LastChanged DataRecord
 	Media       []*MediaRecord
 	Note        []*NoteRecord
 }

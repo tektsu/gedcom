@@ -269,6 +269,8 @@ func makeSourceParser(d *Decoder, s *SourceRecord, minLevel int) parser {
 		case "LOCA":
 			s.DocLocation = value
 			d.pushParser(makeTextParser(d, &s.DocLocation, level))
+		case "CHAN":
+			d.pushParser(makeDataParser(d, &s.LastChanged, level))
 		case "NOTE":
 			r := &NoteRecord{Note: value}
 			s.Note = append(s.Note, r)
