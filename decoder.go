@@ -245,6 +245,30 @@ func makeSourceParser(d *Decoder, s *SourceRecord, minLevel int) parser {
 		case "TEXT":
 			s.Text = value
 			d.pushParser(makeTextParser(d, &s.Text, level))
+		case "FILE":
+			s.File = value
+			d.pushParser(makeTextParser(d, &s.File, level))
+		case "FILN":
+			s.FileNumber = value
+			d.pushParser(makeTextParser(d, &s.FileNumber, level))
+		case "TYPE":
+			s.Type = value
+			d.pushParser(makeTextParser(d, &s.Type, level))
+		case "DATE":
+			s.Date = value
+			d.pushParser(makeTextParser(d, &s.Date, level))
+		case "PLAC":
+			s.Place = value
+			d.pushParser(makeTextParser(d, &s.Place, level))
+		case "DATV":
+			s.DateViewed = value
+			d.pushParser(makeTextParser(d, &s.DateViewed, level))
+		case "URL":
+			s.URL = value
+			d.pushParser(makeTextParser(d, &s.URL, level))
+		case "LOCA":
+			s.DocLocation = value
+			d.pushParser(makeTextParser(d, &s.DocLocation, level))
 		case "NOTE":
 			r := &NoteRecord{Note: value}
 			s.Note = append(s.Note, r)
@@ -470,30 +494,6 @@ func makeObjectParser(d *Decoder, o *ObjectRecord, minLevel int) parser {
 		case "FILE":
 			o.File = value
 			d.pushParser(makeTextParser(d, &o.File, level))
-		case "FILN":
-			o.FileNumber = value
-			d.pushParser(makeTextParser(d, &o.FileNumber, level))
-		case "TYPE":
-			o.Type = value
-			d.pushParser(makeTextParser(d, &o.Type, level))
-		case "DATE":
-			o.Date = value
-			d.pushParser(makeTextParser(d, &o.Date, level))
-		case "PLAC":
-			o.Place = value
-			d.pushParser(makeTextParser(d, &o.Place, level))
-		case "MEDI":
-			o.Media = value
-			d.pushParser(makeTextParser(d, &o.Media, level))
-		case "DATV":
-			o.DateViewed = value
-			d.pushParser(makeTextParser(d, &o.DateViewed, level))
-		case "URL":
-			o.URL = value
-			d.pushParser(makeTextParser(d, &o.URL, level))
-		case "LOCA":
-			o.DocLocation = value
-			d.pushParser(makeTextParser(d, &o.DocLocation, level))
 		case "NOTE":
 			r := &NoteRecord{Note: value}
 			o.Note = append(o.Note, r)

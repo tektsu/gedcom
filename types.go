@@ -80,6 +80,14 @@ type SourceRecord struct {
 	Abbr        string
 	Publication string
 	Text        string
+	File        string
+	FileNumber  string
+	Type        string
+	Place       string
+	Date        string
+	DateViewed  string
+	URL         string
+	DocLocation string
 	Media       []*MediaRecord
 	Note        []*NoteRecord
 }
@@ -161,16 +169,8 @@ type AddressRecord struct {
 
 // ObjectRecord describes a source object.
 type ObjectRecord struct {
-	Title       string
-	Form        string
-	File        string
-	FileNumber  string
-	Type        string
-	Place       string
-	Date        string
-	Media       string
-	DateViewed  string
-	URL         string
-	DocLocation string
-	Note        []*NoteRecord
+	Title string
+	Form  string
+	File  string
+	Note  []*NoteRecord
 }
