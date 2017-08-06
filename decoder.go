@@ -233,29 +233,25 @@ func makeSourceParser(d *Decoder, s *SourceRecord, minLevel int) parser {
 		case "TITL":
 			s.Title = value
 			d.pushParser(makeTextParser(d, &s.Title, level))
-
 		case "AUTH":
 			s.Author = value
 			d.pushParser(makeTextParser(d, &s.Author, level))
-
 		case "ABBR":
 			s.Abbr = value
 			d.pushParser(makeTextParser(d, &s.Abbr, level))
-
 		case "PUBL":
 			s.Publication = value
 			d.pushParser(makeTextParser(d, &s.Publication, level))
-
 		case "TEXT":
 			s.Text = value
 			d.pushParser(makeTextParser(d, &s.Text, level))
-
 		case "NOTE":
 			r := &NoteRecord{Note: value}
 			s.Note = append(s.Note, r)
 			d.pushParser(makeNoteParser(d, r, level))
-
 		case "OBJE":
+			o := &ObjectRecord{}
+			d.pushParser(makeObjectParser(d, o, level))
 		}
 
 		return nil
@@ -455,6 +451,45 @@ func makeAddressParser(d *Decoder, a *AddressRecord, minLevel int) parser {
 
 		}
 
+		return nil
+	}
+}
+
+func makeObjectParser(d *Decoder, o *ObjectRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "TITL":
+			o.Title = value
+			d.pushParser(makeTextParser(d, &o.Title, level))
+		case "FORM":
+			o.Form = value
+			d.pushParser(makeTextParser(d, &o.Form, level))
+		case "FILE":
+			o.File = value
+			d.pushParser(makeTextParser(d, &o.File, level))
+		case "TYPE":
+			o.Type = value
+			d.pushParser(makeTextParser(d, &o.Type, level))
+		case "DATE":
+			o.Date = value
+			d.pushParser(makeTextParser(d, &o.Date, level))
+		case "PLAC":
+			o.Place = value
+			d.pushParser(makeTextParser(d, &o.Place, level))
+		case "MEDI":
+			o.Media = value
+			d.pushParser(makeTextParser(d, &o.Media, level))
+		case "LOCA":
+			o.DocLocation = value
+			d.pushParser(makeTextParser(d, &o.DocLocation, level))
+		case "NOTE":
+			r := &NoteRecord{Note: value}
+			o.Note = append(o.Note, r)
+			d.pushParser(makeNoteParser(d, r, level))
+		}
 		return nil
 	}
 }

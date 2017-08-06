@@ -6,7 +6,6 @@ package gedcom
 
 import (
 	"bytes"
-	"fmt"
 	"io/ioutil"
 	"testing"
 )
@@ -104,12 +103,9 @@ func TestIndividual(t *testing.T) {
 		Citation: []*CitationRecord{
 			&CitationRecord{
 				Source: &SourceRecord{
-					Xref:        "SOURCE1",
-					Title:       "",
-					Author:      "Author of source\nAuthor continued here. The word TEST should not be broken!",
-					Abbr:        "",
-					Publication: "",
-					Text:        "",
+					Xref:   "SOURCE1",
+					Title:  "Title of source\nTitle continued here. The word TEST should not be broken!",
+					Author: "Author of source\nAuthor continued here. The word TEST should not be broken!",
 				},
 
 				Page: "42",
@@ -134,14 +130,21 @@ func TestIndividual(t *testing.T) {
 		},
 	}
 
-	fmt.Printf("---\n%+v\n---\n%+v\n---\n", i1.Name[0], name1)
-	fmt.Printf("---\n%+v\n---\n%+v\n---\n", i1.Name[0].Citation[0].Source, name1.Citation[0].Source)
 	if i1.Name[0].Name != name1.Name {
 		t.Errorf(`Individual 0 Name is "%s" names, expected "%s"`, i1.Name[0].Name, name1.Name)
 	}
-	//	if !reflect.DeepEqual(i1.Name[0], name1) {
-	//		t.Errorf("Individual 0 name 0 was: %s", spew.Sdump(i1.Name[0]))
-	//	}
+	if i1.Name[0].Citation[0].Source.Xref != name1.Citation[0].Source.Xref {
+		t.Errorf(`Individual 0 Name citation source is "%s", expected "%s"`, i1.Name[0].Citation[0].Source.Xref, name1.Citation[0].Source.Xref)
+	}
+	if i1.Name[0].Citation[0].Source.Title != name1.Citation[0].Source.Title {
+		t.Errorf(`Individual 0 Name citation Title is "%s", expected "%s"`, i1.Name[0].Citation[0].Source.Title, name1.Citation[0].Source.Title)
+	}
+	if i1.Name[0].Citation[0].Source.Author != name1.Citation[0].Source.Author {
+		t.Errorf(`Individual 0 Name citation Author is "%s", expected "%s"`, i1.Name[0].Citation[0].Source.Author, name1.Citation[0].Source.Author)
+	}
+	if i1.Name[0].Note[0].Note != name1.Note[0].Note {
+		t.Errorf(`Individual 0 Note 0 is "%s", expected "%s"`, i1.Name[0].Note[0].Note, name1.Note[0].Note)
+	}
 
 	if len(i1.Event) != 24 {
 		t.Fatalf(`Individual 0 had %d events, expected 24`, len(i1.Event))

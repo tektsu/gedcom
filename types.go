@@ -158,3 +158,16 @@ type AddressRecord struct {
 	Country    string
 	Phone      string
 }
+
+// ObjectRecord describes a source object.
+type ObjectRecord struct {
+	Title       string
+	Form        string
+	File        string
+	Type        string
+	Place       string
+	Date        string
+	Media       string
+	DocLocation string
+	Note        []*NoteRecord
+}
