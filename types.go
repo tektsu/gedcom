@@ -164,10 +164,13 @@ type ObjectRecord struct {
 	Title       string
 	Form        string
 	File        string
+	FileNumber  string
 	Type        string
 	Place       string
 	Date        string
 	Media       string
+	DateViewed  string
+	URL         string
 	DocLocation string
 	Note        []*NoteRecord
 }

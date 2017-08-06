@@ -470,6 +470,9 @@ func makeObjectParser(d *Decoder, o *ObjectRecord, minLevel int) parser {
 		case "FILE":
 			o.File = value
 			d.pushParser(makeTextParser(d, &o.File, level))
+		case "FILN":
+			o.FileNumber = value
+			d.pushParser(makeTextParser(d, &o.FileNumber, level))
 		case "TYPE":
 			o.Type = value
 			d.pushParser(makeTextParser(d, &o.Type, level))
@@ -482,6 +485,12 @@ func makeObjectParser(d *Decoder, o *ObjectRecord, minLevel int) parser {
 		case "MEDI":
 			o.Media = value
 			d.pushParser(makeTextParser(d, &o.Media, level))
+		case "DATV":
+			o.DateViewed = value
+			d.pushParser(makeTextParser(d, &o.DateViewed, level))
+		case "URL":
+			o.URL = value
+			d.pushParser(makeTextParser(d, &o.URL, level))
 		case "LOCA":
 			o.DocLocation = value
 			d.pushParser(makeTextParser(d, &o.DocLocation, level))
