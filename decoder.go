@@ -230,54 +230,65 @@ func makeSourceParser(d *Decoder, s *SourceRecord, minLevel int) parser {
 			return d.popParser(level, tag, value, xref)
 		}
 		switch tag {
-		case "TITL":
-			s.Title = value
-			d.pushParser(makeTextParser(d, &s.Title, level))
-		case "AUTH":
+		case "DATA": // {0:1}
+		case "AUTH": // {0:1}
 			s.Author = value
 			d.pushParser(makeTextParser(d, &s.Author, level))
-		case "ABBR":
+		case "TITL": // {0:1}
+			s.Title = value
+			d.pushParser(makeTextParser(d, &s.Title, level))
+		case "ABBR": // {0:1}
 			s.Abbr = value
 			d.pushParser(makeTextParser(d, &s.Abbr, level))
-		case "PUBL":
+		case "PUBL": // {0:1}
 			s.Publication = value
 			d.pushParser(makeTextParser(d, &s.Publication, level))
-		case "TEXT":
+		case "TEXT": // {0:1}
 			s.Text = value
 			d.pushParser(makeTextParser(d, &s.Text, level))
-		case "FILE":
-			s.File = value
-			d.pushParser(makeTextParser(d, &s.File, level))
-		case "FILN":
-			s.FileNumber = value
-			d.pushParser(makeTextParser(d, &s.FileNumber, level))
-		case "TYPE":
+		case "TYPE": // {0:1}
 			s.Type = value
 			d.pushParser(makeTextParser(d, &s.Type, level))
-		case "DATE":
-			s.Date = value
-			d.pushParser(makeTextParser(d, &s.Date, level))
-		case "PLAC":
-			s.Place = value
-			d.pushParser(makeTextParser(d, &s.Place, level))
-		case "DATV":
-			s.DateViewed = value
-			d.pushParser(makeTextParser(d, &s.DateViewed, level))
-		case "URL":
-			s.URL = value
-			d.pushParser(makeTextParser(d, &s.URL, level))
-		case "LOCA":
-			s.DocLocation = value
-			d.pushParser(makeTextParser(d, &s.DocLocation, level))
-		case "CHAN":
+		case "REFN": // {0:M}
+		case "CHAN": // {0:1}
 			d.pushParser(makeDataParser(d, &s.LastChanged, level))
-		case "NOTE":
+		case "NOTE": // {0:M}
 			r := &NoteRecord{Note: value}
 			s.Note = append(s.Note, r)
 			d.pushParser(makeNoteParser(d, r, level))
-		case "OBJE":
+		case "OBJE": // {0:M}
 			o := &ObjectRecord{}
 			d.pushParser(makeObjectParser(d, o, level))
+
+		// Non-standard tags, all assumed to be {0:M}
+		case "FILE":
+			r := value
+			s.File = append(s.File, r)
+			d.pushParser(makeTextParser(d, &r, level))
+		case "FILN":
+			r := value
+			s.FileNumber = append(s.FileNumber, r)
+			d.pushParser(makeTextParser(d, &r, level))
+		case "DATE":
+			r := value
+			s.Date = append(s.Date, r)
+			d.pushParser(makeTextParser(d, &r, level))
+		case "PLAC":
+			r := value
+			s.Place = append(s.Place, r)
+			d.pushParser(makeTextParser(d, &r, level))
+		case "DATV":
+			r := value
+			s.DateViewed = append(s.DateViewed, r)
+			d.pushParser(makeTextParser(d, &r, level))
+		case "URL":
+			r := value
+			s.URL = append(s.URL, r)
+			d.pushParser(makeTextParser(d, &r, level))
+		case "LOCA":
+			r := value
+			s.DocLocation = append(s.DocLocation, r)
+			d.pushParser(makeTextParser(d, &r, level))
 		}
 
 		return nil

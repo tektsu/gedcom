@@ -273,4 +273,11 @@ func TestSource(t *testing.T) {
 		t.Fatalf("Source list length was %d, expected 1", len(g.Source))
 	}
 
+	s := g.Source[0]
+	if len(s.File) != 2 {
+		t.Fatalf("Source file list length was %d, expected 2", len(s.File))
+	}
+	if s.File[1] != "file2" {
+		t.Fatalf("Second source file name was [%s], expected [2]", s.File[1])
+	}
 }

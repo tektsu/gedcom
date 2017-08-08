@@ -75,19 +75,19 @@ type RepositoryRecord struct {
 // SourceRecord describes a single source document.
 type SourceRecord struct {
 	Xref        string
-	Title       string
 	Author      string
+	Title       string
 	Abbr        string
 	Publication string
-	Text        string
-	File        string
-	FileNumber  string
 	Type        string
-	Place       string
-	Date        string
-	DateViewed  string
-	URL         string
-	DocLocation string
+	Text        string
+	File        []string
+	FileNumber  []string
+	Place       []string
+	Date        []string
+	DateViewed  []string
+	URL         []string
+	DocLocation []string
 	LastChanged DataRecord
 	Media       []*MediaRecord
 	Note        []*NoteRecord
