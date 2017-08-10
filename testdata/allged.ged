@@ -1156,6 +1156,8 @@
 3 CONC ST should not be broken!
 1 FILE file1
 1 FILE file2
+1 _TAG
+2 TITL This is part of the _TAG tag and should not be used
 1 _MYOWNTAG This is a non-standard tag. Not recommended but allowed
 0 _MYOWNTAG This is a non-standard tag. Not recommended but allowed
 0 TRLR

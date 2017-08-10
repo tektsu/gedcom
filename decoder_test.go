@@ -280,4 +280,7 @@ func TestSource(t *testing.T) {
 	if s.File[1] != "file2" {
 		t.Fatalf("Second source file name was [%s], expected [2]", s.File[1])
 	}
+	if s.Title != "Title of source\nTitle continued here. The word TEST should not be broken!" {
+		t.Fatalf("Source title was [%s], expected [Title of source\nTitle continued here. The word TEST should not be broken!]", s.Title)
+	}
 }

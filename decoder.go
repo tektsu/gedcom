@@ -6,6 +6,7 @@ information, see <http://unlicense.org/> or the accompanying UNLICENSE file.
 package gedcom
 
 import (
+	"fmt"
 	"io"
 	"strings"
 )
@@ -230,7 +231,6 @@ func makeSourceParser(d *Decoder, s *SourceRecord, minLevel int) parser {
 			return d.popParser(level, tag, value, xref)
 		}
 		switch tag {
-		case "DATA": // {0:1}
 		case "AUTH": // {0:1}
 			s.Author = value
 			d.pushParser(makeTextParser(d, &s.Author, level))
@@ -249,7 +249,6 @@ func makeSourceParser(d *Decoder, s *SourceRecord, minLevel int) parser {
 		case "TYPE": // {0:1}
 			s.Type = value
 			d.pushParser(makeTextParser(d, &s.Type, level))
-		case "REFN": // {0:M}
 		case "CHAN": // {0:1}
 			d.pushParser(makeDataParser(d, &s.LastChanged, level))
 		case "NOTE": // {0:M}
@@ -289,6 +288,14 @@ func makeSourceParser(d *Decoder, s *SourceRecord, minLevel int) parser {
 			r := value
 			s.DocLocation = append(s.DocLocation, r)
 			d.pushParser(makeTextParser(d, &r, level))
+
+		default:
+			fmt.Printf("Not processed %d %s %s", level, tag, value)
+			if xref != "" {
+				fmt.Printf(" (%s)", xref)
+			}
+			fmt.Println("")
+			d.pushParser(makeSlurkParser(d, level))
 		}
 
 		return nil
@@ -511,6 +518,16 @@ func makeObjectParser(d *Decoder, o *ObjectRecord, minLevel int) parser {
 			r := &NoteRecord{Note: value}
 			o.Note = append(o.Note, r)
 			d.pushParser(makeNoteParser(d, r, level))
+		}
+		return nil
+	}
+}
+
+// Just bypass this tag and all its children.
+func makeSlurkParser(d *Decoder, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
 		}
 		return nil
 	}
