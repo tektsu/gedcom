@@ -266,6 +266,9 @@ func makeSourceParser(d *Decoder, s *SourceRecord, minLevel int) parser {
 		case "VOL": // {0:1}
 			s.Volume = value
 			d.pushParser(makeTextParser(d, &s.Volume, level))
+		case "MEDI": // {0:1}
+			s.MediaType = value
+			d.pushParser(makeTextParser(d, &s.MediaType, level))
 		case "PAGE": // {0:M}
 			r := value
 			s.Page = append(s.Page, r)

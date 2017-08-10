@@ -81,6 +81,7 @@ type SourceRecord struct {
 	Publication string
 	Type        string
 	Text        string
+	MediaType   string
 	Periodical  string
 	Volume      string
 	Page        []string
