@@ -283,4 +283,22 @@ func TestSource(t *testing.T) {
 	if s.Title != "Title of source\nTitle continued here. The word TEST should not be broken!" {
 		t.Fatalf("Source title was [%s], expected [Title of source\nTitle continued here. The word TEST should not be broken!]", s.Title)
 	}
+	if s.Submitter[0] != "A submitter" {
+		t.Fatalf("Source submitter name was [%s], expected [A submitter]", s.Submitter[0])
+	}
+	if s.Repository[0] != "A repository" {
+		t.Fatalf("Source repository name was [%s], expected [A repository]", s.Repository[0])
+	}
+	if s.Periodical != "A periodical name" {
+		t.Fatalf("Source periodical name was [%s], expected [A periodical name]", s.Periodical)
+	}
+	if s.Volume != "1" {
+		t.Fatalf("Source volume was [%s], expected [1]", s.Volume)
+	}
+	if s.Page[0] != "3" {
+		t.Fatalf("Source page was [%s], expected [3]", s.Page[0])
+	}
+	if s.Film[0] != "at 11" {
+		t.Fatalf("Source film reference was [%s], expected [at 11]", s.Film[0])
+	}
 }

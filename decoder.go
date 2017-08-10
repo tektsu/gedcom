@@ -259,34 +259,56 @@ func makeSourceParser(d *Decoder, s *SourceRecord, minLevel int) parser {
 			o := &ObjectRecord{}
 			d.pushParser(makeObjectParser(d, o, level))
 
-		// Non-standard tags, all assumed to be {0:M}
-		case "FILE":
+		// Non-standard tags
+		case "PERI": // {0:1}
+			s.Periodical = value
+			d.pushParser(makeTextParser(d, &s.Periodical, level))
+		case "VOL": // {0:1}
+			s.Volume = value
+			d.pushParser(makeTextParser(d, &s.Volume, level))
+		case "PAGE": // {0:M}
+			r := value
+			s.Page = append(s.Page, r)
+			d.pushParser(makeTextParser(d, &r, level))
+		case "FILM": // {0:M}
+			r := value
+			s.Film = append(s.Film, r)
+			d.pushParser(makeTextParser(d, &r, level))
+		case "FILE": // {0:M}
 			r := value
 			s.File = append(s.File, r)
 			d.pushParser(makeTextParser(d, &r, level))
-		case "FILN":
+		case "FILN": // {0:M}
 			r := value
 			s.FileNumber = append(s.FileNumber, r)
 			d.pushParser(makeTextParser(d, &r, level))
-		case "DATE":
+		case "DATE": // {0:M}
 			r := value
 			s.Date = append(s.Date, r)
 			d.pushParser(makeTextParser(d, &r, level))
-		case "PLAC":
+		case "PLAC": // {0:M}
 			r := value
 			s.Place = append(s.Place, r)
 			d.pushParser(makeTextParser(d, &r, level))
-		case "DATV":
+		case "DATV": // {0:M}
 			r := value
 			s.DateViewed = append(s.DateViewed, r)
 			d.pushParser(makeTextParser(d, &r, level))
-		case "URL":
+		case "URL": // {0:M}
 			r := value
 			s.URL = append(s.URL, r)
 			d.pushParser(makeTextParser(d, &r, level))
-		case "LOCA":
+		case "LOCA": // {0:M}
 			r := value
 			s.DocLocation = append(s.DocLocation, r)
+			d.pushParser(makeTextParser(d, &r, level))
+		case "REPO": // {0:M}
+			r := value
+			s.Repository = append(s.Repository, r)
+			d.pushParser(makeTextParser(d, &r, level))
+		case "SUBM": // {0:M}
+			r := value
+			s.Submitter = append(s.Submitter, r)
 			d.pushParser(makeTextParser(d, &r, level))
 
 		default:

@@ -1156,6 +1156,12 @@
 3 CONC ST should not be broken!
 1 FILE file1
 1 FILE file2
+1 SUBM A submitter
+1 REPO A repository
+1 PERI A periodical name
+1 PAGE 3
+1 VOL 1
+1 FILM at 11
 1 _TAG
 2 TITL This is part of the _TAG tag and should not be used
 1 _MYOWNTAG This is a non-standard tag. Not recommended but allowed

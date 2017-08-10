@@ -81,6 +81,10 @@ type SourceRecord struct {
 	Publication string
 	Type        string
 	Text        string
+	Periodical  string
+	Volume      string
+	Page        []string
+	Film        []string
 	File        []string
 	FileNumber  []string
 	Place       []string
@@ -88,6 +92,8 @@ type SourceRecord struct {
 	DateViewed  []string
 	URL         []string
 	DocLocation []string
+	Repository  []string
+	Submitter   []string
 	LastChanged DataRecord
 	Media       []*MediaRecord
 	Note        []*NoteRecord
