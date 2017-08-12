@@ -7,12 +7,16 @@ package gedcom
 import (
 	"bytes"
 	"io/ioutil"
+	"log"
+	"os"
 	"testing"
 )
 
 var (
 	data []byte
 )
+
+var g *Gedcom
 
 func init() {
 	var err error
@@ -22,14 +26,21 @@ func init() {
 	}
 }
 
-func TestStructuresAreInitialized(t *testing.T) {
+func TestMain(m *testing.M) {
 	d := NewDecoder(bytes.NewReader(data))
 
-	g, err := d.Decode()
-
+	var err error
+	g, err = d.Decode()
 	if err != nil {
-		t.Fatalf("Result of decoding gedcom gave error, expected no error")
+		log.Fatal("Result of decoding gedcom gave error, expected no error")
 	}
+
+	//mySetupFunction()
+	retCode := m.Run()
+	os.Exit(retCode)
+}
+
+func TestStructuresAreInitialized(t *testing.T) {
 
 	if g == nil {
 		t.Fatalf("Result of decoding gedcom was nil, expected valid object")
@@ -61,24 +72,6 @@ func TestStructuresAreInitialized(t *testing.T) {
 }
 
 func TestIndividual(t *testing.T) {
-	d := NewDecoder(bytes.NewReader(data))
-
-	// ex1 := &IndividualRecord {
-	// 	Xref: "@PERSON1@",
-	// 	Sex: "M",
-	// 	Name: []*NameRecord{
-	// 		&NameRecord{
-	// 			Name: "given name /surname/jr.",
-	// 			Note: "Personal Name note\nNote continued here. The word TEST should not be broken!",
-	// 			},
-	// 		&NameRecord{
-	// 			Name: "another name /surname/",
-	// 			Note: "Personal Name note\nNote continued here. The word TEST should not be broken!",
-	// 			},
-	// 	}
-	// }
-
-	g, _ := d.Decode()
 
 	if len(g.Individual) != 8 {
 		t.Fatalf("Individual list length was %d, expected 8", len(g.Individual))
@@ -155,27 +148,6 @@ func TestIndividual(t *testing.T) {
 		Place: PlaceRecord{
 			Name: "The place",
 		},
-		Citation: []*CitationRecord{
-			&CitationRecord{
-				Source: &SourceRecord{
-					Xref:  "SOURCE1",
-					Title: "",
-				},
-				Page: "42",
-				Quay: "2",
-				Data: DataRecord{
-					Date: "31 DEC 1900",
-					Text: []string{
-						"a sample text\nSample text continued here. The word TEST should not be broken!",
-					},
-				},
-				Note: []*NoteRecord{
-					&NoteRecord{
-						Note: "A note\nNote continued here. The word TEST should not be broken!",
-					},
-				},
-			},
-		},
 		Note: []*NoteRecord{
 			&NoteRecord{
 				Note: "BIRTH event note (the event of entering into life)\nNote continued here. The word TEST should not be broken!",
@@ -184,12 +156,17 @@ func TestIndividual(t *testing.T) {
 	}
 
 	if i1.Event[0].Tag != event1.Tag {
-		t.Errorf(`Individual 0 Event 0 Tag is "%s" names, expected "%s"`, i1.Event[0].Tag, event1.Tag)
+		t.Errorf(`Individual 0 Event 0 Tag is "%s", expected "%s"`, i1.Event[0].Tag, event1.Tag)
 	}
-
-	//if !reflect.DeepEqual(i1.Event[0], event1) {
-	//	t.Errorf("Individual 0 event 0 was: %s", spew.Sdump(i1.Event[0]))
-	//}
+	if i1.Event[0].Date != event1.Date {
+		t.Errorf(`Individual 0 Event 0 Date is "%s", expected "%s"`, i1.Event[0].Date, event1.Date)
+	}
+	if i1.Event[0].Place.Name != event1.Place.Name {
+		t.Errorf(`Individual 0 Event 0 Place Name is "%s", expected "%s"`, i1.Event[0].Place.Name, event1.Place.Name)
+	}
+	if i1.Event[0].Note[0].Note != event1.Note[0].Note {
+		t.Errorf(`Individual 0 Event 0 Note is "%s", expected "%s"`, i1.Event[0].Note[0].Note, event1.Place.Note[0].Note)
+	}
 
 	if len(i1.Attribute) != 15 {
 		t.Fatalf(`Individual 0 had %d attributes, expected 15`, len(i1.Attribute))
@@ -201,27 +178,6 @@ func TestIndividual(t *testing.T) {
 		Place: PlaceRecord{
 			Name: "The place",
 		},
-		Citation: []*CitationRecord{
-			&CitationRecord{
-				Source: &SourceRecord{
-					Xref:  "SOURCE1",
-					Title: "",
-				},
-				Page: "42",
-				Quay: "3",
-				Data: DataRecord{
-					Date: "31 DEC 1900",
-					Text: []string{
-						"a sample text\nSample text continued here. The word TEST should not be broken!",
-					},
-				},
-				Note: []*NoteRecord{
-					&NoteRecord{
-						Note: "A note\nNote continued here. The word TEST should not be broken!",
-					},
-				},
-			},
-		},
 		Note: []*NoteRecord{
 			&NoteRecord{
 				Note: "CASTE event note (the name of an individual's rank or status in society, based   on racial or religious differences, or differences in wealth, inherited   rank, profession, occupation, etc)\nNote continued here. The word TEST should not be broken!",
@@ -232,9 +188,18 @@ func TestIndividual(t *testing.T) {
 	if i1.Attribute[0].Tag != att1.Tag {
 		t.Errorf(`Individual 0 Attribute 0 Tag is "%s" names, expected "%s"`, i1.Attribute[0].Tag, att1.Tag)
 	}
-	//if !reflect.DeepEqual(i1.Attribute[0], att1) {
-	//	t.Errorf("Individual 0 attribute 0 was: %s\nExpected: %s", spew.Sdump(i1.Attribute[0]), spew.Sdump(att1))
-	//}
+	if i1.Attribute[0].Value != att1.Value {
+		t.Errorf(`Individual 0 Attribute 0 Value is "%s" names, expected "%s"`, i1.Attribute[0].Value, att1.Value)
+	}
+	if i1.Attribute[0].Date != att1.Date {
+		t.Errorf(`Individual 0 Attribute 0 Date is "%s", expected "%s"`, i1.Attribute[0].Date, att1.Date)
+	}
+	if i1.Attribute[0].Place.Name != att1.Place.Name {
+		t.Errorf(`Individual 0 Attribute 0 Place Name is "%s", expected "%s"`, i1.Attribute[0].Place.Name, att1.Place.Name)
+	}
+	if i1.Attribute[0].Note[0].Note != att1.Note[0].Note {
+		t.Errorf(`Individual 0 Attribute 0 Note is "%s", expected "%s"`, i1.Attribute[0].Note[0].Note, att1.Place.Note[0].Note)
+	}
 
 	if len(i1.Parents) != 2 {
 		t.Fatalf(`Individual 0 had %d parent families, expected 2`, len(i1.Parents))
@@ -243,9 +208,6 @@ func TestIndividual(t *testing.T) {
 }
 
 func TestSubmitter(t *testing.T) {
-	d := NewDecoder(bytes.NewReader(data))
-
-	g, _ := d.Decode()
 
 	if len(g.Submitter) != 1 {
 		t.Fatalf("Submitter list length was %d, expected 1", len(g.Submitter))
@@ -254,9 +216,6 @@ func TestSubmitter(t *testing.T) {
 }
 
 func TestFamily(t *testing.T) {
-	d := NewDecoder(bytes.NewReader(data))
-
-	g, _ := d.Decode()
 
 	if len(g.Family) != 4 {
 		t.Fatalf("Family list length was %d, expected 4", len(g.Family))
@@ -265,9 +224,6 @@ func TestFamily(t *testing.T) {
 }
 
 func TestSource(t *testing.T) {
-	d := NewDecoder(bytes.NewReader(data))
-
-	g, _ := d.Decode()
 
 	if len(g.Source) != 1 {
 		t.Fatalf("Source list length was %d, expected 1", len(g.Source))
