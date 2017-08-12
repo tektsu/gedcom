@@ -6,21 +6,23 @@ information, see <http://unlicense.org/> or the accompanying UNLICENSE file.
 package gedcom
 
 import (
-	"fmt"
 	"io"
 	"strings"
 )
 
-// A Decoder reads and decodes GEDCOM objects from an input stream.
-type Decoder struct {
-	r       io.Reader
-	parsers []parser
-	refs    map[string]interface{}
-}
-
 // NewDecoder returns a new decoder that reads from r.
 func NewDecoder(r io.Reader) *Decoder {
-	return &Decoder{r: r}
+	return &Decoder{
+		r:                 r,
+		cbUnrecognizedTag: func(l int, t, v, x string) {},
+	}
+}
+
+func (d *Decoder) SetUnrecTagFunc(f func(int, string, string, string)) {
+	if f == nil {
+		return
+	}
+	d.cbUnrecognizedTag = f
 }
 
 // Decode reads the next GEDCOM-encoded value from its
@@ -315,11 +317,7 @@ func makeSourceParser(d *Decoder, s *SourceRecord, minLevel int) parser {
 			d.pushParser(makeTextParser(d, &r, level))
 
 		default:
-			fmt.Printf("Not processed %d %s %s", level, tag, value)
-			if xref != "" {
-				fmt.Printf(" (%s)", xref)
-			}
-			fmt.Println("")
+			d.cbUnrecognizedTag(level, tag, value, xref)
 			d.pushParser(makeSlurkParser(d, level))
 		}
 

@@ -5,6 +5,16 @@ information, see <http://unlicense.org/> or the accompanying UNLICENSE file.
 
 package gedcom
 
+import "io"
+
+// A Decoder reads and decodes GEDCOM objects from an input stream.
+type Decoder struct {
+	r                 io.Reader
+	parsers           []parser
+	refs              map[string]interface{}
+	cbUnrecognizedTag func(int, string, string, string)
+}
+
 // Gedcom is the top level structure.
 type Gedcom struct {
 	Header           *Header

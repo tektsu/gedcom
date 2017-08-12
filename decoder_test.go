@@ -6,6 +6,7 @@ package gedcom
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -27,7 +28,15 @@ func init() {
 }
 
 func TestMain(m *testing.M) {
+
 	d := NewDecoder(bytes.NewReader(data))
+	d.SetUnrecTagFunc(func(l int, t, v, x string) {
+		fmt.Printf("Unrecognized: %d %s %s", l, t, v)
+		if x != "" {
+			fmt.Printf(" (%s)", x)
+		}
+		fmt.Println("")
+	})
 
 	var err error
 	g, err = d.Decode()
@@ -35,7 +44,6 @@ func TestMain(m *testing.M) {
 		log.Fatal("Result of decoding gedcom gave error, expected no error")
 	}
 
-	//mySetupFunction()
 	retCode := m.Run()
 	os.Exit(retCode)
 }
