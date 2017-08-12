@@ -176,7 +176,7 @@ func TestIndividual(t *testing.T) {
 		t.Errorf(`Individual 0 Event 0 Note is "%s", expected "%s"`, i1.Event[0].Note[0].Note, event1.Place.Note[0].Note)
 	}
 
-	if len(i1.Attribute) != 15 {
+	if len(i1.Attribute) != 14 {
 		t.Fatalf(`Individual 0 had %d attributes, expected 15`, len(i1.Attribute))
 	}
 	att1 := &EventRecord{

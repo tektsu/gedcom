@@ -18,6 +18,7 @@ func NewDecoder(r io.Reader) *Decoder {
 	}
 }
 
+// Set the Unrecognized Tag Callback
 func (d *Decoder) SetUnrecTagFunc(f func(int, string, string, string)) {
 	if f == nil {
 		return
@@ -165,6 +166,10 @@ func makeRootParser(d *Decoder, g *Gedcom) parser {
 				obj := d.source(xref)
 				g.Source = append(g.Source, obj)
 				d.pushParser(makeSourceParser(d, obj, level))
+
+			default:
+				d.cbUnrecognizedTag(level, tag, value, xref)
+				d.pushParser(makeSlurkParser(d, level))
 			}
 		}
 		return nil
@@ -201,6 +206,10 @@ func makeIndividualParser(d *Decoder, i *IndividualRecord, minLevel int) parser 
 			f := &FamilyLinkRecord{Family: family}
 			i.Family = append(i.Family, f)
 			d.pushParser(makeFamilyLinkParser(d, f, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
 		}
 		return nil
 	}
@@ -221,6 +230,10 @@ func makeNameParser(d *Decoder, n *NameRecord, minLevel int) parser {
 			r := &NoteRecord{Note: value}
 			n.Note = append(n.Note, r)
 			d.pushParser(makeNoteParser(d, r, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
 		}
 
 		return nil
@@ -342,6 +355,9 @@ func makeCitationParser(d *Decoder, c *CitationRecord, minLevel int) parser {
 		case "DATA":
 			d.pushParser(makeDataParser(d, &c.Data, level))
 
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
 		}
 
 		return nil
@@ -362,6 +378,10 @@ func makeNoteParser(d *Decoder, n *NoteRecord, minLevel int) parser {
 			c := &CitationRecord{Source: d.source(stripXref(value))}
 			n.Citation = append(n.Citation, c)
 			d.pushParser(makeCitationParser(d, c, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
 		}
 
 		return nil
@@ -378,6 +398,10 @@ func makeTextParser(d *Decoder, s *string, minLevel int) parser {
 			*s = *s + "\n" + value
 		case "CONC":
 			*s = *s + value
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
 		}
 
 		return nil
@@ -395,6 +419,10 @@ func makeDataParser(d *Decoder, r *DataRecord, minLevel int) parser {
 		case "TEXT":
 			r.Text = append(r.Text, value)
 			d.pushParser(makeTextParser(d, &r.Text[len(r.Text)-1], level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
 		}
 
 		return nil
@@ -425,6 +453,10 @@ func makeEventParser(d *Decoder, e *EventRecord, minLevel int) parser {
 			r := &NoteRecord{Note: value}
 			e.Note = append(e.Note, r)
 			d.pushParser(makeNoteParser(d, r, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
 		}
 
 		return nil
@@ -446,6 +478,10 @@ func makePlaceParser(d *Decoder, p *PlaceRecord, minLevel int) parser {
 			r := &NoteRecord{Note: value}
 			p.Note = append(p.Note, r)
 			d.pushParser(makeNoteParser(d, r, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
 		}
 
 		return nil
@@ -465,6 +501,9 @@ func makeFamilyLinkParser(d *Decoder, f *FamilyLinkRecord, minLevel int) parser 
 			f.Note = append(f.Note, r)
 			d.pushParser(makeNoteParser(d, r, level))
 
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
 		}
 
 		return nil
@@ -488,6 +527,9 @@ func makeFamilyParser(d *Decoder, f *FamilyRecord, minLevel int) parser {
 			f.Event = append(f.Event, e)
 			d.pushParser(makeEventParser(d, e, level))
 
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
 		}
 		return nil
 	}
@@ -516,6 +558,9 @@ func makeAddressParser(d *Decoder, a *AddressRecord, minLevel int) parser {
 		case "PHON":
 			a.Phone = value
 
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
 		}
 
 		return nil
@@ -541,6 +586,10 @@ func makeObjectParser(d *Decoder, o *ObjectRecord, minLevel int) parser {
 			r := &NoteRecord{Note: value}
 			o.Note = append(o.Note, r)
 			d.pushParser(makeNoteParser(d, r, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
 		}
 		return nil
 	}
