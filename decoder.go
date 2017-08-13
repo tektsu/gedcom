@@ -31,6 +31,7 @@ func (d *Decoder) SetUnrecTagFunc(f func(int, string, string, string)) {
 func (d *Decoder) Decode() (*Gedcom, error) {
 
 	g := &Gedcom{
+		Header:     &HeaderRecord{},
 		Family:     make([]*FamilyRecord, 0),
 		Individual: make([]*IndividualRecord, 0),
 		Media:      make([]*MediaRecord, 0),
@@ -149,9 +150,11 @@ func (d *Decoder) source(xref string) *SourceRecord {
 
 func makeRootParser(d *Decoder, g *Gedcom) parser {
 	return func(level int, tag string, value string, xref string) error {
-		//println(level, tag, value, xref)
 		if level == 0 {
 			switch tag {
+			case "HEAD":
+				obj := g.Header
+				d.pushParser(makeHeaderParser(d, obj, level))
 			case "INDI":
 				obj := d.individual(xref)
 				g.Individual = append(g.Individual, obj)
@@ -171,6 +174,25 @@ func makeRootParser(d *Decoder, g *Gedcom) parser {
 				d.cbUnrecognizedTag(level, tag, value, xref)
 				d.pushParser(makeSlurkParser(d, level))
 			}
+		}
+		return nil
+	}
+}
+
+func makeHeaderParser(d *Decoder, h *HeaderRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "COPR":
+			h.Copyright = value
+		case "FILE":
+			h.File = value
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
 		}
 		return nil
 	}

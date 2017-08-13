@@ -53,6 +53,11 @@ func TestStructuresAreInitialized(t *testing.T) {
 	if g == nil {
 		t.Fatalf("Result of decoding gedcom was nil, expected valid object")
 	}
+
+	if g.Header == nil {
+		t.Fatalf("Header record was nil, expected valid record")
+	}
+
 	if g.Individual == nil {
 		t.Fatalf("Individual list was nil, expected valid slice")
 	}
@@ -79,25 +84,27 @@ func TestStructuresAreInitialized(t *testing.T) {
 
 }
 
+func TestHeader(t *testing.T) {
+
+	h := g.Header
+
+	testCases := []struct {
+		tested   string
+		expected string
+		actual   string
+	}{
+		{"Gedcom File Name", "ALLGED.GED", h.File},
+		{"Copyright", "(C) 1997-2000 by H. Eichmann. You can use and distribute this file freely as long as you do not charge for it", h.Copyright},
+	}
+
+	for _, tc := range testCases {
+		if tc.expected != tc.actual {
+			t.Errorf("%s was [%s], expected [%s]", tc.tested, tc.expected, tc.actual)
+		}
+	}
+}
+
 func TestIndividual(t *testing.T) {
-
-	if len(g.Individual) != 8 {
-		t.Fatalf("Individual list length was %d, expected 8", len(g.Individual))
-	}
-
-	i1 := g.Individual[0]
-
-	if i1.Xref != "PERSON1" {
-		t.Errorf(`Individual 0 xref was "%s", expected @PERSON1@`, i1.Xref)
-	}
-
-	if i1.Sex != "M" {
-		t.Errorf(`Individual 0 sex "%s" names, expected "M"`, i1.Sex)
-	}
-
-	if len(i1.Name) != 2 {
-		t.Fatalf(`Individual 0 had %d names, expected 2`, len(i1.Name))
-	}
 
 	name1 := &NameRecord{
 		Name: "given name /surname/jr.",
@@ -131,25 +138,6 @@ func TestIndividual(t *testing.T) {
 		},
 	}
 
-	if i1.Name[0].Name != name1.Name {
-		t.Errorf(`Individual 0 Name is "%s" names, expected "%s"`, i1.Name[0].Name, name1.Name)
-	}
-	if i1.Name[0].Citation[0].Source.Xref != name1.Citation[0].Source.Xref {
-		t.Errorf(`Individual 0 Name citation source is "%s", expected "%s"`, i1.Name[0].Citation[0].Source.Xref, name1.Citation[0].Source.Xref)
-	}
-	if i1.Name[0].Citation[0].Source.Title != name1.Citation[0].Source.Title {
-		t.Errorf(`Individual 0 Name citation Title is "%s", expected "%s"`, i1.Name[0].Citation[0].Source.Title, name1.Citation[0].Source.Title)
-	}
-	if i1.Name[0].Citation[0].Source.Author != name1.Citation[0].Source.Author {
-		t.Errorf(`Individual 0 Name citation Author is "%s", expected "%s"`, i1.Name[0].Citation[0].Source.Author, name1.Citation[0].Source.Author)
-	}
-	if i1.Name[0].Note[0].Note != name1.Note[0].Note {
-		t.Errorf(`Individual 0 Note 0 is "%s", expected "%s"`, i1.Name[0].Note[0].Note, name1.Note[0].Note)
-	}
-
-	if len(i1.Event) != 24 {
-		t.Fatalf(`Individual 0 had %d events, expected 24`, len(i1.Event))
-	}
 	event1 := &EventRecord{
 		Tag:  "BIRT",
 		Date: "31 DEC 1997",
@@ -163,22 +151,6 @@ func TestIndividual(t *testing.T) {
 		},
 	}
 
-	if i1.Event[0].Tag != event1.Tag {
-		t.Errorf(`Individual 0 Event 0 Tag is "%s", expected "%s"`, i1.Event[0].Tag, event1.Tag)
-	}
-	if i1.Event[0].Date != event1.Date {
-		t.Errorf(`Individual 0 Event 0 Date is "%s", expected "%s"`, i1.Event[0].Date, event1.Date)
-	}
-	if i1.Event[0].Place.Name != event1.Place.Name {
-		t.Errorf(`Individual 0 Event 0 Place Name is "%s", expected "%s"`, i1.Event[0].Place.Name, event1.Place.Name)
-	}
-	if i1.Event[0].Note[0].Note != event1.Note[0].Note {
-		t.Errorf(`Individual 0 Event 0 Note is "%s", expected "%s"`, i1.Event[0].Note[0].Note, event1.Place.Note[0].Note)
-	}
-
-	if len(i1.Attribute) != 14 {
-		t.Fatalf(`Individual 0 had %d attributes, expected 15`, len(i1.Attribute))
-	}
 	att1 := &EventRecord{
 		Tag:   "CAST",
 		Value: "Cast name",
@@ -193,76 +165,129 @@ func TestIndividual(t *testing.T) {
 		},
 	}
 
-	if i1.Attribute[0].Tag != att1.Tag {
-		t.Errorf(`Individual 0 Attribute 0 Tag is "%s" names, expected "%s"`, i1.Attribute[0].Tag, att1.Tag)
-	}
-	if i1.Attribute[0].Value != att1.Value {
-		t.Errorf(`Individual 0 Attribute 0 Value is "%s" names, expected "%s"`, i1.Attribute[0].Value, att1.Value)
-	}
-	if i1.Attribute[0].Date != att1.Date {
-		t.Errorf(`Individual 0 Attribute 0 Date is "%s", expected "%s"`, i1.Attribute[0].Date, att1.Date)
-	}
-	if i1.Attribute[0].Place.Name != att1.Place.Name {
-		t.Errorf(`Individual 0 Attribute 0 Place Name is "%s", expected "%s"`, i1.Attribute[0].Place.Name, att1.Place.Name)
-	}
-	if i1.Attribute[0].Note[0].Note != att1.Note[0].Note {
-		t.Errorf(`Individual 0 Attribute 0 Note is "%s", expected "%s"`, i1.Attribute[0].Note[0].Note, att1.Place.Note[0].Note)
+	i1 := g.Individual[0]
+
+	iTestCases := []struct {
+		format   string
+		expected int
+		actual   int
+	}{
+		{"Individual list length was [%d]", 8, len(g.Individual)},
+		{"Individual 0 had [%d] names", 2, len(i1.Name)},
+		{"Individual 0 had [%d] events", 24, len(i1.Event)},
+		{"Individual 0 had [%d] attributes", 14, len(i1.Attribute)},
+		{"Individual 0 had [%d] parent families", 2, len(i1.Parents)},
 	}
 
-	if len(i1.Parents) != 2 {
-		t.Fatalf(`Individual 0 had %d parent families, expected 2`, len(i1.Parents))
+	sTestCases := []struct {
+		tested   string
+		expected string
+		actual   string
+	}{
+		{"Individual 0 xref", "PERSON1", i1.Xref},
+		{"Individual 0 sex", "M", i1.Sex},
+		{"Individual 0 Name", name1.Name, i1.Name[0].Name},
+		{"Individual 0 Name citation source", name1.Citation[0].Source.Xref, i1.Name[0].Citation[0].Source.Xref},
+		{"Individual 0 Name citation Title", name1.Citation[0].Source.Title, i1.Name[0].Citation[0].Source.Title},
+		{"Individual 0 Name citation Author", name1.Citation[0].Source.Author, i1.Name[0].Citation[0].Source.Author},
+		{"Individual 0 Note 0", name1.Note[0].Note, i1.Name[0].Note[0].Note},
+		{"Individual 0 Event 0 Tag", event1.Tag, i1.Event[0].Tag},
+		{"Individual 0 Event 0 Date", event1.Date, i1.Event[0].Date},
+		{"Individual 0 Event 0 Place Name", event1.Place.Name, i1.Event[0].Place.Name},
+		{"Individual 0 Event 0 Note", event1.Note[0].Note, i1.Event[0].Note[0].Note},
+		{"Individual 0 Attribute 0 Tag", att1.Tag, i1.Attribute[0].Tag},
+		{"Individual 0 Attribute 0 Value", att1.Value, i1.Attribute[0].Value},
+		{"Individual 0 Attribute 0 Date", att1.Date, i1.Attribute[0].Date},
+		{"Individual 0 Attribute 0 Place Name", att1.Place.Name, i1.Attribute[0].Place.Name},
+		{"Individual 0 Attribute 0 Note", att1.Note[0].Note, i1.Attribute[0].Note[0].Note},
+	}
+
+	for _, tc := range iTestCases {
+		if tc.expected != tc.actual {
+			t.Fatalf(tc.format+", expected [%d]", tc.expected, tc.actual)
+		}
+	}
+
+	for _, tc := range sTestCases {
+		if tc.expected != tc.actual {
+			t.Errorf("%s was [%s], expected [%s]", tc.tested, tc.expected, tc.actual)
+		}
 	}
 
 }
 
 func TestSubmitter(t *testing.T) {
 
-	if len(g.Submitter) != 1 {
-		t.Fatalf("Submitter list length was %d, expected 1", len(g.Submitter))
+	iTestCases := []struct {
+		format   string
+		expected int
+		actual   int
+	}{
+		{"Submitter list length was [%d]", 1, len(g.Submitter)},
 	}
 
+	for _, tc := range iTestCases {
+		if tc.expected != tc.actual {
+			t.Fatalf(tc.format+", expected [%d]", tc.expected, tc.actual)
+		}
+	}
 }
 
 func TestFamily(t *testing.T) {
 
-	if len(g.Family) != 4 {
-		t.Fatalf("Family list length was %d, expected 4", len(g.Family))
+	iTestCases := []struct {
+		format   string
+		expected int
+		actual   int
+	}{
+		{"Family list length was [%d]", 4, len(g.Family)},
 	}
 
+	for _, tc := range iTestCases {
+		if tc.expected != tc.actual {
+			t.Fatalf(tc.format+", expected [%d]", tc.expected, tc.actual)
+		}
+	}
 }
 
 func TestSource(t *testing.T) {
 
-	if len(g.Source) != 1 {
-		t.Fatalf("Source list length was %d, expected 1", len(g.Source))
+	s := g.Source[0]
+
+	iTestCases := []struct {
+		format   string
+		expected int
+		actual   int
+	}{
+		{"Source list length was [%d]", 1, len(g.Source)},
+		{"Source file list length was [%d]", 2, len(s.File)},
 	}
 
-	s := g.Source[0]
-	if len(s.File) != 2 {
-		t.Fatalf("Source file list length was %d, expected 2", len(s.File))
+	sTestCases := []struct {
+		tested   string
+		expected string
+		actual   string
+	}{
+		{"Second source file name", "file2", s.File[1]},
+		{"Source title", "Title of source\nTitle continued here. The word TEST should not be broken!", s.Title},
+		{"Source submitter name", "A submitter", s.Submitter[0]},
+		{"Source repository", "A repository", s.Repository[0]},
+		{"Source periodical name", "A periodical name", s.Periodical},
+		{"Source volume", "1", s.Volume},
+		{"Source page", "3", s.Page[0]},
+		{"Source film reference", "at 11", s.Film[0]},
 	}
-	if s.File[1] != "file2" {
-		t.Fatalf("Second source file name was [%s], expected [2]", s.File[1])
+
+	for _, tc := range iTestCases {
+		if tc.expected != tc.actual {
+			t.Fatalf(tc.format+", expected [%d]", tc.expected, tc.actual)
+		}
 	}
-	if s.Title != "Title of source\nTitle continued here. The word TEST should not be broken!" {
-		t.Fatalf("Source title was [%s], expected [Title of source\nTitle continued here. The word TEST should not be broken!]", s.Title)
+
+	for _, tc := range sTestCases {
+		if tc.expected != tc.actual {
+			t.Errorf("%s was [%s], expected [%s]", tc.tested, tc.expected, tc.actual)
+		}
 	}
-	if s.Submitter[0] != "A submitter" {
-		t.Fatalf("Source submitter name was [%s], expected [A submitter]", s.Submitter[0])
-	}
-	if s.Repository[0] != "A repository" {
-		t.Fatalf("Source repository name was [%s], expected [A repository]", s.Repository[0])
-	}
-	if s.Periodical != "A periodical name" {
-		t.Fatalf("Source periodical name was [%s], expected [A periodical name]", s.Periodical)
-	}
-	if s.Volume != "1" {
-		t.Fatalf("Source volume was [%s], expected [1]", s.Volume)
-	}
-	if s.Page[0] != "3" {
-		t.Fatalf("Source page was [%s], expected [3]", s.Page[0])
-	}
-	if s.Film[0] != "at 11" {
-		t.Fatalf("Source film reference was [%s], expected [at 11]", s.Film[0])
-	}
+
 }

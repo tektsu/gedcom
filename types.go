@@ -17,7 +17,7 @@ type Decoder struct {
 
 // Gedcom is the top level structure.
 type Gedcom struct {
-	Header           *Header
+	Header           *HeaderRecord
 	SubmissionRecord *SubmissionRecord
 	Family           []*FamilyRecord
 	Individual       []*IndividualRecord
@@ -28,9 +28,15 @@ type Gedcom struct {
 	Trailer          *Trailer
 }
 
-// Header is the heading of the Gedcom file.
-type Header struct {
-	SourceSystem SystemRecord
+// HeaderRecord is the heading of the Gedcom file.
+type HeaderRecord struct {
+	Charset     string
+	Date        string
+	Destination string
+	File        string
+	Copyright   string
+	Language    string
+	Source      []*SourceRecord
 }
 
 // SystemRecord is the administrative information about the data.
