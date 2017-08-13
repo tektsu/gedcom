@@ -674,6 +674,24 @@ func makeGedcomSourceParser(d *Decoder, r *GedcomSourceRecord, minLevel int) par
 			r.Version = value
 		case "NAME":
 			r.Name = value
+		case "CORP":
+			r.Corporation = &CorpRecord{Name: value}
+			d.pushParser(makeCorpParser(d, r.Corporation, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
+func makeCorpParser(d *Decoder, r *CorpRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)

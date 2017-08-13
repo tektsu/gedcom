@@ -102,6 +102,7 @@ func TestHeader(t *testing.T) {
 		{"Source", "APPROVED_SOURCE_NAME", h.Source.Source},
 		{"Source version", "Version number of source-program", h.Source.Version},
 		{"Source name", "Name of source-program", h.Source.Name},
+		{"Source corp name", "Corporation name", h.Source.Corporation.Name},
 	}
 
 	for _, tc := range testCases {

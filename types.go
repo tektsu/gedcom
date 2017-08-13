@@ -90,10 +90,10 @@ type RepositoryRecord struct {
 }
 
 type GedcomSourceRecord struct {
-	Source  string
-	Version string
-	Name    string
-	//Corporation *CorpRecord
+	Source      string
+	Version     string
+	Name        string
+	Corporation *CorpRecord
 	//Data        *GedcomDataRecord
 }
 
@@ -218,4 +218,8 @@ type EncodingRecord struct {
 type TimestampRecord struct {
 	Date string
 	Time string
+}
+
+type CorpRecord struct {
+	Name string
 }
