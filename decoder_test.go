@@ -103,6 +103,14 @@ func TestHeader(t *testing.T) {
 		{"Source version", "Version number of source-program", h.Source.Version},
 		{"Source name", "Name of source-program", h.Source.Name},
 		{"Source corp name", "Corporation name", h.Source.Corporation.Name},
+		{"Source Address Line 0", "Corporation address line 1\nCorporation address line 2\nCorporation address line 3\nCorporation address line 4", h.Source.Corporation.Address.Full},
+		{"Source Address Line 1", "Corporation address line 1", h.Source.Corporation.Address.Line1},
+		{"Source Address Line 2", "Corporation address line 2", h.Source.Corporation.Address.Line2},
+		{"Source Address City", "Corporation address city", h.Source.Corporation.Address.City},
+		{"Source Address State", "Corporation address state", h.Source.Corporation.Address.State},
+		{"Source Address Postal Code", "Corporation address ZIP code", h.Source.Corporation.Address.PostalCode},
+		{"Source Address Country", "Corporation address country", h.Source.Corporation.Address.Country},
+		{"Source Phone 3", "Corporation phone number 3 (last one!)", h.Source.Corporation.Phone[2]},
 	}
 
 	for _, tc := range testCases {

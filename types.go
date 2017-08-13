@@ -221,5 +221,7 @@ type TimestampRecord struct {
 }
 
 type CorpRecord struct {
-	Name string
+	Name    string
+	Address *AddressRecord
+	Phone   []string
 }

@@ -692,6 +692,12 @@ func makeCorpParser(d *Decoder, r *CorpRecord, minLevel int) parser {
 			return d.popParser(level, tag, value, xref)
 		}
 		switch tag {
+		case "ADDR":
+			r.Address = &AddressRecord{Full: value}
+			d.pushParser(makeAddressParser(d, r.Address, level))
+		case "PHON":
+			p := value
+			r.Phone = append(r.Phone, p)
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
