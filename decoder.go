@@ -672,6 +672,8 @@ func makeGedcomSourceParser(d *Decoder, r *GedcomSourceRecord, minLevel int) par
 		switch tag {
 		case "VERS":
 			r.Version = value
+		case "NAME":
+			r.Name = value
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)

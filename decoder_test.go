@@ -101,6 +101,7 @@ func TestHeader(t *testing.T) {
 		{"Timestamp", "1 JAN 1998 13:57:24.80", fmt.Sprintf("%s %s", h.Timestamp.Date, h.Timestamp.Time)},
 		{"Source", "APPROVED_SOURCE_NAME", h.Source.Source},
 		{"Source version", "Version number of source-program", h.Source.Version},
+		{"Source name", "Name of source-program", h.Source.Name},
 	}
 
 	for _, tc := range testCases {
