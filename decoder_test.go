@@ -100,6 +100,7 @@ func TestHeader(t *testing.T) {
 		{"Encoding", "ASCII Version number of ASCII (whatever it means)", fmt.Sprintf("%s %s", h.Encoding.Name, h.Encoding.Version)},
 		{"Timestamp", "1 JAN 1998 13:57:24.80", fmt.Sprintf("%s %s", h.Timestamp.Date, h.Timestamp.Time)},
 		{"Source", "APPROVED_SOURCE_NAME", h.Source.Source},
+		{"Source version", "Version number of source-program", h.Source.Version},
 	}
 
 	for _, tc := range testCases {
