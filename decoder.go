@@ -189,6 +189,19 @@ func makeHeaderParser(d *Decoder, h *HeaderRecord, minLevel int) parser {
 			h.Copyright = value
 		case "FILE":
 			h.File = value
+		case "LANG":
+			h.Language = value
+		case "DEST":
+			h.Destination = value
+		case "CHAR":
+			h.Encoding = &EncodingRecord{Name: value}
+			d.pushParser(makeEncodingParser(d, h.Encoding, level))
+		case "DATE":
+			h.Timestamp = &TimestampRecord{Date: value}
+			d.pushParser(makeTimestampParser(d, h.Timestamp, level))
+		case "SOUR":
+			h.Source = &GedcomSourceRecord{Source: value}
+			d.pushParser(makeGedcomSourceParser(d, h.Source, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
@@ -608,6 +621,55 @@ func makeObjectParser(d *Decoder, o *ObjectRecord, minLevel int) parser {
 			r := &NoteRecord{Note: value}
 			o.Note = append(o.Note, r)
 			d.pushParser(makeNoteParser(d, r, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
+func makeEncodingParser(d *Decoder, e *EncodingRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "VERS":
+			e.Version = value
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
+func makeTimestampParser(d *Decoder, t *TimestampRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "TIME":
+			t.Time = value
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
+func makeGedcomSourceParser(d *Decoder, r *GedcomSourceRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)

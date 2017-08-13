@@ -30,13 +30,14 @@ type Gedcom struct {
 
 // HeaderRecord is the heading of the Gedcom file.
 type HeaderRecord struct {
-	Charset     string
 	Date        string
 	Destination string
 	File        string
 	Copyright   string
 	Language    string
-	Source      []*SourceRecord
+	Timestamp   *TimestampRecord
+	Encoding    *EncodingRecord
+	Source      *GedcomSourceRecord
 }
 
 // SystemRecord is the administrative information about the data.
@@ -86,6 +87,14 @@ type MediaRecord struct {
 
 // RepositoryRecord is currently not implemented.
 type RepositoryRecord struct {
+}
+
+type GedcomSourceRecord struct {
+	Source  string
+	Version string
+	Name    string
+	//Corporation *CorpRecord
+	//Data        *GedcomDataRecord
 }
 
 // SourceRecord describes a single source document.
@@ -197,4 +206,16 @@ type ObjectRecord struct {
 	Form  string
 	File  string
 	Note  []*NoteRecord
+}
+
+// EncodingRecord describes a character encoding.
+type EncodingRecord struct {
+	Name    string
+	Version string
+}
+
+// TimestampRecord describes a timestamp.
+type TimestampRecord struct {
+	Date string
+	Time string
 }

@@ -95,11 +95,16 @@ func TestHeader(t *testing.T) {
 	}{
 		{"Gedcom File Name", "ALLGED.GED", h.File},
 		{"Copyright", "(C) 1997-2000 by H. Eichmann. You can use and distribute this file freely as long as you do not charge for it", h.Copyright},
+		{"Language", "language", h.Language},
+		{"Destination", "Destination of transmission", h.Destination},
+		{"Encoding", "ASCII Version number of ASCII (whatever it means)", fmt.Sprintf("%s %s", h.Encoding.Name, h.Encoding.Version)},
+		{"Timestamp", "1 JAN 1998 13:57:24.80", fmt.Sprintf("%s %s", h.Timestamp.Date, h.Timestamp.Time)},
+		{"Source", "APPROVED_SOURCE_NAME", h.Source.Source},
 	}
 
 	for _, tc := range testCases {
 		if tc.expected != tc.actual {
-			t.Errorf("%s was [%s], expected [%s]", tc.tested, tc.expected, tc.actual)
+			t.Errorf("%s was [%s], expected [%s]", tc.tested, tc.actual, tc.expected)
 		}
 	}
 }
@@ -204,13 +209,13 @@ func TestIndividual(t *testing.T) {
 
 	for _, tc := range iTestCases {
 		if tc.expected != tc.actual {
-			t.Fatalf(tc.format+", expected [%d]", tc.expected, tc.actual)
+			t.Fatalf(tc.format+", expected [%d]", tc.actual, tc.expected)
 		}
 	}
 
 	for _, tc := range sTestCases {
 		if tc.expected != tc.actual {
-			t.Errorf("%s was [%s], expected [%s]", tc.tested, tc.expected, tc.actual)
+			t.Errorf("%s was [%s], expected [%s]", tc.tested, tc.actual, tc.expected)
 		}
 	}
 
@@ -228,7 +233,7 @@ func TestSubmitter(t *testing.T) {
 
 	for _, tc := range iTestCases {
 		if tc.expected != tc.actual {
-			t.Fatalf(tc.format+", expected [%d]", tc.expected, tc.actual)
+			t.Fatalf(tc.format+", expected [%d]", tc.actual, tc.expected)
 		}
 	}
 }
@@ -245,7 +250,7 @@ func TestFamily(t *testing.T) {
 
 	for _, tc := range iTestCases {
 		if tc.expected != tc.actual {
-			t.Fatalf(tc.format+", expected [%d]", tc.expected, tc.actual)
+			t.Fatalf(tc.format+", expected [%d]", tc.actual, tc.expected)
 		}
 	}
 }
@@ -280,13 +285,13 @@ func TestSource(t *testing.T) {
 
 	for _, tc := range iTestCases {
 		if tc.expected != tc.actual {
-			t.Fatalf(tc.format+", expected [%d]", tc.expected, tc.actual)
+			t.Fatalf(tc.format+", expected [%d]", tc.actual, tc.expected)
 		}
 	}
 
 	for _, tc := range sTestCases {
 		if tc.expected != tc.actual {
-			t.Errorf("%s was [%s], expected [%s]", tc.tested, tc.expected, tc.actual)
+			t.Errorf("%s was [%s], expected [%s]", tc.tested, tc.actual, tc.expected)
 		}
 	}
 
