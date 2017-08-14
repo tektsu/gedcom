@@ -755,6 +755,12 @@ func makeSubmitterParser(d *Decoder, r *SubmitterRecord, minLevel int) parser {
 		switch tag {
 		case "NAME":
 			r.Name = value
+		case "ADDR":
+			r.Address = &AddressRecord{Full: value}
+			d.pushParser(makeAddressParser(d, r.Address, level))
+		case "PHON":
+			p := value
+			r.Phone = append(r.Phone, p)
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
