@@ -59,10 +59,11 @@ type SubmissionRecord struct {
 
 // SubmitterRecord ...
 type SubmitterRecord struct {
-	Xref    string
-	Name    string
-	Phone   []string
-	Address *AddressRecord
+	Xref     string
+	Name     string
+	Language string
+	Phone    []string
+	Address  *AddressRecord
 }
 
 // The Trailer doesn't do anything but mark the end of the file.

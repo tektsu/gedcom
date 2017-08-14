@@ -257,6 +257,7 @@ func TestSubmitter(t *testing.T) {
 		{"Submitter name", "/Submitter-Name/", r[0].Name},
 		{"Submitter address country", "Submitter address country", r[0].Address.Country},
 		{"Submitter phone nuumber 2", "Submitter phone number 2", r[0].Phone[1]},
+		{"Submitter language", "English", r[0].Language},
 	}
 
 	for _, tc := range iTestCases {

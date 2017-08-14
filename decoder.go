@@ -755,6 +755,8 @@ func makeSubmitterParser(d *Decoder, r *SubmitterRecord, minLevel int) parser {
 		switch tag {
 		case "NAME":
 			r.Name = value
+		case "LANG":
+			r.Language = value
 		case "ADDR":
 			r.Address = &AddressRecord{Full: value}
 			d.pushParser(makeAddressParser(d, r.Address, level))
