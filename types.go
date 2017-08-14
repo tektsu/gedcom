@@ -17,15 +17,15 @@ type Decoder struct {
 
 // Gedcom is the top level structure.
 type Gedcom struct {
-	Header           *HeaderRecord
-	SubmissionRecord *SubmissionRecord
-	Family           []*FamilyRecord
-	Individual       []*IndividualRecord
-	Media            []*MediaRecord
-	Repository       []*RepositoryRecord
-	Source           []*SourceRecord
-	Submitter        []*SubmitterRecord
-	Trailer          *Trailer
+	Header     *HeaderRecord
+	Submission *SubmissionRecord
+	Submitter  []*SubmitterRecord
+	Family     []*FamilyRecord
+	Individual []*IndividualRecord
+	Media      []*MediaRecord
+	Repository []*RepositoryRecord
+	Source     []*SourceRecord
+	Trailer    *Trailer
 }
 
 // HeaderRecord is the heading of the Gedcom file.
@@ -54,6 +54,11 @@ type SystemRecord struct {
 
 // SubmissionRecord ...
 type SubmissionRecord struct {
+	Xref string
+}
+
+// SubmitterRecord ...
+type SubmitterRecord struct {
 	Xref string
 }
 
@@ -140,10 +145,6 @@ type CitationRecord struct {
 	Quay   string
 	Media  []*MediaRecord
 	Note   []*NoteRecord
-}
-
-// SubmitterRecord is not yet implemented.
-type SubmitterRecord struct {
 }
 
 // NameRecord describes a person's name.

@@ -148,6 +148,20 @@ func (d *Decoder) source(xref string) *SourceRecord {
 	return ref
 }
 
+func (d *Decoder) submitter(xref string) *SubmitterRecord {
+	if xref == "" {
+		return &SubmitterRecord{}
+	}
+
+	ref, found := d.refs[xref].(*SubmitterRecord)
+	if !found {
+		rec := &SubmitterRecord{Xref: xref}
+		d.refs[rec.Xref] = rec
+		return rec
+	}
+	return ref
+}
+
 func makeRootParser(d *Decoder, g *Gedcom) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level == 0 {
@@ -160,7 +174,9 @@ func makeRootParser(d *Decoder, g *Gedcom) parser {
 				g.Individual = append(g.Individual, obj)
 				d.pushParser(makeIndividualParser(d, obj, level))
 			case "SUBM":
-				g.Submitter = append(g.Submitter, &SubmitterRecord{})
+				obj := d.submitter(xref)
+				g.Submitter = append(g.Submitter, obj)
+				d.pushParser(makeSubmitterParser(d, obj, level))
 			case "FAM":
 				obj := d.family(xref)
 				g.Family = append(g.Family, obj)
@@ -722,6 +738,21 @@ func makeCorpParser(d *Decoder, r *CorpRecord, minLevel int) parser {
 		case "PHON":
 			p := value
 			r.Phone = append(r.Phone, p)
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
+func makeSubmitterParser(d *Decoder, r *SubmitterRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)

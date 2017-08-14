@@ -238,17 +238,33 @@ func TestIndividual(t *testing.T) {
 
 func TestSubmitter(t *testing.T) {
 
+	r := g.Submitter
+
 	iTestCases := []struct {
 		format   string
 		expected int
 		actual   int
 	}{
-		{"Submitter list length was [%d]", 1, len(g.Submitter)},
+		{"Submitter list length was [%d]", 1, len(r)},
+	}
+
+	sTestCases := []struct {
+		tested   string
+		expected string
+		actual   string
+	}{
+		{"Submitter xref", "SUBMITTER", r[0].Xref},
 	}
 
 	for _, tc := range iTestCases {
 		if tc.expected != tc.actual {
 			t.Fatalf(tc.format+", expected [%d]", tc.actual, tc.expected)
+		}
+	}
+
+	for _, tc := range sTestCases {
+		if tc.expected != tc.actual {
+			t.Errorf("%s was [%s], expected [%s]", tc.tested, tc.actual, tc.expected)
 		}
 	}
 }
