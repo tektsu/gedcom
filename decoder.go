@@ -679,7 +679,7 @@ func makeGedcomSourceParser(d *Decoder, r *GedcomSourceRecord, minLevel int) par
 			d.pushParser(makeCorpParser(d, r.Corporation, level))
 		case "DATA":
 			r.Data = &GedcomDataRecord{Name: value}
-			d.pushParser(makeCorpParser(d, r.Corporation, level))
+			d.pushParser(makeGedcomDataParser(d, r.Data, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
@@ -695,6 +695,8 @@ func makeGedcomDataParser(d *Decoder, r *GedcomDataRecord, minLevel int) parser 
 			return d.popParser(level, tag, value, xref)
 		}
 		switch tag {
+		case "DATE":
+			r.Date = value
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)

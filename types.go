@@ -99,6 +99,7 @@ type GedcomSourceRecord struct {
 
 type GedcomDataRecord struct {
 	Name string
+	Date string
 }
 
 // SourceRecord describes a single source document.
