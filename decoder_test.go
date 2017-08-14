@@ -254,6 +254,7 @@ func TestSubmitter(t *testing.T) {
 		actual   string
 	}{
 		{"Submitter xref", "SUBMITTER", r[0].Xref},
+		{"Submitter name", "/Submitter-Name/", r[0].Name},
 	}
 
 	for _, tc := range iTestCases {

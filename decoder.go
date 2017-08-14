@@ -753,6 +753,8 @@ func makeSubmitterParser(d *Decoder, r *SubmitterRecord, minLevel int) parser {
 			return d.popParser(level, tag, value, xref)
 		}
 		switch tag {
+		case "NAME":
+			r.Name = value
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)

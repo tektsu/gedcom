@@ -60,6 +60,7 @@ type SubmissionRecord struct {
 // SubmitterRecord ...
 type SubmitterRecord struct {
 	Xref string
+	Name string
 }
 
 // The Trailer doesn't do anything but mark the end of the file.
