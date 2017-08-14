@@ -111,6 +111,7 @@ func TestHeader(t *testing.T) {
 		{"Source Address Postal Code", "Corporation address ZIP code", h.Source.Corporation.Address.PostalCode},
 		{"Source Address Country", "Corporation address country", h.Source.Corporation.Address.Country},
 		{"Source Phone 3", "Corporation phone number 3 (last one!)", h.Source.Corporation.Phone[2]},
+		{"Source Data Name", "Name of source data", h.Source.Data.Name},
 	}
 
 	for _, tc := range testCases {

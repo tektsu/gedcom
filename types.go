@@ -94,7 +94,11 @@ type GedcomSourceRecord struct {
 	Version     string
 	Name        string
 	Corporation *CorpRecord
-	//Data        *GedcomDataRecord
+	Data        *GedcomDataRecord
+}
+
+type GedcomDataRecord struct {
+	Name string
 }
 
 // SourceRecord describes a single source document.
