@@ -102,6 +102,7 @@ func TestHeader(t *testing.T) {
 		{"Source", "APPROVED_SOURCE_NAME", h.Source.Source},
 		{"Source version", "Version number of source-program", h.Source.Version},
 		{"Source name", "Name of source-program", h.Source.Name},
+		{"Source form", "LINEAGE-LINKED", h.Source.Form},
 		{"Source corp name", "Corporation name", h.Source.Corporation.Name},
 		{"Source Address Line 0", "Corporation address line 1\nCorporation address line 2\nCorporation address line 3\nCorporation address line 4", h.Source.Corporation.Address.Full},
 		{"Source Address Line 1", "Corporation address line 1", h.Source.Corporation.Address.Line1},

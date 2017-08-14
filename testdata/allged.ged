@@ -21,6 +21,7 @@
 2 DATA Name of source data
 3 DATE 1 JAN 1998
 3 COPR Copyright of source data
+2 FORM LINEAGE-LINKED
 1 DEST Destination of transmission
 1 DATE 1 JAN 1998
 2 TIME 13:57:24.80

@@ -93,6 +93,7 @@ type GedcomSourceRecord struct {
 	Source      string
 	Version     string
 	Name        string
+	Form        string
 	Corporation *CorpRecord
 	Data        *GedcomDataRecord
 }

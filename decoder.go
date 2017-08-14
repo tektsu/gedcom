@@ -674,6 +674,8 @@ func makeGedcomSourceParser(d *Decoder, r *GedcomSourceRecord, minLevel int) par
 			r.Version = value
 		case "NAME":
 			r.Name = value
+		case "FORM":
+			r.Form = value
 		case "CORP":
 			r.Corporation = &CorpRecord{Name: value}
 			d.pushParser(makeCorpParser(d, r.Corporation, level))
