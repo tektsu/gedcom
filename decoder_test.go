@@ -113,6 +113,7 @@ func TestHeader(t *testing.T) {
 		{"Source Phone 3", "Corporation phone number 3 (last one!)", h.Source.Corporation.Phone[2]},
 		{"Source Data Name", "Name of source data", h.Source.Data.Name},
 		{"Source Data Date", "1 JAN 1998", h.Source.Data.Date},
+		{"Source Data Copyright", "Copyright of source data", h.Source.Data.Copyright},
 	}
 
 	for _, tc := range testCases {

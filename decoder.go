@@ -697,6 +697,8 @@ func makeGedcomDataParser(d *Decoder, r *GedcomDataRecord, minLevel int) parser 
 		switch tag {
 		case "DATE":
 			r.Date = value
+		case "COPR":
+			r.Copyright = value
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
