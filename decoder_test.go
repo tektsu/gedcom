@@ -13,6 +13,38 @@ import (
 	"testing"
 )
 
+type stringTestCase struct {
+	tested   string
+	expected string
+	actual   string
+}
+
+type stringTestCases []stringTestCase
+
+func (testCases stringTestCases) run(t *testing.T) {
+	for _, tc := range testCases {
+		if tc.expected != tc.actual {
+			t.Errorf("%s was [%s], expected [%s]", tc.tested, tc.actual, tc.expected)
+		}
+	}
+}
+
+type intTestCase struct {
+	format   string
+	expected int
+	actual   int
+}
+
+type intTestCases []intTestCase
+
+func (testCases intTestCases) run(t *testing.T) {
+	for _, tc := range testCases {
+		if tc.expected != tc.actual {
+			t.Fatalf(tc.format+", expected [%d]", tc.actual, tc.expected)
+		}
+	}
+}
+
 var (
 	data []byte
 )
@@ -88,11 +120,7 @@ func TestHeader(t *testing.T) {
 
 	h := g.Header
 
-	testCases := []struct {
-		tested   string
-		expected string
-		actual   string
-	}{
+	stringTestCases{
 		{"Gedcom File Name", "ALLGED.GED", h.File},
 		{"Copyright", "(C) 1997-2000 by H. Eichmann. You can use and distribute this file freely as long as you do not charge for it", h.Copyright},
 		{"Language", "language", h.Language},
@@ -115,13 +143,8 @@ func TestHeader(t *testing.T) {
 		{"Source Data Name", "Name of source data", h.Source.Data.Name},
 		{"Source Data Date", "1 JAN 1998", h.Source.Data.Date},
 		{"Source Data Copyright", "Copyright of source data", h.Source.Data.Copyright},
-	}
+	}.run(t)
 
-	for _, tc := range testCases {
-		if tc.expected != tc.actual {
-			t.Errorf("%s was [%s], expected [%s]", tc.tested, tc.actual, tc.expected)
-		}
-	}
 }
 
 func TestIndividual(t *testing.T) {
@@ -187,23 +210,15 @@ func TestIndividual(t *testing.T) {
 
 	i1 := g.Individual[0]
 
-	iTestCases := []struct {
-		format   string
-		expected int
-		actual   int
-	}{
+	intTestCases{
 		{"Individual list length was [%d]", 8, len(g.Individual)},
 		{"Individual 0 had [%d] names", 2, len(i1.Name)},
 		{"Individual 0 had [%d] events", 24, len(i1.Event)},
 		{"Individual 0 had [%d] attributes", 14, len(i1.Attribute)},
 		{"Individual 0 had [%d] parent families", 2, len(i1.Parents)},
-	}
+	}.run(t)
 
-	sTestCases := []struct {
-		tested   string
-		expected string
-		actual   string
-	}{
+	stringTestCases{
 		{"Individual 0 xref", "PERSON1", i1.Xref},
 		{"Individual 0 sex", "M", i1.Sex},
 		{"Individual 0 Name", name1.Name, i1.Name[0].Name},
@@ -220,39 +235,18 @@ func TestIndividual(t *testing.T) {
 		{"Individual 0 Attribute 0 Date", att1.Date, i1.Attribute[0].Date},
 		{"Individual 0 Attribute 0 Place Name", att1.Place.Name, i1.Attribute[0].Place.Name},
 		{"Individual 0 Attribute 0 Note", att1.Note[0].Note, i1.Attribute[0].Note[0].Note},
-	}
-
-	for _, tc := range iTestCases {
-		if tc.expected != tc.actual {
-			t.Fatalf(tc.format+", expected [%d]", tc.actual, tc.expected)
-		}
-	}
-
-	for _, tc := range sTestCases {
-		if tc.expected != tc.actual {
-			t.Errorf("%s was [%s], expected [%s]", tc.tested, tc.actual, tc.expected)
-		}
-	}
-
+	}.run(t)
 }
 
 func TestSubmitter(t *testing.T) {
 
 	r := g.Submitter
 
-	iTestCases := []struct {
-		format   string
-		expected int
-		actual   int
-	}{
+	intTestCases{
 		{"Submitter list length was [%d]", 1, len(r)},
-	}
+	}.run(t)
 
-	sTestCases := []struct {
-		tested   string
-		expected string
-		actual   string
-	}{
+	stringTestCases{
 		{"Submitter xref", "SUBMITTER", r[0].Xref},
 		{"Submitter name", "/Submitter-Name/", r[0].Name},
 		{"Submitter address country", "Submitter address country", r[0].Address.Country},
@@ -261,56 +255,26 @@ func TestSubmitter(t *testing.T) {
 		{"Submitter change date", "19 JUN 2000", r[0].Changed.Stamp.Date},
 		{"Submitter change time", "12:34:56.789", r[0].Changed.Stamp.Time},
 		{"Submitter note", "A note\nNote continued here. The word TEST should not be broken!", r[0].Changed.Note[0].Note},
-	}
-
-	for _, tc := range iTestCases {
-		if tc.expected != tc.actual {
-			t.Fatalf(tc.format+", expected [%d]", tc.actual, tc.expected)
-		}
-	}
-
-	for _, tc := range sTestCases {
-		if tc.expected != tc.actual {
-			t.Errorf("%s was [%s], expected [%s]", tc.tested, tc.actual, tc.expected)
-		}
-	}
+	}.run(t)
 }
 
 func TestFamily(t *testing.T) {
 
-	iTestCases := []struct {
-		format   string
-		expected int
-		actual   int
-	}{
+	intTestCases{
 		{"Family list length was [%d]", 4, len(g.Family)},
-	}
-
-	for _, tc := range iTestCases {
-		if tc.expected != tc.actual {
-			t.Fatalf(tc.format+", expected [%d]", tc.actual, tc.expected)
-		}
-	}
+	}.run(t)
 }
 
 func TestSource(t *testing.T) {
 
 	s := g.Source[0]
 
-	iTestCases := []struct {
-		format   string
-		expected int
-		actual   int
-	}{
+	intTestCases{
 		{"Source list length was [%d]", 1, len(g.Source)},
 		{"Source file list length was [%d]", 2, len(s.File)},
-	}
+	}.run(t)
 
-	sTestCases := []struct {
-		tested   string
-		expected string
-		actual   string
-	}{
+	stringTestCases{
 		{"Second source file name", "file2", s.File[1]},
 		{"Source title", "Title of source\nTitle continued here. The word TEST should not be broken!", s.Title},
 		{"Source submitter name", "A submitter", s.Submitter[0]},
@@ -319,18 +283,5 @@ func TestSource(t *testing.T) {
 		{"Source volume", "1", s.Volume},
 		{"Source page", "3", s.Page[0]},
 		{"Source film reference", "at 11", s.Film[0]},
-	}
-
-	for _, tc := range iTestCases {
-		if tc.expected != tc.actual {
-			t.Fatalf(tc.format+", expected [%d]", tc.actual, tc.expected)
-		}
-	}
-
-	for _, tc := range sTestCases {
-		if tc.expected != tc.actual {
-			t.Errorf("%s was [%s], expected [%s]", tc.tested, tc.actual, tc.expected)
-		}
-	}
-
+	}.run(t)
 }
