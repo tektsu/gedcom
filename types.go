@@ -56,6 +56,7 @@ type SystemRecord struct {
 type SubmissionRecord struct {
 	Xref       string
 	FamilyFile string
+	TempleCode string
 }
 
 // SubmitterRecord describes a submitter.

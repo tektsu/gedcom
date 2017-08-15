@@ -209,6 +209,7 @@ func TestSubmission(t *testing.T) {
 	stringTestCases{
 		{"Submission xref", "SUBMISSION", r.Xref},
 		{"Submission family file", "NameOfFamilyFile", r.FamilyFile},
+		{"Submission temple code", "Abreviated temple code", r.TempleCode},
 	}.run(t)
 }
 
