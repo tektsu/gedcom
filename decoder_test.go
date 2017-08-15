@@ -202,6 +202,15 @@ func TestSubmitter(t *testing.T) {
 	}.run(t)
 }
 
+func TestSubmission(t *testing.T) {
+
+	r := g.Submission
+
+	stringTestCases{
+		{"Submission xref", "SUBMISSION", r.Xref},
+	}.run(t)
+}
+
 func TestFamily(t *testing.T) {
 
 	intTestCases{

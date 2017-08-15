@@ -162,6 +162,20 @@ func (d *Decoder) submitter(xref string) *SubmitterRecord {
 	return ref
 }
 
+func (d *Decoder) submission(xref string) *SubmissionRecord {
+	if xref == "" {
+		return &SubmissionRecord{}
+	}
+
+	ref, found := d.refs[xref].(*SubmissionRecord)
+	if !found {
+		rec := &SubmissionRecord{Xref: xref}
+		d.refs[rec.Xref] = rec
+		return rec
+	}
+	return ref
+}
+
 func makeRootParser(d *Decoder, g *Gedcom) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level == 0 {
@@ -177,6 +191,9 @@ func makeRootParser(d *Decoder, g *Gedcom) parser {
 				obj := d.submitter(xref)
 				g.Submitter = append(g.Submitter, obj)
 				d.pushParser(makeSubmitterParser(d, obj, level))
+			case "SUBN":
+				g.Submission = d.submission(xref)
+				d.pushParser(makeSubmissionParser(d, g.Submission, level))
 			case "FAM":
 				obj := d.family(xref)
 				g.Family = append(g.Family, obj)
@@ -806,6 +823,21 @@ func makeSubmitterParser(d *Decoder, r *SubmitterRecord, minLevel int) parser {
 		case "CHAN":
 			r.Changed = &ChangedRecord{}
 			d.pushParser(makeChangedParser(d, r.Changed, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
+func makeSubmissionParser(d *Decoder, r *SubmissionRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
