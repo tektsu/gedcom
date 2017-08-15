@@ -31,6 +31,7 @@ type Gedcom struct {
 // GedcomInfoRecord contains information about the Gedcom version
 type GedcomInfoRecord struct {
 	Version string
+	Form    string
 }
 
 // HeaderRecord is the heading of the Gedcom file.

@@ -90,6 +90,7 @@ func TestHeader(t *testing.T) {
 		{"Submitter name", "/Submitter-Name/", h.Submitter.Name},
 		{"Submission family file", "NameOfFamilyFile", h.Submission.FamilyFile},
 		{"Gedcom version", "5.5", h.GedcomInfo.Version},
+		{"Gedcom form", "LINEAGE-LINKED", h.GedcomInfo.Form},
 	}.run(t)
 
 }
