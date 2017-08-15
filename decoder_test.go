@@ -258,6 +258,9 @@ func TestSubmitter(t *testing.T) {
 		{"Submitter address country", "Submitter address country", r[0].Address.Country},
 		{"Submitter phone nuumber 2", "Submitter phone number 2", r[0].Phone[1]},
 		{"Submitter language", "English", r[0].Language},
+		{"Submitter change date", "19 JUN 2000", r[0].Changed.Stamp.Date},
+		{"Submitter change time", "12:34:56.789", r[0].Changed.Stamp.Time},
+		{"Submitter note", "A note\nNote continued here. The word TEST should not be broken!", r[0].Changed.Note[0].Note},
 	}
 
 	for _, tc := range iTestCases {

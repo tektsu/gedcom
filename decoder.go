@@ -663,6 +663,24 @@ func makeEncodingParser(d *Decoder, e *EncodingRecord, minLevel int) parser {
 	}
 }
 
+func makeChangeParser(d *Decoder, r *TimestampRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "DATE":
+			r.Date = value
+			d.pushParser(makeTimestampParser(d, r, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
 func makeTimestampParser(d *Decoder, t *TimestampRecord, minLevel int) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level <= minLevel {
@@ -747,6 +765,28 @@ func makeCorpParser(d *Decoder, r *CorpRecord, minLevel int) parser {
 	}
 }
 
+func makeChangedParser(d *Decoder, r *ChangedRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "DATE":
+			r.Stamp = &TimestampRecord{Date: value}
+			d.pushParser(makeTimestampParser(d, r.Stamp, level))
+		case "NOTE":
+			n := &NoteRecord{Note: value}
+			r.Note = append(r.Note, n)
+			d.pushParser(makeNoteParser(d, n, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
 func makeSubmitterParser(d *Decoder, r *SubmitterRecord, minLevel int) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level <= minLevel {
@@ -763,6 +803,9 @@ func makeSubmitterParser(d *Decoder, r *SubmitterRecord, minLevel int) parser {
 		case "PHON":
 			p := value
 			r.Phone = append(r.Phone, p)
+		case "CHAN":
+			r.Changed = &ChangedRecord{}
+			d.pushParser(makeChangedParser(d, r.Changed, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)

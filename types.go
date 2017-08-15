@@ -57,13 +57,20 @@ type SubmissionRecord struct {
 	Xref string
 }
 
-// SubmitterRecord ...
+// SubmitterRecord describes a submitter.
 type SubmitterRecord struct {
 	Xref     string
 	Name     string
 	Language string
 	Phone    []string
 	Address  *AddressRecord
+	Changed  *ChangedRecord
+}
+
+// ChangedRecord describes a document change.
+type ChangedRecord struct {
+	Stamp *TimestampRecord
+	Note  []*NoteRecord
 }
 
 // The Trailer doesn't do anything but mark the end of the file.
