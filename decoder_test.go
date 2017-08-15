@@ -210,6 +210,7 @@ func TestSubmission(t *testing.T) {
 		{"Submission xref", "SUBMISSION", r.Xref},
 		{"Submission family file", "NameOfFamilyFile", r.FamilyFile},
 		{"Submission temple code", "Abreviated temple code", r.TempleCode},
+		{"Submission ancestors", "1", r.Ancestors},
 	}.run(t)
 }
 
