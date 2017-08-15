@@ -18,7 +18,7 @@ func NewDecoder(r io.Reader) *Decoder {
 	}
 }
 
-// Set the Unrecognized Tag Callback
+// SetUnrecTagFunc sets the callback function for unrecognized tags.
 func (d *Decoder) SetUnrecTagFunc(f func(int, string, string, string)) {
 	if f == nil {
 		return
@@ -233,15 +233,15 @@ func makeHeaderParser(d *Decoder, h *HeaderRecord, minLevel int) parser {
 			h.Timestamp = &TimestampRecord{Date: value}
 			d.pushParser(makeTimestampParser(d, h.Timestamp, level))
 		case "SOUR":
-			h.Source = &GedcomSourceRecord{Source: value}
-			d.pushParser(makeGedcomSourceParser(d, h.Source, level))
+			h.Source = &HeaderSourceRecord{Source: value}
+			d.pushParser(makeHeaderSourceParser(d, h.Source, level))
 		case "SUBM":
 			h.Submitter = d.submitter(stripXref(value))
 		case "SUBN":
 			h.Submission = d.submission(stripXref(value))
 		case "GEDC":
-			h.GedcomInfo = &GedcomInfoRecord{}
-			d.pushParser(makeGedcomInfoParser(d, h.GedcomInfo, level))
+			h.Info = &HeaderInfoRecord{}
+			d.pushParser(makeHeaderInfoParser(d, h.Info, level))
 		case "NOTE":
 			h.Note = &NoteRecord{Note: value}
 			d.pushParser(makeNoteParser(d, h.Note, level))
@@ -725,7 +725,7 @@ func makeTimestampParser(d *Decoder, t *TimestampRecord, minLevel int) parser {
 	}
 }
 
-func makeGedcomSourceParser(d *Decoder, r *GedcomSourceRecord, minLevel int) parser {
+func makeHeaderSourceParser(d *Decoder, r *HeaderSourceRecord, minLevel int) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level <= minLevel {
 			return d.popParser(level, tag, value, xref)
@@ -741,8 +741,8 @@ func makeGedcomSourceParser(d *Decoder, r *GedcomSourceRecord, minLevel int) par
 			r.Corporation = &CorpRecord{Name: value}
 			d.pushParser(makeCorpParser(d, r.Corporation, level))
 		case "DATA":
-			r.Data = &GedcomDataRecord{Name: value}
-			d.pushParser(makeGedcomDataParser(d, r.Data, level))
+			r.Data = &HeaderDataRecord{Name: value}
+			d.pushParser(makeHeaderDataParser(d, r.Data, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
@@ -752,7 +752,7 @@ func makeGedcomSourceParser(d *Decoder, r *GedcomSourceRecord, minLevel int) par
 	}
 }
 
-func makeGedcomDataParser(d *Decoder, r *GedcomDataRecord, minLevel int) parser {
+func makeHeaderDataParser(d *Decoder, r *HeaderDataRecord, minLevel int) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level <= minLevel {
 			return d.popParser(level, tag, value, xref)
@@ -869,7 +869,7 @@ func makeSubmissionParser(d *Decoder, r *SubmissionRecord, minLevel int) parser 
 	}
 }
 
-func makeGedcomInfoParser(d *Decoder, r *GedcomInfoRecord, minLevel int) parser {
+func makeHeaderInfoParser(d *Decoder, r *HeaderInfoRecord, minLevel int) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level <= minLevel {
 			return d.popParser(level, tag, value, xref)

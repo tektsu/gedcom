@@ -28,8 +28,8 @@ type Gedcom struct {
 	Trailer    *Trailer
 }
 
-// GedcomInfoRecord contains information about the Gedcom version
-type GedcomInfoRecord struct {
+// HeaderInfoRecord contains information about the Gedcom version
+type HeaderInfoRecord struct {
 	Version string
 	Form    string
 }
@@ -43,10 +43,10 @@ type HeaderRecord struct {
 	Language    string
 	Timestamp   *TimestampRecord
 	Encoding    *EncodingRecord
-	Source      *GedcomSourceRecord
+	Source      *HeaderSourceRecord
 	Submitter   *SubmitterRecord
 	Submission  *SubmissionRecord
-	GedcomInfo  *GedcomInfoRecord
+	Info        *HeaderInfoRecord
 	Note        *NoteRecord
 }
 
@@ -121,16 +121,18 @@ type MediaRecord struct {
 type RepositoryRecord struct {
 }
 
-type GedcomSourceRecord struct {
+// HeaderSourceRecord ...
+type HeaderSourceRecord struct {
 	Source      string
 	Version     string
 	Name        string
 	Form        string
 	Corporation *CorpRecord
-	Data        *GedcomDataRecord
+	Data        *HeaderDataRecord
 }
 
-type GedcomDataRecord struct {
+// HeaderDataRecord ...
+type HeaderDataRecord struct {
 	Name      string
 	Date      string
 	Copyright string
@@ -255,6 +257,7 @@ type TimestampRecord struct {
 	Time string
 }
 
+// CorpRecord ...
 type CorpRecord struct {
 	Name    string
 	Address *AddressRecord

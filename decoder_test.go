@@ -89,8 +89,8 @@ func TestHeader(t *testing.T) {
 		{"Source Data Copyright", "Copyright of source data", h.Source.Data.Copyright},
 		{"Submitter name", "/Submitter-Name/", h.Submitter.Name},
 		{"Submission family file", "NameOfFamilyFile", h.Submission.FamilyFile},
-		{"Gedcom version", "5.5", h.GedcomInfo.Version},
-		{"Gedcom form", "LINEAGE-LINKED", h.GedcomInfo.Form},
+		{"Gedcom version", "5.5", h.Info.Version},
+		{"Gedcom form", "LINEAGE-LINKED", h.Info.Form},
 		{"Note", "A general note", h.Note.Note[:14]},
 	}.run(t)
 }
