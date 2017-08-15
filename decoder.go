@@ -538,6 +538,10 @@ func makeEventParser(d *Decoder, e *EventRecord, minLevel int) parser {
 				e.Parents = append(e.Parents, f)
 				d.pushParser(makeFamilyLinkParser(d, f, level))
 			}
+		case "HUSB":
+			r := &SpouseInfoRecord{}
+			e.SpouseInfo = append(e.SpouseInfo, r)
+			d.pushParser(makeSpouseInfoParser(d, r, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
@@ -886,6 +890,23 @@ func makeHeaderInfoParser(d *Decoder, r *HeaderInfoRecord, minLevel int) parser 
 			r.Version = value
 		case "FORM":
 			r.Form = value
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
+func makeSpouseInfoParser(d *Decoder, r *SpouseInfoRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "AGE":
+			r.Age = value
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)

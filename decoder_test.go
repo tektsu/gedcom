@@ -225,8 +225,14 @@ func TestSubmission(t *testing.T) {
 
 func TestFamily(t *testing.T) {
 
+	f := g.Family
+
 	intTestCases{
-		{"Family list length was [%d]", 4, len(g.Family)},
+		{"Family list length was [%d]", 4, len(f)},
+	}.run(t)
+
+	stringTestCases{
+		{"Husbands age at annulment", "42y", f[0].Event[0].SpouseInfo[0].Age},
 	}.run(t)
 }
 

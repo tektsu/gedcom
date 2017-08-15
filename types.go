@@ -191,19 +191,20 @@ type DataRecord struct {
 
 // EventRecord describes a life event.
 type EventRecord struct {
-	Tag      string
-	Value    string
-	Type     string
-	Date     string
-	Place    PlaceRecord
-	Address  AddressRecord
-	Age      string
-	Agency   string
-	Cause    string
-	Citation []*CitationRecord
-	Media    []*MediaRecord
-	Note     []*NoteRecord
-	Parents  []*FamilyLinkRecord
+	Tag        string
+	Value      string
+	Type       string
+	Date       string
+	Place      PlaceRecord
+	Address    AddressRecord
+	Age        string
+	Agency     string
+	Cause      string
+	Citation   []*CitationRecord
+	Media      []*MediaRecord
+	Note       []*NoteRecord
+	Parents    []*FamilyLinkRecord
+	SpouseInfo []*SpouseInfoRecord
 }
 
 // NoteRecord describes a text note.
@@ -258,9 +259,15 @@ type TimestampRecord struct {
 	Time string
 }
 
-// CorpRecord ...
+// CorpRecord describes the corporation producing the software that generated the Gedcom.
 type CorpRecord struct {
 	Name    string
 	Address *AddressRecord
 	Phone   []string
+}
+
+// SpouseInfoRecord describes information about a spouse referenced in a family event.
+type SpouseInfoRecord struct {
+	Spouse string
+	Age    string
 }
