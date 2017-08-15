@@ -60,6 +60,7 @@ type SubmissionRecord struct {
 	Ancestors   string
 	Descendants string
 	Ordinance   string
+	Submitter   *SubmitterRecord
 }
 
 // SubmitterRecord describes a submitter.

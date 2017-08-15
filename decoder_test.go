@@ -213,6 +213,8 @@ func TestSubmission(t *testing.T) {
 		{"Submission ancestors", "1", r.Ancestors},
 		{"Submission descendants", "1", r.Descendants},
 		{"Submission ordinance", "yes", r.Ordinance},
+		{"Submission submitter name", "/Submitter-Name/", r.Submitter.Name},
+		{"Submission submitter language", "English", r.Submitter.Language},
 	}.run(t)
 }
 
