@@ -54,7 +54,8 @@ type SystemRecord struct {
 
 // SubmissionRecord ...
 type SubmissionRecord struct {
-	Xref string
+	Xref       string
+	FamilyFile string
 }
 
 // SubmitterRecord describes a submitter.

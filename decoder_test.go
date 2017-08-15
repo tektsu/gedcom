@@ -208,6 +208,7 @@ func TestSubmission(t *testing.T) {
 
 	stringTestCases{
 		{"Submission xref", "SUBMISSION", r.Xref},
+		{"Submission family file", "NameOfFamilyFile", r.FamilyFile},
 	}.run(t)
 }
 

@@ -838,6 +838,8 @@ func makeSubmissionParser(d *Decoder, r *SubmissionRecord, minLevel int) parser 
 			return d.popParser(level, tag, value, xref)
 		}
 		switch tag {
+		case "FAMF":
+			r.FamilyFile = value
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
