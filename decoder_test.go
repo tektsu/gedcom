@@ -212,6 +212,7 @@ func TestSubmission(t *testing.T) {
 		{"Submission temple code", "Abreviated temple code", r.TempleCode},
 		{"Submission ancestors", "1", r.Ancestors},
 		{"Submission descendants", "1", r.Descendants},
+		{"Submission ordinance", "yes", r.Ordinance},
 	}.run(t)
 }
 

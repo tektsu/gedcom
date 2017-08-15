@@ -846,6 +846,8 @@ func makeSubmissionParser(d *Decoder, r *SubmissionRecord, minLevel int) parser 
 			r.Ancestors = value
 		case "DESC":
 			r.Descendants = value
+		case "ORDI":
+			r.Ordinance = value
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)

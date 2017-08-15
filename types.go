@@ -59,6 +59,7 @@ type SubmissionRecord struct {
 	TempleCode  string
 	Ancestors   string
 	Descendants string
+	Ordinance   string
 }
 
 // SubmitterRecord describes a submitter.
