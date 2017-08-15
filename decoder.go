@@ -235,6 +235,8 @@ func makeHeaderParser(d *Decoder, h *HeaderRecord, minLevel int) parser {
 		case "SOUR":
 			h.Source = &GedcomSourceRecord{Source: value}
 			d.pushParser(makeGedcomSourceParser(d, h.Source, level))
+		case "SUBM":
+			h.Submitter = d.submitter(stripXref(value))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
