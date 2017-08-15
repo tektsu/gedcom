@@ -844,6 +844,8 @@ func makeSubmissionParser(d *Decoder, r *SubmissionRecord, minLevel int) parser 
 			r.TempleCode = value
 		case "ANCE":
 			r.Ancestors = value
+		case "DESC":
+			r.Descendants = value
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
