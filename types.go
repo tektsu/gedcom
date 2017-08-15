@@ -28,6 +28,11 @@ type Gedcom struct {
 	Trailer    *Trailer
 }
 
+// GedcomInfoRecord contains information about the Gedcom version
+type GedcomInfoRecord struct {
+	Version string
+}
+
 // HeaderRecord is the heading of the Gedcom file.
 type HeaderRecord struct {
 	Date        string
@@ -40,6 +45,7 @@ type HeaderRecord struct {
 	Source      *GedcomSourceRecord
 	Submitter   *SubmitterRecord
 	Submission  *SubmissionRecord
+	GedcomInfo  *GedcomInfoRecord
 }
 
 // SystemRecord is the administrative information about the data.

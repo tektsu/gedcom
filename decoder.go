@@ -239,6 +239,9 @@ func makeHeaderParser(d *Decoder, h *HeaderRecord, minLevel int) parser {
 			h.Submitter = d.submitter(stripXref(value))
 		case "SUBN":
 			h.Submission = d.submission(stripXref(value))
+		case "GEDC":
+			h.GedcomInfo = &GedcomInfoRecord{}
+			d.pushParser(makeGedcomInfoParser(d, h.GedcomInfo, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
@@ -854,6 +857,23 @@ func makeSubmissionParser(d *Decoder, r *SubmissionRecord, minLevel int) parser 
 			r.Ordinance = value
 		case "SUBM":
 			r.Submitter = d.submitter(stripXref(value))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
+func makeGedcomInfoParser(d *Decoder, r *GedcomInfoRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "VERS":
+			r.Version = value
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
