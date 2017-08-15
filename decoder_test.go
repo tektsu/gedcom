@@ -183,6 +183,7 @@ func TestIndividual(t *testing.T) {
 		{"Individual 0 Attribute 0 Date", att1.Date, i1.Attribute[0].Date},
 		{"Individual 0 Attribute 0 Place Name", att1.Place.Name, i1.Attribute[0].Place.Name},
 		{"Individual 0 Attribute 0 Note", att1.Note[0].Note, i1.Attribute[0].Note[0].Note},
+		{"Individual 0 birth father name ", "/Father/", i1.Event[0].Parents[0].Family.Husband.Name[0].Name},
 	}.run(t)
 }
 
