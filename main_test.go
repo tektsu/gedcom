@@ -44,6 +44,9 @@ func TestMain(m *testing.M) {
 
 	d := NewDecoder(bytes.NewReader(data))
 	d.SetUnrecTagFunc(func(l int, t, v, x string) {
+		if t[0:1] == "_" {
+			return
+		}
 		fmt.Printf("Unrecognized: %d %s %s", l, t, v)
 		if x != "" {
 			fmt.Printf(" (%s)", x)
