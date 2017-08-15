@@ -39,6 +39,7 @@ type HeaderRecord struct {
 	Encoding    *EncodingRecord
 	Source      *GedcomSourceRecord
 	Submitter   *SubmitterRecord
+	Submission  *SubmissionRecord
 }
 
 // SystemRecord is the administrative information about the data.

@@ -87,7 +87,8 @@ func TestHeader(t *testing.T) {
 		{"Source Data Name", "Name of source data", h.Source.Data.Name},
 		{"Source Data Date", "1 JAN 1998", h.Source.Data.Date},
 		{"Source Data Copyright", "Copyright of source data", h.Source.Data.Copyright},
-		{"Source submitter name", "/Submitter-Name/", h.Submitter.Name},
+		{"Submitter name", "/Submitter-Name/", h.Submitter.Name},
+		{"Submission family file", "NameOfFamilyFile", h.Submission.FamilyFile},
 	}.run(t)
 
 }
