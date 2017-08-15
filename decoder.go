@@ -242,6 +242,9 @@ func makeHeaderParser(d *Decoder, h *HeaderRecord, minLevel int) parser {
 		case "GEDC":
 			h.GedcomInfo = &GedcomInfoRecord{}
 			d.pushParser(makeGedcomInfoParser(d, h.GedcomInfo, level))
+		case "NOTE":
+			h.Note = &NoteRecord{Note: value}
+			d.pushParser(makeNoteParser(d, h.Note, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)

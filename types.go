@@ -47,6 +47,7 @@ type HeaderRecord struct {
 	Submitter   *SubmitterRecord
 	Submission  *SubmissionRecord
 	GedcomInfo  *GedcomInfoRecord
+	Note        *NoteRecord
 }
 
 // SystemRecord is the administrative information about the data.

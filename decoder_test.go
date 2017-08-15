@@ -91,8 +91,8 @@ func TestHeader(t *testing.T) {
 		{"Submission family file", "NameOfFamilyFile", h.Submission.FamilyFile},
 		{"Gedcom version", "5.5", h.GedcomInfo.Version},
 		{"Gedcom form", "LINEAGE-LINKED", h.GedcomInfo.Form},
+		{"Note", "A general note", h.Note.Note[:14]},
 	}.run(t)
-
 }
 
 func TestIndividual(t *testing.T) {
