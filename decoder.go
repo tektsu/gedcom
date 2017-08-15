@@ -531,6 +531,13 @@ func makeEventParser(d *Decoder, e *EventRecord, minLevel int) parser {
 			r := &NoteRecord{Note: value}
 			e.Note = append(e.Note, r)
 			d.pushParser(makeNoteParser(d, r, level))
+		case "FAMC":
+			if e.Tag == "BIRT" || e.Tag == "ADOP" {
+				family := d.family(stripXref(value))
+				f := &FamilyLinkRecord{Family: family}
+				e.Parents = append(e.Parents, f)
+				d.pushParser(makeFamilyLinkParser(d, f, level))
+			}
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
@@ -573,7 +580,7 @@ func makeFamilyLinkParser(d *Decoder, f *FamilyLinkRecord, minLevel int) parser 
 		}
 		switch tag {
 		case "PEDI":
-			f.Type = value
+			f.Pedigree = value
 		case "NOTE":
 			r := &NoteRecord{Note: value}
 			f.Note = append(f.Note, r)

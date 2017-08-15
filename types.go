@@ -203,6 +203,7 @@ type EventRecord struct {
 	Citation []*CitationRecord
 	Media    []*MediaRecord
 	Note     []*NoteRecord
+	Parents  []*FamilyLinkRecord
 }
 
 // NoteRecord describes a text note.
@@ -220,9 +221,9 @@ type PlaceRecord struct {
 
 // FamilyLinkRecord ...
 type FamilyLinkRecord struct {
-	Family *FamilyRecord
-	Type   string
-	Note   []*NoteRecord
+	Family   *FamilyRecord
+	Pedigree string
+	Note     []*NoteRecord
 }
 
 // AddressRecord describes and address.
