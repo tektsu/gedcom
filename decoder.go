@@ -585,6 +585,8 @@ func makeFamilyLinkParser(d *Decoder, f *FamilyLinkRecord, minLevel int) parser 
 		switch tag {
 		case "PEDI":
 			f.Pedigree = value
+		case "ADOP":
+			f.AdoptedBy = value
 		case "NOTE":
 			r := &NoteRecord{Note: value}
 			f.Note = append(f.Note, r)

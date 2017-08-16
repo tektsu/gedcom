@@ -222,9 +222,10 @@ type PlaceRecord struct {
 
 // FamilyLinkRecord ...
 type FamilyLinkRecord struct {
-	Family   *FamilyRecord
-	Pedigree string
-	Note     []*NoteRecord
+	Family    *FamilyRecord
+	Pedigree  string
+	AdoptedBy string
+	Note      []*NoteRecord
 }
 
 // AddressRecord describes and address.

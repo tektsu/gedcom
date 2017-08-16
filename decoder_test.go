@@ -184,6 +184,7 @@ func TestIndividual(t *testing.T) {
 		{"Individual 0 Attribute 0 Place Name", att1.Place.Name, i1.Attribute[0].Place.Name},
 		{"Individual 0 Attribute 0 Note", att1.Note[0].Note, i1.Attribute[0].Note[0].Note},
 		{"Individual 0 birth father name ", "/Father/", i1.Event[0].Parents[0].Family.Husband.Name[0].Name},
+		{"Individual 0 adopted by", "BOTH", i1.Event[6].Parents[0].AdoptedBy},
 	}.run(t)
 }
 
