@@ -229,10 +229,12 @@ func TestFamily(t *testing.T) {
 
 	intTestCases{
 		{"Family list length was [%d]", 4, len(f)},
+		{"Family 0 event list length was [%d]", 11, len(f[0].Event)},
 	}.run(t)
 
 	stringTestCases{
-		{"Husbands age at annulment", "42y", f[0].Event[0].SpouseInfo[0].Age},
+		{"Husband's age at annulment", "42y", f[0].Event[0].SpouseInfo[0].Age},
+		{"Wife's age at divorce filing", "CHILD", f[0].Event[3].SpouseInfo[1].Age},
 	}.run(t)
 }
 
