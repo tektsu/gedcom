@@ -235,6 +235,7 @@ func TestFamily(t *testing.T) {
 	stringTestCases{
 		{"Husband's age at annulment", "42y", f[0].Event[0].SpouseInfo[0].Age},
 		{"Wife's age at divorce filing", "CHILD", f[0].Event[3].SpouseInfo[1].Age},
+		{"Wife's spouse type at divorce filing", "WIFE", f[0].Event[3].SpouseInfo[1].Spouse},
 	}.run(t)
 }
 

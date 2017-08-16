@@ -539,7 +539,7 @@ func makeEventParser(d *Decoder, e *EventRecord, minLevel int) parser {
 				d.pushParser(makeFamilyLinkParser(d, f, level))
 			}
 		case "HUSB", "WIFE":
-			r := &SpouseInfoRecord{}
+			r := &SpouseInfoRecord{Spouse: tag}
 			e.SpouseInfo = append(e.SpouseInfo, r)
 			d.pushParser(makeSpouseInfoParser(d, r, level))
 
