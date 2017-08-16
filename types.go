@@ -105,12 +105,13 @@ type FamilyRecord struct {
 // IndividualRecord describes a single person.
 type IndividualRecord struct {
 	Xref      string
-	Name      []*NameRecord
 	Sex       string
+	Name      []*NameRecord
 	Event     []*EventRecord
 	Attribute []*EventRecord
 	Parents   []*FamilyLinkRecord
 	Family    []*FamilyLinkRecord
+	Citation  []*CitationRecord
 }
 
 // MediaRecord is currently not implemented.

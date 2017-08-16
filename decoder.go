@@ -284,6 +284,10 @@ func makeIndividualParser(d *Decoder, i *IndividualRecord, minLevel int) parser 
 			f := &FamilyLinkRecord{Family: family}
 			i.Family = append(i.Family, f)
 			d.pushParser(makeFamilyLinkParser(d, f, level))
+		case "SOUR":
+			c := &CitationRecord{Source: d.source(stripXref(value))}
+			i.Citation = append(i.Citation, c)
+			d.pushParser(makeCitationParser(d, c, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
