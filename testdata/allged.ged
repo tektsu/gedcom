@@ -83,7 +83,8 @@
 1 DESC 1
 1 ORDI yes
 0 @PERSON1@ INDI
-1 NAME given name /surname/jr.
+1 NAME given name /surname/
+2 NSFX jr.
 2 SOUR @SOURCE1@
 3 PAGE 42
 3 DATA

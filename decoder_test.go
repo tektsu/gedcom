@@ -98,7 +98,7 @@ func TestHeader(t *testing.T) {
 func TestIndividual(t *testing.T) {
 
 	name1 := &NameRecord{
-		Name: "given name /surname/jr.",
+		Name: "given name /surname/",
 		Citation: []*CitationRecord{
 			&CitationRecord{
 				Source: &SourceRecord{
@@ -170,6 +170,7 @@ func TestIndividual(t *testing.T) {
 		{"Individual 0 xref", "PERSON1", i1.Xref},
 		{"Individual 0 sex", "M", i1.Sex},
 		{"Individual 0 Name", name1.Name, i1.Name[0].Name},
+		{"Individual 0 Name suffix", "jr.", i1.Name[0].Suffix},
 		{"Individual 0 Name citation source", name1.Citation[0].Source.Xref, i1.Name[0].Citation[0].Source.Xref},
 		{"Individual 0 Name citation Title", name1.Citation[0].Source.Title, i1.Name[0].Citation[0].Source.Title},
 		{"Individual 0 Name citation Author", name1.Citation[0].Source.Author, i1.Name[0].Citation[0].Source.Author},

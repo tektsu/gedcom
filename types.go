@@ -176,6 +176,7 @@ type MediaRecord struct {
 // NameRecord describes a person's name.
 type NameRecord struct {
 	Name     string
+	Suffix   string
 	Citation []*CitationRecord
 	Note     []*NoteRecord
 }
