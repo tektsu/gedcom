@@ -170,6 +170,7 @@ func TestIndividual(t *testing.T) {
 		{"Individual 0 xref", "PERSON1", i1.Xref},
 		{"Individual 0 sex", "M", i1.Sex},
 		{"Individual 0 Name", name1.Name, i1.Name[0].Name},
+		{"Individual 0 Name prefix", "MSgt", i1.Name[0].Prefix},
 		{"Individual 0 Name suffix", "jr.", i1.Name[0].Suffix},
 		{"Individual 0 Name citation source", name1.Citation[0].Source.Xref, i1.Name[0].Citation[0].Source.Xref},
 		{"Individual 0 Name citation Title", name1.Citation[0].Source.Title, i1.Name[0].Citation[0].Source.Title},

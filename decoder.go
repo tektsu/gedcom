@@ -632,6 +632,8 @@ func makeNameParser(d *Decoder, n *NameRecord, minLevel int) parser {
 		switch tag {
 		case "NSFX":
 			n.Suffix = value
+		case "NPFX":
+			n.Prefix = value
 		case "SOUR":
 			c := &CitationRecord{Source: d.source(stripXref(value))}
 			n.Citation = append(n.Citation, c)
