@@ -177,7 +177,7 @@ type SourceRecord struct {
 	DocLocation []string
 	Repository  []string
 	Submitter   []string
-	LastChanged DataRecord
+	Changed     *ChangedRecord
 	EventData   *SourceDataRecord
 	Media       []*MediaRecord
 	Note        []*NoteRecord
