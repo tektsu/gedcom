@@ -99,6 +99,7 @@ type FamilyRecord struct {
 	Husband          *IndividualRecord
 	Wife             *IndividualRecord
 	NumberOfChildren *EventRecord
+	Changed          *ChangedRecord
 	Child            []*IndividualRecord
 	Event            []*EventRecord
 	Citation         []*CitationRecord
@@ -146,6 +147,11 @@ type HeaderDataRecord struct {
 	Copyright string
 }
 
+// SourceDataRecord describes events pertaining to this source
+type SourceDataRecord struct {
+	Event []*EventRecord
+}
+
 // SourceRecord describes a single source document.
 type SourceRecord struct {
 	Xref        string
@@ -170,6 +176,7 @@ type SourceRecord struct {
 	Repository  []string
 	Submitter   []string
 	LastChanged DataRecord
+	EventData   *SourceDataRecord
 	Media       []*MediaRecord
 	Note        []*NoteRecord
 	Object      []*ObjectRecord

@@ -248,6 +248,8 @@ func TestFamily(t *testing.T) {
 		{"Family citation first file", "file1", f[0].Citation[0].Source.File[0]},
 		{"Family object title", "A bmp picture", f[0].Object[0].Title},
 		{"Family note 0", "A note about the family\nNote continued here. The word TEST should not be broken!", f[0].Note[0].Note},
+		{"Family change date", "1 APR 1998", f[0].Changed.Stamp.Date},
+		{"Family change time", "12:34:56.789", f[0].Changed.Stamp.Time},
 	}.run(t)
 }
 
@@ -270,5 +272,7 @@ func TestSource(t *testing.T) {
 		{"Source page", "3", s.Page[0]},
 		{"Source film reference", "at 11", s.Film[0]},
 		{"Source object 0 title", "A bmp picture", s.Object[0].Title},
+		{"Source birth and christening event tags", "BIRT, CHR", s.EventData.Event[0].Value},
+		{"Source death event place", "Another place", s.EventData.Event[1].Place.Name},
 	}.run(t)
 }

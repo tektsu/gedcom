@@ -333,6 +333,25 @@ func makeNameParser(d *Decoder, n *NameRecord, minLevel int) parser {
 	}
 }
 
+func makeSourceDataParser(d *Decoder, r *SourceDataRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "EVEN":
+			e := &EventRecord{Tag: tag, Value: value}
+			r.Event = append(r.Event, e)
+			d.pushParser(makeEventParser(d, e, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
 func makeSourceParser(d *Decoder, s *SourceRecord, minLevel int) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level <= minLevel {
@@ -367,6 +386,9 @@ func makeSourceParser(d *Decoder, s *SourceRecord, minLevel int) parser {
 			o := &ObjectRecord{}
 			s.Object = append(s.Object, o)
 			d.pushParser(makeObjectParser(d, o, level))
+		case "DATA": // {0:1}
+			s.EventData = &SourceDataRecord{}
+			d.pushParser(makeSourceDataParser(d, s.EventData, level))
 
 		// Non-standard tags
 		case "PERI": // {0:1}
@@ -648,6 +670,9 @@ func makeFamilyParser(d *Decoder, f *FamilyRecord, minLevel int) parser {
 			r := &NoteRecord{Note: value}
 			f.Note = append(f.Note, r)
 			d.pushParser(makeNoteParser(d, r, level))
+		case "CHAN":
+			f.Changed = &ChangedRecord{}
+			d.pushParser(makeChangedParser(d, f.Changed, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
