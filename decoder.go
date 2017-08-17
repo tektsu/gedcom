@@ -345,6 +345,10 @@ func makeSourceDataParser(d *Decoder, r *SourceDataRecord, minLevel int) parser 
 			e := &EventRecord{Tag: tag, Value: value}
 			r.Event = append(r.Event, e)
 			d.pushParser(makeEventParser(d, e, level))
+		case "NOTE":
+			n := &NoteRecord{Note: value}
+			r.Note = append(r.Note, n)
+			d.pushParser(makeNoteParser(d, n, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)

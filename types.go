@@ -151,6 +151,7 @@ type HeaderDataRecord struct {
 type SourceDataRecord struct {
 	Agency string
 	Event  []*EventRecord
+	Note   []*NoteRecord
 }
 
 // SourceRecord describes a single source document.

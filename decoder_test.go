@@ -273,6 +273,7 @@ func TestSource(t *testing.T) {
 		{"Source film reference", "at 11", s.Film[0]},
 		{"Source object 0 title", "A bmp picture", s.Object[0].Title},
 		{"Source event data responsible agency", "Responsible agency", s.EventData.Agency},
+		{"Source event data note", "A note about whatever\nNote continued here. The word TEST should not be broken!", s.EventData.Note[0].Note},
 		{"Source birth and christening event tags", "BIRT, CHR", s.EventData.Event[0].Value},
 		{"Source death event place", "Another place", s.EventData.Event[1].Place.Name},
 	}.run(t)
