@@ -292,6 +292,13 @@ func makeIndividualParser(d *Decoder, i *IndividualRecord, minLevel int) parser 
 			o := &ObjectRecord{}
 			i.Object = append(i.Object, o)
 			d.pushParser(makeObjectParser(d, o, level))
+		case "NOTE":
+			n := &NoteRecord{Note: value}
+			i.Note = append(i.Note, n)
+			d.pushParser(makeNoteParser(d, n, level))
+		case "CHAN":
+			i.Changed = &ChangedRecord{}
+			d.pushParser(makeChangedParser(d, i.Changed, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)

@@ -106,6 +106,7 @@ type FamilyRecord struct {
 type IndividualRecord struct {
 	Xref      string
 	Sex       string
+	Changed   *ChangedRecord
 	Name      []*NameRecord
 	Event     []*EventRecord
 	Attribute []*EventRecord
@@ -113,6 +114,7 @@ type IndividualRecord struct {
 	Family    []*FamilyLinkRecord
 	Citation  []*CitationRecord
 	Object    []*ObjectRecord
+	Note      []*NoteRecord
 }
 
 // MediaRecord is currently not implemented.

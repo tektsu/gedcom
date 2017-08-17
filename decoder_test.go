@@ -188,6 +188,9 @@ func TestIndividual(t *testing.T) {
 		{"Individual 0 citation page", "42", i1.Citation[0].Page},
 		{"Individual 0 citation source author", "Author of source", i1.Citation[0].Source.Author[:16]},
 		{"Individual 0 object title", "A gif picture", i1.Object[0].Title},
+		{"Individual 0 Note 0", "A note about the individual\nNote continued here. The word TEST should not be broken!", i1.Note[0].Note},
+		{"Individual 0 change date", "1 APR 1998", i1.Changed.Stamp.Date},
+		{"Individual 0 change time", "12:34:56.789", i1.Changed.Stamp.Time},
 	}.run(t)
 }
 
