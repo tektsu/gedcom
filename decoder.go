@@ -288,6 +288,10 @@ func makeIndividualParser(d *Decoder, i *IndividualRecord, minLevel int) parser 
 			c := &CitationRecord{Source: d.source(stripXref(value))}
 			i.Citation = append(i.Citation, c)
 			d.pushParser(makeCitationParser(d, c, level))
+		case "OBJE": // {0:M}
+			o := &ObjectRecord{}
+			i.Object = append(i.Object, o)
+			d.pushParser(makeObjectParser(d, o, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
@@ -354,6 +358,7 @@ func makeSourceParser(d *Decoder, s *SourceRecord, minLevel int) parser {
 			d.pushParser(makeNoteParser(d, r, level))
 		case "OBJE": // {0:M}
 			o := &ObjectRecord{}
+			s.Object = append(s.Object, o)
 			d.pushParser(makeObjectParser(d, o, level))
 
 		// Non-standard tags

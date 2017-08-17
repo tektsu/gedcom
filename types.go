@@ -112,6 +112,7 @@ type IndividualRecord struct {
 	Parents   []*FamilyLinkRecord
 	Family    []*FamilyLinkRecord
 	Citation  []*CitationRecord
+	Object    []*ObjectRecord
 }
 
 // MediaRecord is currently not implemented.
@@ -165,6 +166,7 @@ type SourceRecord struct {
 	LastChanged DataRecord
 	Media       []*MediaRecord
 	Note        []*NoteRecord
+	Object      []*ObjectRecord
 }
 
 // CitationRecord links another record and a source.

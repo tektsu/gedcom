@@ -186,7 +186,8 @@ func TestIndividual(t *testing.T) {
 		{"Individual 0 birth father name ", "/Father/", i1.Event[0].Parents[0].Family.Husband.Name[0].Name},
 		{"Individual 0 adopted by", "BOTH", i1.Event[6].Parents[0].AdoptedBy},
 		{"Individual 0 citation page", "42", i1.Citation[0].Page},
-		{"Individual 0 citation soutce author", "Author of source", i1.Citation[0].Source.Author[:16]},
+		{"Individual 0 citation source author", "Author of source", i1.Citation[0].Source.Author[:16]},
+		{"Individual 0 object title", "A gif picture", i1.Object[0].Title},
 	}.run(t)
 }
 
@@ -260,5 +261,6 @@ func TestSource(t *testing.T) {
 		{"Source volume", "1", s.Volume},
 		{"Source page", "3", s.Page[0]},
 		{"Source film reference", "at 11", s.Film[0]},
+		{"Source object 0 title", "A bmp picture", s.Object[0].Title},
 	}.run(t)
 }
