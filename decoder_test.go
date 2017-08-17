@@ -246,6 +246,8 @@ func TestFamily(t *testing.T) {
 		{"Number of children", "42", f[0].NumberOfChildren.Value},
 		{"Family citation quality", "0", f[0].Citation[0].Quality},
 		{"Family citation first file", "file1", f[0].Citation[0].Source.File[0]},
+		{"Family object title", "A bmp picture", f[0].Object[0].Title},
+		{"Family note 0", "A note about the family\nNote continued here. The word TEST should not be broken!", f[0].Note[0].Note},
 	}.run(t)
 }
 

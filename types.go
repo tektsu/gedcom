@@ -102,6 +102,8 @@ type FamilyRecord struct {
 	Child            []*IndividualRecord
 	Event            []*EventRecord
 	Citation         []*CitationRecord
+	Object           []*ObjectRecord
+	Note             []*NoteRecord
 }
 
 // IndividualRecord describes a single person.

@@ -640,6 +640,14 @@ func makeFamilyParser(d *Decoder, f *FamilyRecord, minLevel int) parser {
 			c := &CitationRecord{Source: d.source(stripXref(value))}
 			f.Citation = append(f.Citation, c)
 			d.pushParser(makeCitationParser(d, c, level))
+		case "OBJE": // {0:M}
+			o := &ObjectRecord{}
+			f.Object = append(f.Object, o)
+			d.pushParser(makeObjectParser(d, o, level))
+		case "NOTE":
+			r := &NoteRecord{Note: value}
+			f.Note = append(f.Note, r)
+			d.pushParser(makeNoteParser(d, r, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
