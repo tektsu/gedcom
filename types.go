@@ -101,6 +101,7 @@ type FamilyRecord struct {
 	NumberOfChildren *EventRecord
 	Child            []*IndividualRecord
 	Event            []*EventRecord
+	Citation         []*CitationRecord
 }
 
 // IndividualRecord describes a single person.
@@ -174,12 +175,12 @@ type SourceRecord struct {
 
 // CitationRecord links another record and a source.
 type CitationRecord struct {
-	Source *SourceRecord
-	Page   string
-	Data   DataRecord
-	Quay   string
-	Media  []*MediaRecord
-	Note   []*NoteRecord
+	Source  *SourceRecord
+	Page    string
+	Data    DataRecord
+	Quality string
+	Media   []*MediaRecord
+	Note    []*NoteRecord
 }
 
 // NameRecord describes a person's name.

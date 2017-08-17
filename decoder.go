@@ -441,7 +441,7 @@ func makeCitationParser(d *Decoder, c *CitationRecord, minLevel int) parser {
 		case "PAGE":
 			c.Page = value
 		case "QUAY":
-			c.Quay = value
+			c.Quality = value
 		case "NOTE":
 			r := &NoteRecord{Note: value}
 			c.Note = append(c.Note, r)
@@ -636,6 +636,10 @@ func makeFamilyParser(d *Decoder, f *FamilyRecord, minLevel int) parser {
 		case "NCHI":
 			f.NumberOfChildren = &EventRecord{Tag: tag, Value: value}
 			d.pushParser(makeEventParser(d, f.NumberOfChildren, level))
+		case "SOUR":
+			c := &CitationRecord{Source: d.source(stripXref(value))}
+			f.Citation = append(f.Citation, c)
+			d.pushParser(makeCitationParser(d, c, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)

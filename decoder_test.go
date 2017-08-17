@@ -107,8 +107,8 @@ func TestIndividual(t *testing.T) {
 					Author: "Author of source\nAuthor continued here. The word TEST should not be broken!",
 				},
 
-				Page: "42",
-				Quay: "0",
+				Page:    "42",
+				Quality: "0",
 				Data: DataRecord{
 					Date: "BEF 1 JAN 1900",
 					Text: []string{
@@ -244,6 +244,8 @@ func TestFamily(t *testing.T) {
 		{"Wife's age at divorce filing", "CHILD", f[0].Event[3].SpouseInfo[1].Age},
 		{"Wife's spouse type at divorce filing", "WIFE", f[0].Event[3].SpouseInfo[1].Spouse},
 		{"Number of children", "42", f[0].NumberOfChildren.Value},
+		{"Family citation quality", "0", f[0].Citation[0].Quality},
+		{"Family citation first file", "file1", f[0].Citation[0].Source.File[0]},
 	}.run(t)
 }
 
