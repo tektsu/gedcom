@@ -28,6 +28,100 @@ type Gedcom struct {
 	Trailer    *Trailer
 }
 
+// AddressRecord describes and address.
+type AddressRecord struct {
+	Full       string
+	Line1      string
+	Line2      string
+	City       string
+	State      string
+	PostalCode string
+	Country    string
+	Phone      string
+}
+
+// ChangedRecord describes a document change.
+type ChangedRecord struct {
+	Stamp *TimestampRecord
+	Note  []*NoteRecord
+}
+
+// CitationRecord links another record and a source.
+type CitationRecord struct {
+	Source  *SourceRecord
+	Page    string
+	Data    DataRecord
+	Quality string
+	Media   []*MediaRecord
+	Note    []*NoteRecord
+}
+
+// CorpRecord describes the corporation producing the software that generated the Gedcom.
+type CorpRecord struct {
+	Name    string
+	Address *AddressRecord
+	Phone   []string
+}
+
+// DataRecord ...
+type DataRecord struct {
+	Date string
+	Text []string
+}
+
+// EncodingRecord describes a character encoding.
+type EncodingRecord struct {
+	Name    string
+	Version string
+}
+
+// EventRecord describes a life event.
+type EventRecord struct {
+	Tag        string
+	Value      string
+	Type       string
+	Date       string
+	Place      PlaceRecord
+	Address    AddressRecord
+	Age        string
+	Agency     string
+	Cause      string
+	Citation   []*CitationRecord
+	Media      []*MediaRecord
+	Note       []*NoteRecord
+	Parents    []*FamilyLinkRecord
+	SpouseInfo []*SpouseInfoRecord
+}
+
+// FamilyLinkRecord ...
+type FamilyLinkRecord struct {
+	Family    *FamilyRecord
+	Pedigree  string
+	AdoptedBy string
+	Note      []*NoteRecord
+}
+
+// FamilyRecord describes a family unit.
+type FamilyRecord struct {
+	Xref             string
+	Husband          *IndividualRecord
+	Wife             *IndividualRecord
+	NumberOfChildren *EventRecord
+	Changed          *ChangedRecord
+	Child            []*IndividualRecord
+	Event            []*EventRecord
+	Citation         []*CitationRecord
+	Object           []*ObjectRecord
+	Note             []*NoteRecord
+}
+
+// HeaderDataRecord ...
+type HeaderDataRecord struct {
+	Name      string
+	Date      string
+	Copyright string
+}
+
 // HeaderInfoRecord contains information about the Gedcom version
 type HeaderInfoRecord struct {
 	Version string
@@ -50,61 +144,14 @@ type HeaderRecord struct {
 	Note        *NoteRecord
 }
 
-// SystemRecord is the administrative information about the data.
-type SystemRecord struct {
-	ID              string
-	Version         string
-	ProductName     string
-	BusinessName    string
-	Address         AddressRecord
-	SourceName      string
-	SourceDate      string
-	SourceCopyright string
-}
-
-// SubmissionRecord ...
-type SubmissionRecord struct {
-	Xref        string
-	FamilyFile  string
-	TempleCode  string
-	Ancestors   string
-	Descendants string
-	Ordinance   string
-	Submitter   *SubmitterRecord
-}
-
-// SubmitterRecord describes a submitter.
-type SubmitterRecord struct {
-	Xref     string
-	Name     string
-	Language string
-	Phone    []string
-	Address  *AddressRecord
-	Changed  *ChangedRecord
-}
-
-// ChangedRecord describes a document change.
-type ChangedRecord struct {
-	Stamp *TimestampRecord
-	Note  []*NoteRecord
-}
-
-// The Trailer doesn't do anything but mark the end of the file.
-type Trailer struct {
-}
-
-// FamilyRecord describes a family unit.
-type FamilyRecord struct {
-	Xref             string
-	Husband          *IndividualRecord
-	Wife             *IndividualRecord
-	NumberOfChildren *EventRecord
-	Changed          *ChangedRecord
-	Child            []*IndividualRecord
-	Event            []*EventRecord
-	Citation         []*CitationRecord
-	Object           []*ObjectRecord
-	Note             []*NoteRecord
+// HeaderSourceRecord ...
+type HeaderSourceRecord struct {
+	Source      string
+	Version     string
+	Name        string
+	Form        string
+	Corporation *CorpRecord
+	Data        *HeaderDataRecord
 }
 
 // IndividualRecord describes a single person.
@@ -126,25 +173,36 @@ type IndividualRecord struct {
 type MediaRecord struct {
 }
 
+// NameRecord describes a person's name.
+type NameRecord struct {
+	Name     string
+	Citation []*CitationRecord
+	Note     []*NoteRecord
+}
+
+// NoteRecord describes a text note.
+type NoteRecord struct {
+	Note     string
+	Citation []*CitationRecord
+}
+
+// ObjectRecord describes a source object.
+type ObjectRecord struct {
+	Title string
+	Form  string
+	File  string
+	Note  []*NoteRecord
+}
+
+// PlaceRecord describes a location.
+type PlaceRecord struct {
+	Name     string
+	Citation []*CitationRecord
+	Note     []*NoteRecord
+}
+
 // RepositoryRecord is currently not implemented.
 type RepositoryRecord struct {
-}
-
-// HeaderSourceRecord ...
-type HeaderSourceRecord struct {
-	Source      string
-	Version     string
-	Name        string
-	Form        string
-	Corporation *CorpRecord
-	Data        *HeaderDataRecord
-}
-
-// HeaderDataRecord ...
-type HeaderDataRecord struct {
-	Name      string
-	Date      string
-	Copyright string
 }
 
 // SourceDataRecord describes events pertaining to this source
@@ -184,92 +242,31 @@ type SourceRecord struct {
 	Object      []*ObjectRecord
 }
 
-// CitationRecord links another record and a source.
-type CitationRecord struct {
-	Source  *SourceRecord
-	Page    string
-	Data    DataRecord
-	Quality string
-	Media   []*MediaRecord
-	Note    []*NoteRecord
+// SpouseInfoRecord describes information about a spouse referenced in a family event.
+type SpouseInfoRecord struct {
+	Spouse string
+	Age    string
 }
 
-// NameRecord describes a person's name.
-type NameRecord struct {
+// SubmissionRecord ...
+type SubmissionRecord struct {
+	Xref        string
+	FamilyFile  string
+	TempleCode  string
+	Ancestors   string
+	Descendants string
+	Ordinance   string
+	Submitter   *SubmitterRecord
+}
+
+// SubmitterRecord describes a submitter.
+type SubmitterRecord struct {
+	Xref     string
 	Name     string
-	Citation []*CitationRecord
-	Note     []*NoteRecord
-}
-
-// DataRecord ...
-type DataRecord struct {
-	Date string
-	Text []string
-}
-
-// EventRecord describes a life event.
-type EventRecord struct {
-	Tag        string
-	Value      string
-	Type       string
-	Date       string
-	Place      PlaceRecord
-	Address    AddressRecord
-	Age        string
-	Agency     string
-	Cause      string
-	Citation   []*CitationRecord
-	Media      []*MediaRecord
-	Note       []*NoteRecord
-	Parents    []*FamilyLinkRecord
-	SpouseInfo []*SpouseInfoRecord
-}
-
-// NoteRecord describes a text note.
-type NoteRecord struct {
-	Note     string
-	Citation []*CitationRecord
-}
-
-// PlaceRecord describes a location.
-type PlaceRecord struct {
-	Name     string
-	Citation []*CitationRecord
-	Note     []*NoteRecord
-}
-
-// FamilyLinkRecord ...
-type FamilyLinkRecord struct {
-	Family    *FamilyRecord
-	Pedigree  string
-	AdoptedBy string
-	Note      []*NoteRecord
-}
-
-// AddressRecord describes and address.
-type AddressRecord struct {
-	Full       string
-	Line1      string
-	Line2      string
-	City       string
-	State      string
-	PostalCode string
-	Country    string
-	Phone      string
-}
-
-// ObjectRecord describes a source object.
-type ObjectRecord struct {
-	Title string
-	Form  string
-	File  string
-	Note  []*NoteRecord
-}
-
-// EncodingRecord describes a character encoding.
-type EncodingRecord struct {
-	Name    string
-	Version string
+	Language string
+	Phone    []string
+	Address  *AddressRecord
+	Changed  *ChangedRecord
 }
 
 // TimestampRecord describes a timestamp.
@@ -278,15 +275,6 @@ type TimestampRecord struct {
 	Time string
 }
 
-// CorpRecord describes the corporation producing the software that generated the Gedcom.
-type CorpRecord struct {
-	Name    string
-	Address *AddressRecord
-	Phone   []string
-}
-
-// SpouseInfoRecord describes information about a spouse referenced in a family event.
-type SpouseInfoRecord struct {
-	Spouse string
-	Age    string
+// The Trailer doesn't do anything but mark the end of the file.
+type Trailer struct {
 }

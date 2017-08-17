@@ -212,6 +212,295 @@ func makeRootParser(d *Decoder, g *Gedcom) parser {
 	}
 }
 
+func makeAddressParser(d *Decoder, a *AddressRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "CONT":
+			a.Full = a.Full + "\n" + value
+		case "ADR1":
+			a.Line1 = value
+		case "ADR2":
+			a.Line2 = value
+		case "CITY":
+			a.City = value
+		case "STAE":
+			a.State = value
+		case "POST":
+			a.PostalCode = value
+		case "CTRY":
+			a.Country = value
+		case "PHON":
+			a.Phone = value
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+
+		return nil
+	}
+}
+
+func makeChangedParser(d *Decoder, r *ChangedRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "DATE":
+			r.Stamp = &TimestampRecord{Date: value}
+			d.pushParser(makeTimestampParser(d, r.Stamp, level))
+		case "NOTE":
+			n := &NoteRecord{Note: value}
+			r.Note = append(r.Note, n)
+			d.pushParser(makeNoteParser(d, n, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
+func makeCorpParser(d *Decoder, r *CorpRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "ADDR":
+			r.Address = &AddressRecord{Full: value}
+			d.pushParser(makeAddressParser(d, r.Address, level))
+		case "PHON":
+			p := value
+			r.Phone = append(r.Phone, p)
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
+func makeCitationParser(d *Decoder, c *CitationRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "PAGE":
+			c.Page = value
+		case "QUAY":
+			c.Quality = value
+		case "NOTE":
+			r := &NoteRecord{Note: value}
+			c.Note = append(c.Note, r)
+			d.pushParser(makeNoteParser(d, r, level))
+		case "DATA":
+			d.pushParser(makeDataParser(d, &c.Data, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+
+		return nil
+	}
+}
+
+func makeDataParser(d *Decoder, r *DataRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "DATE":
+			r.Date = value
+		case "TEXT":
+			r.Text = append(r.Text, value)
+			d.pushParser(makeTextParser(d, &r.Text[len(r.Text)-1], level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+
+		return nil
+	}
+}
+
+func makeEncodingParser(d *Decoder, e *EncodingRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "VERS":
+			e.Version = value
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
+func makeEventParser(d *Decoder, e *EventRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "TYPE":
+			e.Type = value
+		case "DATE":
+			e.Date = value
+		case "PLAC":
+			e.Place.Name = value
+			d.pushParser(makePlaceParser(d, &e.Place, level))
+		case "ADDR":
+			e.Address.Full = value
+			d.pushParser(makeAddressParser(d, &e.Address, level))
+		case "SOUR":
+			c := &CitationRecord{Source: d.source(stripXref(value))}
+			e.Citation = append(e.Citation, c)
+			d.pushParser(makeCitationParser(d, c, level))
+		case "NOTE":
+			r := &NoteRecord{Note: value}
+			e.Note = append(e.Note, r)
+			d.pushParser(makeNoteParser(d, r, level))
+		case "FAMC":
+			if e.Tag == "BIRT" || e.Tag == "ADOP" {
+				family := d.family(stripXref(value))
+				f := &FamilyLinkRecord{Family: family}
+				e.Parents = append(e.Parents, f)
+				d.pushParser(makeFamilyLinkParser(d, f, level))
+			}
+		case "HUSB", "WIFE":
+			r := &SpouseInfoRecord{Spouse: tag}
+			e.SpouseInfo = append(e.SpouseInfo, r)
+			d.pushParser(makeSpouseInfoParser(d, r, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+
+		return nil
+	}
+}
+
+func makeFamilyLinkParser(d *Decoder, f *FamilyLinkRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "PEDI":
+			f.Pedigree = value
+		case "ADOP":
+			f.AdoptedBy = value
+		case "NOTE":
+			r := &NoteRecord{Note: value}
+			f.Note = append(f.Note, r)
+			d.pushParser(makeNoteParser(d, r, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+
+		return nil
+	}
+}
+
+func makeFamilyParser(d *Decoder, f *FamilyRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "HUSB":
+			f.Husband = d.individual(stripXref(value))
+		case "WIFE":
+			f.Wife = d.individual(stripXref(value))
+		case "CHIL":
+			f.Child = append(f.Child, d.individual(stripXref(value)))
+		case "ANUL", "CENS", "DIV", "DIVF", "ENGA", "MARR", "MARB", "MARC", "MARL", "MARS", "EVEN":
+			e := &EventRecord{Tag: tag, Value: value}
+			f.Event = append(f.Event, e)
+			d.pushParser(makeEventParser(d, e, level))
+		case "NCHI":
+			f.NumberOfChildren = &EventRecord{Tag: tag, Value: value}
+			d.pushParser(makeEventParser(d, f.NumberOfChildren, level))
+		case "SOUR":
+			c := &CitationRecord{Source: d.source(stripXref(value))}
+			f.Citation = append(f.Citation, c)
+			d.pushParser(makeCitationParser(d, c, level))
+		case "OBJE": // {0:M}
+			o := &ObjectRecord{}
+			f.Object = append(f.Object, o)
+			d.pushParser(makeObjectParser(d, o, level))
+		case "NOTE":
+			r := &NoteRecord{Note: value}
+			f.Note = append(f.Note, r)
+			d.pushParser(makeNoteParser(d, r, level))
+		case "CHAN":
+			f.Changed = &ChangedRecord{}
+			d.pushParser(makeChangedParser(d, f.Changed, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
+func makeHeaderDataParser(d *Decoder, r *HeaderDataRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "DATE":
+			r.Date = value
+		case "COPR":
+			r.Copyright = value
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
+func makeHeaderInfoParser(d *Decoder, r *HeaderInfoRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "VERS":
+			r.Version = value
+		case "FORM":
+			r.Form = value
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
 func makeHeaderParser(d *Decoder, h *HeaderRecord, minLevel int) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level <= minLevel {
@@ -245,6 +534,33 @@ func makeHeaderParser(d *Decoder, h *HeaderRecord, minLevel int) parser {
 		case "NOTE":
 			h.Note = &NoteRecord{Note: value}
 			d.pushParser(makeNoteParser(d, h.Note, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
+func makeHeaderSourceParser(d *Decoder, r *HeaderSourceRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "VERS":
+			r.Version = value
+		case "NAME":
+			r.Name = value
+		case "FORM":
+			r.Form = value
+		case "CORP":
+			r.Corporation = &CorpRecord{Name: value}
+			d.pushParser(makeCorpParser(d, r.Corporation, level))
+		case "DATA":
+			r.Data = &HeaderDataRecord{Name: value}
+			d.pushParser(makeHeaderDataParser(d, r.Data, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
@@ -322,6 +638,83 @@ func makeNameParser(d *Decoder, n *NameRecord, minLevel int) parser {
 		case "NOTE":
 			r := &NoteRecord{Note: value}
 			n.Note = append(n.Note, r)
+			d.pushParser(makeNoteParser(d, r, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+
+		return nil
+	}
+}
+
+func makeNoteParser(d *Decoder, n *NoteRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "CONT":
+			n.Note = n.Note + "\n" + value
+		case "CONC":
+			n.Note = n.Note + value
+		case "SOUR":
+			c := &CitationRecord{Source: d.source(stripXref(value))}
+			n.Citation = append(n.Citation, c)
+			d.pushParser(makeCitationParser(d, c, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+
+		return nil
+	}
+}
+
+func makeObjectParser(d *Decoder, o *ObjectRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "TITL":
+			o.Title = value
+			d.pushParser(makeTextParser(d, &o.Title, level))
+		case "FORM":
+			o.Form = value
+			d.pushParser(makeTextParser(d, &o.Form, level))
+		case "FILE":
+			o.File = value
+			d.pushParser(makeTextParser(d, &o.File, level))
+		case "NOTE":
+			r := &NoteRecord{Note: value}
+			o.Note = append(o.Note, r)
+			d.pushParser(makeNoteParser(d, r, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
+func makePlaceParser(d *Decoder, p *PlaceRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+
+		case "SOUR":
+			c := &CitationRecord{Source: d.source(stripXref(value))}
+			p.Citation = append(p.Citation, c)
+			d.pushParser(makeCitationParser(d, c, level))
+		case "NOTE":
+			r := &NoteRecord{Note: value}
+			p.Note = append(p.Note, r)
 			d.pushParser(makeNoteParser(d, r, level))
 
 		default:
@@ -461,225 +854,14 @@ func makeSourceParser(d *Decoder, s *SourceRecord, minLevel int) parser {
 	}
 }
 
-func makeCitationParser(d *Decoder, c *CitationRecord, minLevel int) parser {
+func makeSpouseInfoParser(d *Decoder, r *SpouseInfoRecord, minLevel int) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level <= minLevel {
 			return d.popParser(level, tag, value, xref)
 		}
 		switch tag {
-		case "PAGE":
-			c.Page = value
-		case "QUAY":
-			c.Quality = value
-		case "NOTE":
-			r := &NoteRecord{Note: value}
-			c.Note = append(c.Note, r)
-			d.pushParser(makeNoteParser(d, r, level))
-		case "DATA":
-			d.pushParser(makeDataParser(d, &c.Data, level))
-
-		default:
-			d.cbUnrecognizedTag(level, tag, value, xref)
-			d.pushParser(makeSlurkParser(d, level))
-		}
-
-		return nil
-	}
-}
-
-func makeNoteParser(d *Decoder, n *NoteRecord, minLevel int) parser {
-	return func(level int, tag string, value string, xref string) error {
-		if level <= minLevel {
-			return d.popParser(level, tag, value, xref)
-		}
-		switch tag {
-		case "CONT":
-			n.Note = n.Note + "\n" + value
-		case "CONC":
-			n.Note = n.Note + value
-		case "SOUR":
-			c := &CitationRecord{Source: d.source(stripXref(value))}
-			n.Citation = append(n.Citation, c)
-			d.pushParser(makeCitationParser(d, c, level))
-
-		default:
-			d.cbUnrecognizedTag(level, tag, value, xref)
-			d.pushParser(makeSlurkParser(d, level))
-		}
-
-		return nil
-	}
-}
-
-func makeTextParser(d *Decoder, s *string, minLevel int) parser {
-	return func(level int, tag string, value string, xref string) error {
-		if level <= minLevel {
-			return d.popParser(level, tag, value, xref)
-		}
-		switch tag {
-		case "CONT":
-			*s = *s + "\n" + value
-		case "CONC":
-			*s = *s + value
-
-		default:
-			d.cbUnrecognizedTag(level, tag, value, xref)
-			d.pushParser(makeSlurkParser(d, level))
-		}
-
-		return nil
-	}
-}
-
-func makeDataParser(d *Decoder, r *DataRecord, minLevel int) parser {
-	return func(level int, tag string, value string, xref string) error {
-		if level <= minLevel {
-			return d.popParser(level, tag, value, xref)
-		}
-		switch tag {
-		case "DATE":
-			r.Date = value
-		case "TEXT":
-			r.Text = append(r.Text, value)
-			d.pushParser(makeTextParser(d, &r.Text[len(r.Text)-1], level))
-
-		default:
-			d.cbUnrecognizedTag(level, tag, value, xref)
-			d.pushParser(makeSlurkParser(d, level))
-		}
-
-		return nil
-	}
-}
-
-func makeEventParser(d *Decoder, e *EventRecord, minLevel int) parser {
-	return func(level int, tag string, value string, xref string) error {
-		if level <= minLevel {
-			return d.popParser(level, tag, value, xref)
-		}
-		switch tag {
-		case "TYPE":
-			e.Type = value
-		case "DATE":
-			e.Date = value
-		case "PLAC":
-			e.Place.Name = value
-			d.pushParser(makePlaceParser(d, &e.Place, level))
-		case "ADDR":
-			e.Address.Full = value
-			d.pushParser(makeAddressParser(d, &e.Address, level))
-		case "SOUR":
-			c := &CitationRecord{Source: d.source(stripXref(value))}
-			e.Citation = append(e.Citation, c)
-			d.pushParser(makeCitationParser(d, c, level))
-		case "NOTE":
-			r := &NoteRecord{Note: value}
-			e.Note = append(e.Note, r)
-			d.pushParser(makeNoteParser(d, r, level))
-		case "FAMC":
-			if e.Tag == "BIRT" || e.Tag == "ADOP" {
-				family := d.family(stripXref(value))
-				f := &FamilyLinkRecord{Family: family}
-				e.Parents = append(e.Parents, f)
-				d.pushParser(makeFamilyLinkParser(d, f, level))
-			}
-		case "HUSB", "WIFE":
-			r := &SpouseInfoRecord{Spouse: tag}
-			e.SpouseInfo = append(e.SpouseInfo, r)
-			d.pushParser(makeSpouseInfoParser(d, r, level))
-
-		default:
-			d.cbUnrecognizedTag(level, tag, value, xref)
-			d.pushParser(makeSlurkParser(d, level))
-		}
-
-		return nil
-	}
-}
-
-func makePlaceParser(d *Decoder, p *PlaceRecord, minLevel int) parser {
-	return func(level int, tag string, value string, xref string) error {
-		if level <= minLevel {
-			return d.popParser(level, tag, value, xref)
-		}
-		switch tag {
-
-		case "SOUR":
-			c := &CitationRecord{Source: d.source(stripXref(value))}
-			p.Citation = append(p.Citation, c)
-			d.pushParser(makeCitationParser(d, c, level))
-		case "NOTE":
-			r := &NoteRecord{Note: value}
-			p.Note = append(p.Note, r)
-			d.pushParser(makeNoteParser(d, r, level))
-
-		default:
-			d.cbUnrecognizedTag(level, tag, value, xref)
-			d.pushParser(makeSlurkParser(d, level))
-		}
-
-		return nil
-	}
-}
-
-func makeFamilyLinkParser(d *Decoder, f *FamilyLinkRecord, minLevel int) parser {
-	return func(level int, tag string, value string, xref string) error {
-		if level <= minLevel {
-			return d.popParser(level, tag, value, xref)
-		}
-		switch tag {
-		case "PEDI":
-			f.Pedigree = value
-		case "ADOP":
-			f.AdoptedBy = value
-		case "NOTE":
-			r := &NoteRecord{Note: value}
-			f.Note = append(f.Note, r)
-			d.pushParser(makeNoteParser(d, r, level))
-
-		default:
-			d.cbUnrecognizedTag(level, tag, value, xref)
-			d.pushParser(makeSlurkParser(d, level))
-		}
-
-		return nil
-	}
-}
-
-func makeFamilyParser(d *Decoder, f *FamilyRecord, minLevel int) parser {
-	return func(level int, tag string, value string, xref string) error {
-		if level <= minLevel {
-			return d.popParser(level, tag, value, xref)
-		}
-		switch tag {
-		case "HUSB":
-			f.Husband = d.individual(stripXref(value))
-		case "WIFE":
-			f.Wife = d.individual(stripXref(value))
-		case "CHIL":
-			f.Child = append(f.Child, d.individual(stripXref(value)))
-		case "ANUL", "CENS", "DIV", "DIVF", "ENGA", "MARR", "MARB", "MARC", "MARL", "MARS", "EVEN":
-			e := &EventRecord{Tag: tag, Value: value}
-			f.Event = append(f.Event, e)
-			d.pushParser(makeEventParser(d, e, level))
-		case "NCHI":
-			f.NumberOfChildren = &EventRecord{Tag: tag, Value: value}
-			d.pushParser(makeEventParser(d, f.NumberOfChildren, level))
-		case "SOUR":
-			c := &CitationRecord{Source: d.source(stripXref(value))}
-			f.Citation = append(f.Citation, c)
-			d.pushParser(makeCitationParser(d, c, level))
-		case "OBJE": // {0:M}
-			o := &ObjectRecord{}
-			f.Object = append(f.Object, o)
-			d.pushParser(makeObjectParser(d, o, level))
-		case "NOTE":
-			r := &NoteRecord{Note: value}
-			f.Note = append(f.Note, r)
-			d.pushParser(makeNoteParser(d, r, level))
-		case "CHAN":
-			f.Changed = &ChangedRecord{}
-			d.pushParser(makeChangedParser(d, f.Changed, level))
+		case "AGE":
+			r.Age = value
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
@@ -689,198 +871,24 @@ func makeFamilyParser(d *Decoder, f *FamilyRecord, minLevel int) parser {
 	}
 }
 
-func makeAddressParser(d *Decoder, a *AddressRecord, minLevel int) parser {
+func makeSubmissionParser(d *Decoder, r *SubmissionRecord, minLevel int) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level <= minLevel {
 			return d.popParser(level, tag, value, xref)
 		}
 		switch tag {
-		case "CONT":
-			a.Full = a.Full + "\n" + value
-		case "ADR1":
-			a.Line1 = value
-		case "ADR2":
-			a.Line2 = value
-		case "CITY":
-			a.City = value
-		case "STAE":
-			a.State = value
-		case "POST":
-			a.PostalCode = value
-		case "CTRY":
-			a.Country = value
-		case "PHON":
-			a.Phone = value
-
-		default:
-			d.cbUnrecognizedTag(level, tag, value, xref)
-			d.pushParser(makeSlurkParser(d, level))
-		}
-
-		return nil
-	}
-}
-
-func makeObjectParser(d *Decoder, o *ObjectRecord, minLevel int) parser {
-	return func(level int, tag string, value string, xref string) error {
-		if level <= minLevel {
-			return d.popParser(level, tag, value, xref)
-		}
-		switch tag {
-		case "TITL":
-			o.Title = value
-			d.pushParser(makeTextParser(d, &o.Title, level))
-		case "FORM":
-			o.Form = value
-			d.pushParser(makeTextParser(d, &o.Form, level))
-		case "FILE":
-			o.File = value
-			d.pushParser(makeTextParser(d, &o.File, level))
-		case "NOTE":
-			r := &NoteRecord{Note: value}
-			o.Note = append(o.Note, r)
-			d.pushParser(makeNoteParser(d, r, level))
-
-		default:
-			d.cbUnrecognizedTag(level, tag, value, xref)
-			d.pushParser(makeSlurkParser(d, level))
-		}
-		return nil
-	}
-}
-
-func makeEncodingParser(d *Decoder, e *EncodingRecord, minLevel int) parser {
-	return func(level int, tag string, value string, xref string) error {
-		if level <= minLevel {
-			return d.popParser(level, tag, value, xref)
-		}
-		switch tag {
-		case "VERS":
-			e.Version = value
-
-		default:
-			d.cbUnrecognizedTag(level, tag, value, xref)
-			d.pushParser(makeSlurkParser(d, level))
-		}
-		return nil
-	}
-}
-
-func makeChangeParser(d *Decoder, r *TimestampRecord, minLevel int) parser {
-	return func(level int, tag string, value string, xref string) error {
-		if level <= minLevel {
-			return d.popParser(level, tag, value, xref)
-		}
-		switch tag {
-		case "DATE":
-			r.Date = value
-			d.pushParser(makeTimestampParser(d, r, level))
-
-		default:
-			d.cbUnrecognizedTag(level, tag, value, xref)
-			d.pushParser(makeSlurkParser(d, level))
-		}
-		return nil
-	}
-}
-
-func makeTimestampParser(d *Decoder, t *TimestampRecord, minLevel int) parser {
-	return func(level int, tag string, value string, xref string) error {
-		if level <= minLevel {
-			return d.popParser(level, tag, value, xref)
-		}
-		switch tag {
-		case "TIME":
-			t.Time = value
-
-		default:
-			d.cbUnrecognizedTag(level, tag, value, xref)
-			d.pushParser(makeSlurkParser(d, level))
-		}
-		return nil
-	}
-}
-
-func makeHeaderSourceParser(d *Decoder, r *HeaderSourceRecord, minLevel int) parser {
-	return func(level int, tag string, value string, xref string) error {
-		if level <= minLevel {
-			return d.popParser(level, tag, value, xref)
-		}
-		switch tag {
-		case "VERS":
-			r.Version = value
-		case "NAME":
-			r.Name = value
-		case "FORM":
-			r.Form = value
-		case "CORP":
-			r.Corporation = &CorpRecord{Name: value}
-			d.pushParser(makeCorpParser(d, r.Corporation, level))
-		case "DATA":
-			r.Data = &HeaderDataRecord{Name: value}
-			d.pushParser(makeHeaderDataParser(d, r.Data, level))
-
-		default:
-			d.cbUnrecognizedTag(level, tag, value, xref)
-			d.pushParser(makeSlurkParser(d, level))
-		}
-		return nil
-	}
-}
-
-func makeHeaderDataParser(d *Decoder, r *HeaderDataRecord, minLevel int) parser {
-	return func(level int, tag string, value string, xref string) error {
-		if level <= minLevel {
-			return d.popParser(level, tag, value, xref)
-		}
-		switch tag {
-		case "DATE":
-			r.Date = value
-		case "COPR":
-			r.Copyright = value
-
-		default:
-			d.cbUnrecognizedTag(level, tag, value, xref)
-			d.pushParser(makeSlurkParser(d, level))
-		}
-		return nil
-	}
-}
-
-func makeCorpParser(d *Decoder, r *CorpRecord, minLevel int) parser {
-	return func(level int, tag string, value string, xref string) error {
-		if level <= minLevel {
-			return d.popParser(level, tag, value, xref)
-		}
-		switch tag {
-		case "ADDR":
-			r.Address = &AddressRecord{Full: value}
-			d.pushParser(makeAddressParser(d, r.Address, level))
-		case "PHON":
-			p := value
-			r.Phone = append(r.Phone, p)
-
-		default:
-			d.cbUnrecognizedTag(level, tag, value, xref)
-			d.pushParser(makeSlurkParser(d, level))
-		}
-		return nil
-	}
-}
-
-func makeChangedParser(d *Decoder, r *ChangedRecord, minLevel int) parser {
-	return func(level int, tag string, value string, xref string) error {
-		if level <= minLevel {
-			return d.popParser(level, tag, value, xref)
-		}
-		switch tag {
-		case "DATE":
-			r.Stamp = &TimestampRecord{Date: value}
-			d.pushParser(makeTimestampParser(d, r.Stamp, level))
-		case "NOTE":
-			n := &NoteRecord{Note: value}
-			r.Note = append(r.Note, n)
-			d.pushParser(makeNoteParser(d, n, level))
+		case "FAMF":
+			r.FamilyFile = value
+		case "TEMP":
+			r.TempleCode = value
+		case "ANCE":
+			r.Ancestors = value
+		case "DESC":
+			r.Descendants = value
+		case "ORDI":
+			r.Ordinance = value
+		case "SUBM":
+			r.Submitter = d.submitter(stripXref(value))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
@@ -918,60 +926,34 @@ func makeSubmitterParser(d *Decoder, r *SubmitterRecord, minLevel int) parser {
 	}
 }
 
-func makeSubmissionParser(d *Decoder, r *SubmissionRecord, minLevel int) parser {
+func makeTextParser(d *Decoder, s *string, minLevel int) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level <= minLevel {
 			return d.popParser(level, tag, value, xref)
 		}
 		switch tag {
-		case "FAMF":
-			r.FamilyFile = value
-		case "TEMP":
-			r.TempleCode = value
-		case "ANCE":
-			r.Ancestors = value
-		case "DESC":
-			r.Descendants = value
-		case "ORDI":
-			r.Ordinance = value
-		case "SUBM":
-			r.Submitter = d.submitter(stripXref(value))
+		case "CONT":
+			*s = *s + "\n" + value
+		case "CONC":
+			*s = *s + value
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
 			d.pushParser(makeSlurkParser(d, level))
 		}
+
 		return nil
 	}
 }
 
-func makeHeaderInfoParser(d *Decoder, r *HeaderInfoRecord, minLevel int) parser {
+func makeTimestampParser(d *Decoder, t *TimestampRecord, minLevel int) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level <= minLevel {
 			return d.popParser(level, tag, value, xref)
 		}
 		switch tag {
-		case "VERS":
-			r.Version = value
-		case "FORM":
-			r.Form = value
-
-		default:
-			d.cbUnrecognizedTag(level, tag, value, xref)
-			d.pushParser(makeSlurkParser(d, level))
-		}
-		return nil
-	}
-}
-
-func makeSpouseInfoParser(d *Decoder, r *SpouseInfoRecord, minLevel int) parser {
-	return func(level int, tag string, value string, xref string) error {
-		if level <= minLevel {
-			return d.popParser(level, tag, value, xref)
-		}
-		switch tag {
-		case "AGE":
-			r.Age = value
+		case "TIME":
+			t.Time = value
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
