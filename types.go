@@ -149,7 +149,8 @@ type HeaderDataRecord struct {
 
 // SourceDataRecord describes events pertaining to this source
 type SourceDataRecord struct {
-	Event []*EventRecord
+	Agency string
+	Event  []*EventRecord
 }
 
 // SourceRecord describes a single source document.

@@ -339,6 +339,8 @@ func makeSourceDataParser(d *Decoder, r *SourceDataRecord, minLevel int) parser 
 			return d.popParser(level, tag, value, xref)
 		}
 		switch tag {
+		case "AGNC":
+			r.Agency = value
 		case "EVEN":
 			e := &EventRecord{Tag: tag, Value: value}
 			r.Event = append(r.Event, e)
