@@ -633,6 +633,9 @@ func makeFamilyParser(d *Decoder, f *FamilyRecord, minLevel int) parser {
 			e := &EventRecord{Tag: tag, Value: value}
 			f.Event = append(f.Event, e)
 			d.pushParser(makeEventParser(d, e, level))
+		case "NCHI":
+			f.NumberOfChildren = &EventRecord{Tag: tag, Value: value}
+			d.pushParser(makeEventParser(d, f.NumberOfChildren, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)

@@ -95,11 +95,12 @@ type Trailer struct {
 
 // FamilyRecord describes a family unit.
 type FamilyRecord struct {
-	Xref    string
-	Husband *IndividualRecord
-	Wife    *IndividualRecord
-	Child   []*IndividualRecord
-	Event   []*EventRecord
+	Xref             string
+	Husband          *IndividualRecord
+	Wife             *IndividualRecord
+	NumberOfChildren *EventRecord
+	Child            []*IndividualRecord
+	Event            []*EventRecord
 }
 
 // IndividualRecord describes a single person.
