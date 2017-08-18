@@ -253,6 +253,7 @@ func TestFamily(t *testing.T) {
 		{"Family note 0", "A note about the family\nNote continued here. The word TEST should not be broken!", f[0].Note[0].Note},
 		{"Family change date", "1 APR 1998", f[0].Changed.Stamp.Date},
 		{"Family change time", "12:34:56.789", f[0].Changed.Stamp.Time},
+		{"Family 2 note 0", "\nNote object note here. The word TEST should not be broken!", f[2].Note[0].Note},
 	}.run(t)
 }
 

@@ -25,6 +25,7 @@ type Gedcom struct {
 	Media      []*MediaRecord
 	Repository []*RepositoryRecord
 	Source     []*SourceRecord
+	Note       []*NoteRecord
 	Trailer    *Trailer
 }
 
@@ -184,6 +185,7 @@ type NameRecord struct {
 
 // NoteRecord describes a text note.
 type NoteRecord struct {
+	Xref     string
 	Note     string
 	Citation []*CitationRecord
 }

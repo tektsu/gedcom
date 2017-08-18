@@ -38,6 +38,7 @@ func (d *Decoder) Decode() (*Gedcom, error) {
 		Repository: make([]*RepositoryRecord, 0),
 		Source:     make([]*SourceRecord, 0),
 		Submitter:  make([]*SubmitterRecord, 0),
+		Note:       make([]*NoteRecord, 0),
 	}
 
 	d.refs = make(map[string]interface{})
@@ -176,6 +177,20 @@ func (d *Decoder) submission(xref string) *SubmissionRecord {
 	return ref
 }
 
+func (d *Decoder) note(xref string) *NoteRecord {
+	if xref == "" {
+		return &NoteRecord{}
+	}
+
+	ref, found := d.refs[xref].(*NoteRecord)
+	if !found {
+		rec := &NoteRecord{Xref: xref}
+		d.refs[rec.Xref] = rec
+		return rec
+	}
+	return ref
+}
+
 func makeRootParser(d *Decoder, g *Gedcom) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level == 0 {
@@ -202,6 +217,10 @@ func makeRootParser(d *Decoder, g *Gedcom) parser {
 				obj := d.source(xref)
 				g.Source = append(g.Source, obj)
 				d.pushParser(makeSourceParser(d, obj, level))
+			case "NOTE":
+				obj := d.note(xref)
+				g.Note = append(g.Note, obj)
+				d.pushParser(makeNoteParser(d, obj, level))
 
 			default:
 				d.cbUnrecognizedTag(level, tag, value, xref)
@@ -449,9 +468,14 @@ func makeFamilyParser(d *Decoder, f *FamilyRecord, minLevel int) parser {
 			f.Object = append(f.Object, o)
 			d.pushParser(makeObjectParser(d, o, level))
 		case "NOTE":
-			r := &NoteRecord{Note: value}
-			f.Note = append(f.Note, r)
-			d.pushParser(makeNoteParser(d, r, level))
+			if value[0:1] == "@" {
+				r := d.note(stripXref(value))
+				f.Note = append(f.Note, r)
+			} else {
+				r := &NoteRecord{Note: value}
+				f.Note = append(f.Note, r)
+				d.pushParser(makeNoteParser(d, r, level))
+			}
 		case "CHAN":
 			f.Changed = &ChangedRecord{}
 			d.pushParser(makeChangedParser(d, f.Changed, level))
