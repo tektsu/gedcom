@@ -189,6 +189,7 @@ func TestIndividual(t *testing.T) {
 		{"Individual 0 adopted by", "BOTH", i1.Event[6].Parents[0].AdoptedBy},
 		{"Individual 0 citation page", "42", i1.Citation[0].Page},
 		{"Individual 0 citation source author", "Author of source", i1.Citation[0].Source.Author[:16]},
+		{"Individual 0 name citation page", "Roll 1066, Pg 369B, 1880 US Census, 1880 Census, Ohio, Seneca County,  (Downloaded from Genealogy.com, supplemented by LDS site), Roll 1066, Pg 369B.", i1.Name[0].Citation[0].Page},
 		{"Individual 0 object title", "A gif picture", i1.Object[0].Title},
 		{"Individual 0 Note 0", "A note about the individual\nNote continued here. The word TEST should not be broken!", i1.Note[0].Note},
 		{"Individual 0 change date", "1 APR 1998", i1.Changed.Stamp.Date},

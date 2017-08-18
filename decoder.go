@@ -295,6 +295,7 @@ func makeCitationParser(d *Decoder, c *CitationRecord, minLevel int) parser {
 		switch tag {
 		case "PAGE":
 			c.Page = value
+			d.pushParser(makeTextParser(d, &c.Page, level))
 		case "QUAY":
 			c.Quality = value
 		case "NOTE":
