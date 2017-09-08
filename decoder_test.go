@@ -164,6 +164,7 @@ func TestIndividual(t *testing.T) {
 		{"Individual 0 had [%d] events", 24, len(i1.Event)},
 		{"Individual 0 had [%d] attributes", 14, len(i1.Attribute)},
 		{"Individual 0 had [%d] parent families", 2, len(i1.Parents)},
+		{"Individual 0 object width was [%d]", 0, i1.Object[0].Width},
 	}.run(t)
 
 	stringTestCases{
@@ -194,6 +195,10 @@ func TestIndividual(t *testing.T) {
 		{"Individual 0 Note 0", "A note about the individual\nNote continued here. The word TEST should not be broken!", i1.Note[0].Note},
 		{"Individual 0 change date", "1 APR 1998", i1.Changed.Stamp.Date},
 		{"Individual 0 change time", "12:34:56.789", i1.Changed.Stamp.Time},
+	}.run(t)
+
+	boolTestCases{
+		{"Individual 0 Object primary", false, i1.Object[0].Primary},
 	}.run(t)
 }
 
@@ -240,6 +245,8 @@ func TestFamily(t *testing.T) {
 	intTestCases{
 		{"Family list length was [%d]", 4, len(f)},
 		{"Family 0 event list length was [%d]", 11, len(f[0].Event)},
+		{"Family object width was [%d]", 400, f[0].Object[0].Width},
+		{"Family object height was [%d]", 300, f[0].Object[0].Height},
 	}.run(t)
 
 	stringTestCases{
@@ -254,6 +261,10 @@ func TestFamily(t *testing.T) {
 		{"Family change date", "1 APR 1998", f[0].Changed.Stamp.Date},
 		{"Family change time", "12:34:56.789", f[0].Changed.Stamp.Time},
 		{"Family 2 note 0", "\nNote object note here. The word TEST should not be broken!", f[2].Note[0].Note},
+	}.run(t)
+
+	boolTestCases{
+		{"Family object primary", true, f[0].Object[0].Primary},
 	}.run(t)
 }
 

@@ -192,10 +192,13 @@ type NoteRecord struct {
 
 // ObjectRecord describes a source object.
 type ObjectRecord struct {
-	Title string
-	Form  string
-	File  string
-	Note  []*NoteRecord
+	Title   string
+	Form    string
+	File    string
+	Height  int
+	Width   int
+	Primary bool
+	Note    []*NoteRecord
 }
 
 // PlaceRecord describes a location.

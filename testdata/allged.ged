@@ -806,6 +806,7 @@
 2 NOTE A note
 3 CONT Note continued here. The word TE
 3 CONC ST should not be broken!
+2 _PRIM N
 1 NOTE A note about the individual
 2 CONT Note continued here. The word TE
 2 CONC ST should not be broken!
@@ -1097,6 +1098,8 @@
 2 NOTE A note
 3 CONT Note continued here. The word TE
 3 CONC ST should not be broken!
+2 _PRIM Y
+2 _SIZE 400.000000 300.000000
 1 NOTE A note about the family
 2 CONT Note continued here. The word TE
 2 CONC ST should not be broken!

@@ -40,6 +40,22 @@ func (testCases intTestCases) run(t *testing.T) {
 	}
 }
 
+type boolTestCase struct {
+	tested   string
+	expected bool
+	actual   bool
+}
+
+type boolTestCases []boolTestCase
+
+func (testCases boolTestCases) run(t *testing.T) {
+	for _, tc := range testCases {
+		if tc.expected != tc.actual {
+			t.Fatalf("%s was [%t], expected [%t]", tc.tested, tc.actual, tc.expected)
+		}
+	}
+}
+
 func TestMain(m *testing.M) {
 
 	d := NewDecoder(bytes.NewReader(data))

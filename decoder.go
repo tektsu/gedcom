@@ -7,6 +7,8 @@ package gedcom
 
 import (
 	"io"
+	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -716,6 +718,18 @@ func makeObjectParser(d *Decoder, o *ObjectRecord, minLevel int) parser {
 		case "FILE":
 			o.File = value
 			d.pushParser(makeTextParser(d, &o.File, level))
+		case "_PRIM":
+			if value == "Y" {
+				o.Primary = true
+			}
+		case "_SIZE":
+			v := strings.Split(value, " ")
+			if len(v) >= 2 {
+				r := regexp.MustCompile("\\.[0-9]+$")
+				o.Width, _ = strconv.Atoi(r.ReplaceAllString(v[0], ""))
+				o.Height, _ = strconv.Atoi(r.ReplaceAllString(v[1], ""))
+			}
+
 		case "NOTE":
 			r := &NoteRecord{Note: value}
 			o.Note = append(o.Note, r)
