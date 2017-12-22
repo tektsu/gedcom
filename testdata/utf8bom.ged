@@ -1,0 +1,18 @@
+﻿0 HEAD
+1 SOUR FTM
+2 VERS 23.0.2.343
+2 NAME Family Tree Maker for Mac
+2 CORP The Software MacKiev Company
+3 ADDR 30 Union Wharf
+4 CONT Boston, MA 02109
+3 PHON (617) 227-6681
+1 DEST FTM
+1 DATE 17 DEC 2017
+1 CHAR UTF-8
+1 FILE utf8bom.ged
+1 SUBM @SUBM@
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+0 TRLR
+

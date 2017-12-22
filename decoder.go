@@ -7,8 +7,6 @@ package gedcom
 
 import (
 	"io"
-	"regexp"
-	"strconv"
 	"strings"
 )
 
@@ -36,7 +34,7 @@ func (d *Decoder) Decode() (*Gedcom, error) {
 		Header:     &HeaderRecord{},
 		Family:     make([]*FamilyRecord, 0),
 		Individual: make([]*IndividualRecord, 0),
-		Media:      make([]*MediaRecord, 0),
+		Object:     make([]*ObjectRecord, 0),
 		Repository: make([]*RepositoryRecord, 0),
 		Source:     make([]*SourceRecord, 0),
 		Submitter:  make([]*SubmitterRecord, 0),
@@ -137,6 +135,20 @@ func (d *Decoder) family(xref string) *FamilyRecord {
 	return ref
 }
 
+func (d *Decoder) repository(xref string) *RepositoryRecord {
+	if xref == "" {
+		return &RepositoryRecord{}
+	}
+
+	ref, found := d.refs[xref].(*RepositoryRecord)
+	if !found {
+		rec := &RepositoryRecord{Xref: xref}
+		d.refs[rec.Xref] = rec
+		return rec
+	}
+	return ref
+}
+
 func (d *Decoder) source(xref string) *SourceRecord {
 	if xref == "" {
 		return &SourceRecord{}
@@ -193,6 +205,20 @@ func (d *Decoder) note(xref string) *NoteRecord {
 	return ref
 }
 
+func (d *Decoder) object(xref string) *ObjectRecord {
+	if xref == "" {
+		return &ObjectRecord{}
+	}
+
+	ref, found := d.refs[xref].(*ObjectRecord)
+	if !found {
+		rec := &ObjectRecord{Xref: xref}
+		d.refs[rec.Xref] = rec
+		return rec
+	}
+	return ref
+}
+
 func makeRootParser(d *Decoder, g *Gedcom) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level == 0 {
@@ -223,6 +249,15 @@ func makeRootParser(d *Decoder, g *Gedcom) parser {
 				obj := d.note(xref)
 				g.Note = append(g.Note, obj)
 				d.pushParser(makeNoteParser(d, obj, level))
+			case "OBJE":
+				obj := d.object(xref)
+				g.Object = append(g.Object, obj)
+				d.pushParser(makeObjectParser(d, obj, level))
+			case "REPO":
+				obj := d.repository(xref)
+				g.Repository = append(g.Repository, obj)
+				d.pushParser(makeRepositoryParser(d, obj, level))
+			case "TRLR":
 
 			default:
 				d.cbUnrecognizedTag(level, tag, value, xref)
@@ -278,6 +313,25 @@ func makeChangedParser(d *Decoder, r *ChangedRecord, minLevel int) parser {
 			n := &NoteRecord{Note: value}
 			r.Note = append(r.Note, n)
 			d.pushParser(makeNoteParser(d, n, level))
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+		return nil
+	}
+}
+
+func makeChildParser(d *Decoder, r *ChildRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "_FREL":
+			r.FatherRelation = value
+		case "_MREL":
+			r.MotherRelation = value
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
@@ -397,6 +451,15 @@ func makeEventParser(d *Decoder, e *EventRecord, minLevel int) parser {
 			r := &NoteRecord{Note: value}
 			e.Note = append(e.Note, r)
 			d.pushParser(makeNoteParser(d, r, level))
+		case "CAUS":
+			if value[0:1] == "@" {
+				o := d.note(stripXref(value))
+				e.Cause = append(e.Cause, o)
+			} else {
+				r := &NoteRecord{Note: value}
+				e.Cause = append(e.Cause, r)
+				d.pushParser(makeNoteParser(d, r, level))
+			}
 		case "FAMC":
 			if e.Tag == "BIRT" || e.Tag == "ADOP" {
 				family := d.family(stripXref(value))
@@ -453,7 +516,9 @@ func makeFamilyParser(d *Decoder, f *FamilyRecord, minLevel int) parser {
 		case "WIFE":
 			f.Wife = d.individual(stripXref(value))
 		case "CHIL":
-			f.Child = append(f.Child, d.individual(stripXref(value)))
+			c := &ChildRecord{Person: d.individual(stripXref(value))}
+			f.Child = append(f.Child, c)
+			d.pushParser(makeChildParser(d, c, level))
 		case "ANUL", "CENS", "DIV", "DIVF", "ENGA", "MARR", "MARB", "MARC", "MARL", "MARS", "EVEN":
 			e := &EventRecord{Tag: tag, Value: value}
 			f.Event = append(f.Event, e)
@@ -466,9 +531,14 @@ func makeFamilyParser(d *Decoder, f *FamilyRecord, minLevel int) parser {
 			f.Citation = append(f.Citation, c)
 			d.pushParser(makeCitationParser(d, c, level))
 		case "OBJE": // {0:M}
-			o := &ObjectRecord{}
-			f.Object = append(f.Object, o)
-			d.pushParser(makeObjectParser(d, o, level))
+			if value[0:1] == "@" {
+				o := d.object(stripXref(value))
+				f.Object = append(f.Object, o)
+			} else {
+				o := &ObjectRecord{}
+				f.Object = append(f.Object, o)
+				d.pushParser(makeObjectParser(d, o, level))
+			}
 		case "NOTE":
 			if value[0:1] == "@" {
 				r := d.note(stripXref(value))
@@ -486,6 +556,26 @@ func makeFamilyParser(d *Decoder, f *FamilyRecord, minLevel int) parser {
 			d.cbUnrecognizedTag(level, tag, value, xref)
 			d.pushParser(makeSlurkParser(d, level))
 		}
+		return nil
+	}
+}
+
+func makeFileParser(d *Decoder, f *FileRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "TITL":
+			f.Title = value
+		case "FORM":
+			f.Form = value
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+
 		return nil
 	}
 }
@@ -631,10 +721,17 @@ func makeIndividualParser(d *Decoder, i *IndividualRecord, minLevel int) parser 
 			c := &CitationRecord{Source: d.source(stripXref(value))}
 			i.Citation = append(i.Citation, c)
 			d.pushParser(makeCitationParser(d, c, level))
+		case "_PHOTO":
+			i.Photo = d.object(stripXref(value))
 		case "OBJE": // {0:M}
-			o := &ObjectRecord{}
-			i.Object = append(i.Object, o)
-			d.pushParser(makeObjectParser(d, o, level))
+			if value[0:1] == "@" {
+				o := d.object(stripXref(value))
+				i.Object = append(i.Object, o)
+			} else {
+				o := &ObjectRecord{}
+				i.Object = append(i.Object, o)
+				d.pushParser(makeObjectParser(d, o, level))
+			}
 		case "NOTE":
 			n := &NoteRecord{Note: value}
 			i.Note = append(i.Note, n)
@@ -709,31 +806,9 @@ func makeObjectParser(d *Decoder, o *ObjectRecord, minLevel int) parser {
 			return d.popParser(level, tag, value, xref)
 		}
 		switch tag {
-		case "TITL":
-			o.Title = value
-			d.pushParser(makeTextParser(d, &o.Title, level))
-		case "FORM":
-			o.Form = value
-			d.pushParser(makeTextParser(d, &o.Form, level))
 		case "FILE":
-			o.File = value
-			d.pushParser(makeTextParser(d, &o.File, level))
-		case "_PRIM":
-			if value == "Y" {
-				o.Primary = true
-			}
-		case "_SIZE":
-			v := strings.Split(value, " ")
-			if len(v) >= 2 {
-				r := regexp.MustCompile("\\.[0-9]+$")
-				o.Width, _ = strconv.Atoi(r.ReplaceAllString(v[0], ""))
-				o.Height, _ = strconv.Atoi(r.ReplaceAllString(v[1], ""))
-			}
-
-		case "NOTE":
-			r := &NoteRecord{Note: value}
-			o.Note = append(o.Note, r)
-			d.pushParser(makeNoteParser(d, r, level))
+			o.File = &FileRecord{Name: value}
+			d.pushParser(makeFileParser(d, o.File, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
@@ -764,6 +839,25 @@ func makePlaceParser(d *Decoder, p *PlaceRecord, minLevel int) parser {
 			d.pushParser(makeSlurkParser(d, level))
 		}
 
+		return nil
+	}
+}
+
+func makeRepositoryParser(d *Decoder, o *RepositoryRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+		case "NAME":
+		case "ADDR":
+		case "EMAIL":
+		case "PHON":
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
 		return nil
 	}
 }
@@ -825,9 +919,14 @@ func makeSourceParser(d *Decoder, s *SourceRecord, minLevel int) parser {
 			s.Note = append(s.Note, r)
 			d.pushParser(makeNoteParser(d, r, level))
 		case "OBJE": // {0:M}
-			o := &ObjectRecord{}
-			s.Object = append(s.Object, o)
-			d.pushParser(makeObjectParser(d, o, level))
+			if value[0:1] == "@" {
+				o := d.object(stripXref(value))
+				s.Object = append(s.Object, o)
+			} else {
+				o := &ObjectRecord{}
+				s.Object = append(s.Object, o)
+				d.pushParser(makeObjectParser(d, o, level))
+			}
 		case "DATA": // {0:1}
 			s.EventData = &SourceDataRecord{}
 			d.pushParser(makeSourceDataParser(d, s.EventData, level))

@@ -55,6 +55,11 @@ func (s *scanner) nextTag(data []byte) (offset int, err error) {
 			case isSpace(c):
 				continue
 			default:
+
+				// TODO: Actually parse BOM instead of ignoring it
+				if c == 0xEF || c == 0xBB || c == 0xBF || c == 0xFE || c == 0xFF || c == 0x00 {
+					continue
+				}
 				s.parseState = stateError
 				err = fmt.Errorf("Found non-whitespace before level")
 				return

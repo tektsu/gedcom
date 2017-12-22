@@ -22,7 +22,7 @@ type Gedcom struct {
 	Submitter  []*SubmitterRecord
 	Family     []*FamilyRecord
 	Individual []*IndividualRecord
-	Media      []*MediaRecord
+	Object     []*ObjectRecord
 	Repository []*RepositoryRecord
 	Source     []*SourceRecord
 	Note       []*NoteRecord
@@ -47,13 +47,20 @@ type ChangedRecord struct {
 	Note  []*NoteRecord
 }
 
+// ChildRecord describes a child within a family.
+type ChildRecord struct {
+	FatherRelation string
+	MotherRelation string
+	Person         *IndividualRecord
+}
+
 // CitationRecord links another record and a source.
 type CitationRecord struct {
 	Source  *SourceRecord
 	Page    string
 	Data    DataRecord
 	Quality string
-	Media   []*MediaRecord
+	Object  []*ObjectRecord
 	Note    []*NoteRecord
 }
 
@@ -86,10 +93,10 @@ type EventRecord struct {
 	Address    AddressRecord
 	Age        string
 	Agency     string
-	Cause      string
 	Citation   []*CitationRecord
-	Media      []*MediaRecord
+	Object     []*ObjectRecord
 	Note       []*NoteRecord
+	Cause      []*NoteRecord
 	Parents    []*FamilyLinkRecord
 	SpouseInfo []*SpouseInfoRecord
 }
@@ -109,11 +116,18 @@ type FamilyRecord struct {
 	Wife             *IndividualRecord
 	NumberOfChildren *EventRecord
 	Changed          *ChangedRecord
-	Child            []*IndividualRecord
+	Child            []*ChildRecord
 	Event            []*EventRecord
 	Citation         []*CitationRecord
 	Object           []*ObjectRecord
 	Note             []*NoteRecord
+}
+
+// FileRecord ...
+type FileRecord struct {
+	Name  string
+	Title string
+	Form  string
 }
 
 // HeaderDataRecord ...
@@ -160,6 +174,7 @@ type IndividualRecord struct {
 	Xref      string
 	Sex       string
 	Changed   *ChangedRecord
+	Photo     *ObjectRecord
 	Name      []*NameRecord
 	Event     []*EventRecord
 	Attribute []*EventRecord
@@ -168,10 +183,6 @@ type IndividualRecord struct {
 	Citation  []*CitationRecord
 	Object    []*ObjectRecord
 	Note      []*NoteRecord
-}
-
-// MediaRecord is currently not implemented.
-type MediaRecord struct {
 }
 
 // NameRecord describes a person's name.
@@ -192,13 +203,8 @@ type NoteRecord struct {
 
 // ObjectRecord describes a source object.
 type ObjectRecord struct {
-	Title   string
-	Form    string
-	File    string
-	Height  int
-	Width   int
-	Primary bool
-	Note    []*NoteRecord
+	Xref string
+	File *FileRecord
 }
 
 // PlaceRecord describes a location.
@@ -210,6 +216,7 @@ type PlaceRecord struct {
 
 // RepositoryRecord is currently not implemented.
 type RepositoryRecord struct {
+	Xref string
 }
 
 // SourceDataRecord describes events pertaining to this source
@@ -244,7 +251,6 @@ type SourceRecord struct {
 	Submitter   []string
 	Changed     *ChangedRecord
 	EventData   *SourceDataRecord
-	Media       []*MediaRecord
 	Note        []*NoteRecord
 	Object      []*ObjectRecord
 }

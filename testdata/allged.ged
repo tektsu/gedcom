@@ -172,6 +172,7 @@
 1 DEAT
 2 DATE BET 31 DEC 1997 AND 1 JAN 1998
 2 PLAC The place
+2 CAUS @NOTE2@
 2 SOUR @SOURCE1@
 3 PAGE 42
 3 DATA
@@ -799,14 +800,10 @@
 2 NOTE A note
 3 CONT Note continued here. The word TE
 3 CONC ST should not be broken!
-1 OBJE
-2 FORM gif
-2 TITL A gif picture
-2 FILE \\network\drive\path\file name.gif
-2 NOTE A note
-3 CONT Note continued here. The word TE
-3 CONC ST should not be broken!
-2 _PRIM N
+1 _PHOTO @M795@
+1 OBJE @M794@
+1 OBJE @M795@
+1 OBJE @M796@
 1 NOTE A note about the individual
 2 CONT Note continued here. The word TE
 2 CONC ST should not be broken!
@@ -1091,15 +1088,7 @@
 2 NOTE A note
 3 CONT Note continued here. The word TE
 3 CONC ST should not be broken!
-1 OBJE
-2 FORM bmp
-2 TITL A bmp picture
-2 FILE \\network\drive\path\file name.bmp
-2 NOTE A note
-3 CONT Note continued here. The word TE
-3 CONC ST should not be broken!
-2 _PRIM Y
-2 _SIZE 400.000000 300.000000
+1 OBJE @M795@
 1 NOTE A note about the family
 2 CONT Note continued here. The word TE
 2 CONC ST should not be broken!
@@ -1113,17 +1102,25 @@
 0 @PARENTS@ FAM
 1 HUSB @PERSON5@
 1 CHIL @PERSON1@
+2 _FREL Natural
+2 _MREL Natural
 0 @ADOPTIVE_PARENTS@ FAM
 1 WIFE @PERSON6@
 1 CHIL @PERSON1@
+2 _FREL Natural
+2 _MREL Natural
 1 NOTE @NOTE1@
 0 @FAMILY2@ FAM
 1 HUSB @PERSON1@
 1 WIFE @PERSON8@
 1 CHIL @PERSON7@
+2 _FREL Adopted
+2 _MREL Natural
 0 @NOTE1@ NOTE
 2 CONT Note object note here. The word TE
 2 CONC ST should not be broken!
+0 @NOTE2@ NOTE
+1 CONC The cause
 0 @SOURCE1@ SOUR
 1 DATA
 2 EVEN BIRT, CHR
@@ -1149,13 +1146,7 @@
 1 TEXT Citation from source
 2 CONT Citation continued here. The word TE
 2 CONC ST should not be broken!
-1 OBJE
-2 FORM bmp
-2 TITL A bmp picture
-2 FILE \\network\drive\path\file name.bmp
-2 NOTE A note
-3 CONT Note continued here. The word TE
-3 CONC ST should not be broken!
+1 OBJE @M796@
 1 NOTE A note about the family
 2 CONT Note continued here. The word TE
 2 CONC ST should not be broken!
@@ -1177,4 +1168,16 @@
 2 TITL This is part of the _TAG tag and should not be used
 1 _MYOWNTAG This is a non-standard tag. Not recommended but allowed
 0 _MYOWNTAG This is a non-standard tag. Not recommended but allowed
+0 @M794@ OBJE
+1 FILE \\network\drive\path\file name.gif
+2 FORM gif
+2 TITL A gif picture
+0 @M795@ OBJE
+1 FILE /Users/test/test.jpg
+2 FORM jpg
+2 TITL A jpg picture
+0 @M796@ OBJE
+1 FILE \\network\drive\path\file name.bmp
+2 FORM bmp
+2 TITL A bmp picture
 0 TRLR
