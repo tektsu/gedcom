@@ -209,9 +209,11 @@ type ObjectRecord struct {
 
 // PlaceRecord describes a location.
 type PlaceRecord struct {
-	Name     string
-	Citation []*CitationRecord
-	Note     []*NoteRecord
+	Name      string
+	Latitude  string
+	Longitude string
+	Citation  []*CitationRecord
+	Note      []*NoteRecord
 }
 
 // RepositoryRecord is currently not implemented.

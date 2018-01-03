@@ -135,7 +135,9 @@ func TestIndividual(t *testing.T) {
 		Tag:  "BIRT",
 		Date: "31 DEC 1997",
 		Place: PlaceRecord{
-			Name: "The place",
+			Name:      "The place",
+			Latitude:  "N42.157841",
+			Longitude: "W78.715065",
 		},
 		Note: []*NoteRecord{
 			&NoteRecord{
@@ -195,6 +197,8 @@ func TestIndividual(t *testing.T) {
 		{"Individual 0 Birth Tag", birth.Tag, i1.Event[0].Tag},
 		{"Individual 0 Birth Date", birth.Date, i1.Event[0].Date},
 		{"Individual 0 Birth Place Name", birth.Place.Name, i1.Event[0].Place.Name},
+		{"Individual 0 Birth Place Latitude", birth.Place.Latitude, i1.Event[0].Place.Latitude},
+		{"Individual 0 Birth Place Longitude", birth.Place.Longitude, i1.Event[0].Place.Longitude},
 		{"Individual 0 Birth Note", birth.Note[0].Note, i1.Event[0].Note[0].Note},
 		{"Individual 0 Death Tag", death.Tag, i1.Event[3].Tag},
 		{"Individual 0 Death Date", death.Date, i1.Event[3].Date},

@@ -833,6 +833,8 @@ func makePlaceParser(d *Decoder, p *PlaceRecord, minLevel int) parser {
 			r := &NoteRecord{Note: value}
 			p.Note = append(p.Note, r)
 			d.pushParser(makeNoteParser(d, r, level))
+		case "MAP":
+			d.pushParser(makeMapParser(d, p, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
@@ -840,6 +842,28 @@ func makePlaceParser(d *Decoder, p *PlaceRecord, minLevel int) parser {
 		}
 
 		return nil
+	}
+}
+
+func makeMapParser(d *Decoder, p *PlaceRecord, minLevel int) parser {
+	return func(level int, tag string, value string, xref string) error {
+		if level <= minLevel {
+			return d.popParser(level, tag, value, xref)
+		}
+		switch tag {
+
+		case "LATI":
+			p.Latitude = value
+		case "LONG":
+			p.Longitude = value
+
+		default:
+			d.cbUnrecognizedTag(level, tag, value, xref)
+			d.pushParser(makeSlurkParser(d, level))
+		}
+
+		return nil
+
 	}
 }
 
