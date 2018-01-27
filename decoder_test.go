@@ -59,7 +59,6 @@ func TestStructuresAreInitialized(t *testing.T) {
 	if g.Submitter == nil {
 		t.Fatalf("Submitter list was nil, expected valid slice")
 	}
-
 }
 
 func TestHeader(t *testing.T) {
@@ -102,30 +101,29 @@ func TestIndividual(t *testing.T) {
 	name1 := &NameRecord{
 		Name: "given name /surname/",
 		Citation: []*CitationRecord{
-			&CitationRecord{
+			{
 				Source: &SourceRecord{
 					Xref:   "SOURCE1",
 					Title:  "Title of source\nTitle continued here. The word TEST should not be broken!",
 					Author: "Author of source\nAuthor continued here. The word TEST should not be broken!",
 				},
-
-				Page:    "42",
-				Quality: "0",
+				Page: "42",
 				Data: DataRecord{
 					Date: "BEF 1 JAN 1900",
 					Text: []string{
 						"a sample text\nSample text continued here. The word TEST should not be broken!",
 					},
 				},
+				Quality: "0",
 				Note: []*NoteRecord{
-					&NoteRecord{
+					{
 						Note: "A note\nNote continued here. The word TEST should not be broken!",
 					},
 				},
 			},
 		},
 		Note: []*NoteRecord{
-			&NoteRecord{
+			{
 				Note: "Personal Name note\nNote continued here. The word TEST should not be broken!",
 			},
 		},
@@ -140,7 +138,7 @@ func TestIndividual(t *testing.T) {
 			Longitude: "W78.715065",
 		},
 		Note: []*NoteRecord{
-			&NoteRecord{
+			{
 				Note: "BIRTH event note (the event of entering into life)\nNote continued here. The word TEST should not be broken!",
 			},
 		},
@@ -153,7 +151,7 @@ func TestIndividual(t *testing.T) {
 			Name: "The place",
 		},
 		Cause: []*NoteRecord{
-			&NoteRecord{
+			{
 				Note: "The cause",
 			},
 		},
@@ -167,7 +165,7 @@ func TestIndividual(t *testing.T) {
 			Name: "The place",
 		},
 		Note: []*NoteRecord{
-			&NoteRecord{
+			{
 				Note: "CASTE event note (the name of an individual's rank or status in society, based   on racial or religious differences, or differences in wealth, inherited   rank, profession, occupation, etc)\nNote continued here. The word TEST should not be broken!",
 			},
 		},
