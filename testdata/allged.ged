@@ -35,18 +35,18 @@
 1 LANG language
 1 NOTE A general note about this file:
 2 CONT It demonstrates most of the data which can be submitted using GEDCOM5.5. It shows the relatives of PERSON1:
-2 CONT His 2 wifes (PERSON2, PERSON8), his parents (father: PERSON5, mother not given), 
+2 CONT His 2 wifes (PERSON2, PERSON8), his parents (father: PERSON5, mother not given),
 2 CONT adoptive parents (mother: PERSON6, father not given) and his 3 children (PERSON3, PERSON4 and PERSON7).
 2 CONT In PERSON1, FAMILY1, SUBMITTER, SUBMISSION and SOURCE1 as many datafields as possible are used.
 2 CONT All other individuals/families contain no data. Note, that many data tags can appear more than once
 2 CONT (in this transmission this is demonstrated with tags: NAME, OCCU, PLACE and NOTE. Seek the word 'another'.
 2 CONT The data transmitted here do not make sence. Just the HEAD.DATE tag contains the date of the creation
 2 CONT of this file and will change in future Versions!
-2 CONT This file is created by H. Eichmann: h.eichmann@@gmx.de. Feel free to copy and use it for any 
+2 CONT This file is created by H. Eichmann: h.eichmann@@gmx.de. Feel free to copy and use it for any
 2 CONT non-commercial purpose. For the creation the GEDCOM standard Release 5.5 (2 JAN 1996) has been used.
 2 CONT Copyright: The church of Jesus Christ of latter-day saints, gedcom@@gedcom.org
 2 CONT Download it (the GEDCOM 5.5 specs) from: ftp.gedcom.com/pub/genealogy/gedcom.
-2 CONT Some Specials: This line is very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long but not too long (255 caharcters is the limit). 
+2 CONT Some Specials: This line is very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long but not too long (255 caharcters is the limit).
 2 CONT This @@ (commercial at) character may only appear ONCE!
 2 CONT Note continued here. The word TE
 2 CONC ST should not be broken!
@@ -67,7 +67,7 @@
 1 PHON Submitter phone number 2
 1 PHON Submitter phone number 3 (last one!)
 1 LANG English
-1 CHAN 
+1 CHAN
 2 DATE 19 JUN 2000
 3 TIME 12:34:56.789
 2 NOTE A note
@@ -767,7 +767,7 @@
 3 NOTE A note
 4 CONT Note continued here. The word TE
 4 CONC ST should not be broken!
-2 NOTE TITLE event note (a description of a specific writing or other work, such as the title of a book when used in a source context, or a formal designation used by an individual in connection with positions of royalty or other social status, 
+2 NOTE TITLE event note (a description of a specific writing or other work, such as the title of a book when used in a source context, or a formal designation used by an individual in connection with positions of royalty or other social status,
 3 CONT such as Grand Duke)
 3 CONT Note continued here. The word TE
 3 CONC ST should not be broken!
@@ -810,7 +810,7 @@
 1 NOTE A note about the individual
 2 CONT Note continued here. The word TE
 2 CONC ST should not be broken!
-1 CHAN 
+1 CHAN
 2 DATE 1 APR 1998
 3 TIME 12:34:56.789
 2 NOTE A note
@@ -1095,7 +1095,7 @@
 1 NOTE A note about the family
 2 CONT Note continued here. The word TE
 2 CONC ST should not be broken!
-1 CHAN 
+1 CHAN
 2 DATE 1 APR 1998
 3 TIME 12:34:56.789
 2 NOTE A note
@@ -1124,6 +1124,9 @@
 2 CONC ST should not be broken!
 0 @NOTE2@ NOTE
 1 CONC The cause
+0 @NOTE3@ NOTE
+2 CONT Object note here. The word TE
+2 CONC ST should not be broken!
 0 @SOURCE1@ SOUR
 1 DATA
 2 EVEN BIRT, CHR
@@ -1153,7 +1156,7 @@
 1 NOTE A note about the family
 2 CONT Note continued here. The word TE
 2 CONC ST should not be broken!
-1 CHAN 
+1 CHAN
 2 DATE 1 APR 1998
 3 TIME 12:34:56.789
 2 NOTE A note
@@ -1175,12 +1178,17 @@
 1 FILE \\network\drive\path\file name.gif
 2 FORM gif
 2 TITL A gif picture
+1 NOTE A note about the object
+2 CONT Note continued here. The word TE
+2 CONC ST should not be broken!
 0 @M795@ OBJE
 1 FILE /Users/test/test.jpg
 2 FORM jpg
 2 TITL A jpg picture
+1 NOTE @NOTE3@
 0 @M796@ OBJE
 1 FILE \\network\drive\path\file name.bmp
 2 FORM bmp
 2 TITL A bmp picture
+2 _TEXT Description of this fine BMP
 0 TRLR

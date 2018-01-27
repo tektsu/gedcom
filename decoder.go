@@ -570,6 +570,8 @@ func makeFileParser(d *Decoder, f *FileRecord, minLevel int) parser {
 			f.Title = value
 		case "FORM":
 			f.Form = value
+		case "_TEXT":
+			f.Description = value
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)
@@ -809,6 +811,15 @@ func makeObjectParser(d *Decoder, o *ObjectRecord, minLevel int) parser {
 		case "FILE":
 			o.File = &FileRecord{Name: value}
 			d.pushParser(makeFileParser(d, o.File, level))
+		case "NOTE":
+			if value[0:1] == "@" {
+				r := d.note(stripXref(value))
+				o.Note = append(o.Note, r)
+			} else {
+				r := &NoteRecord{Note: value}
+				o.Note = append(o.Note, r)
+				d.pushParser(makeNoteParser(d, r, level))
+			}
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)

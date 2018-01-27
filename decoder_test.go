@@ -327,8 +327,11 @@ func TestObject(t *testing.T) {
 	stringTestCases{
 		{"First file Xref", "M794", objects[0].Xref},
 		{"First object file form", "gif", objects[0].File.Form},
+		{"First object note 0", "A note about the object\nNote continued here. The word TEST should not be broken!", objects[0].Note[0].Note},
 		{"Second object file name", "/Users/test/test.jpg", objects[1].File.Name},
+		{"Second object note 0", "\nObject note here. The word TEST should not be broken!", objects[1].Note[0].Note},
 		{"Third object Title", "A bmp picture", objects[2].File.Title},
+		{"Third object Description", "Description of this fine BMP", objects[2].File.Description},
 	}.run(t)
 }
 

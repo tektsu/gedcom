@@ -125,9 +125,10 @@ type FamilyRecord struct {
 
 // FileRecord ...
 type FileRecord struct {
-	Name  string
-	Title string
-	Form  string
+	Name        string
+	Title       string
+	Form        string
+	Description string
 }
 
 // HeaderDataRecord ...
@@ -205,6 +206,7 @@ type NoteRecord struct {
 type ObjectRecord struct {
 	Xref string
 	File *FileRecord
+	Note []*NoteRecord
 }
 
 // PlaceRecord describes a location.
