@@ -80,7 +80,7 @@ func (d *Decoder) scan(g *Gedcom) {
 		rest := copy(buf, buf[pos:])
 
 		// top up buffer
-		num, err := d.r.Read(buf[rest:len(buf)])
+		num, err := d.r.Read(buf[rest:])
 		if err != nil {
 			break
 		}
@@ -835,7 +835,6 @@ func makePlaceParser(d *Decoder, p *PlaceRecord, minLevel int) parser {
 			return d.popParser(level, tag, value, xref)
 		}
 		switch tag {
-
 		case "SOUR":
 			c := &CitationRecord{Source: d.source(stripXref(value))}
 			p.Citation = append(p.Citation, c)
@@ -862,7 +861,6 @@ func makeMapParser(d *Decoder, p *PlaceRecord, minLevel int) parser {
 			return d.popParser(level, tag, value, xref)
 		}
 		switch tag {
-
 		case "LATI":
 			p.Latitude = value
 		case "LONG":
@@ -1140,6 +1138,7 @@ func makeTimestampParser(d *Decoder, t *TimestampRecord, minLevel int) parser {
 }
 
 // Just bypass this tag and all its children.
+//noinspection SpellCheckingInspection
 func makeSlurkParser(d *Decoder, minLevel int) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level <= minLevel {

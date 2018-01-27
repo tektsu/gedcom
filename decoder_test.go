@@ -18,6 +18,7 @@ var (
 
 var g *Gedcom
 
+//noinspection SpellCheckingInspection
 func init() {
 	var err error
 	data, err = ioutil.ReadFile("testdata/allged.ged")
@@ -237,7 +238,7 @@ func TestSubmitter(t *testing.T) {
 		{"Submitter xref", "SUBMITTER", r[0].Xref},
 		{"Submitter name", "/Submitter-Name/", r[0].Name},
 		{"Submitter address country", "Submitter address country", r[0].Address.Country},
-		{"Submitter phone nuumber 2", "Submitter phone number 2", r[0].Phone[1]},
+		{"Submitter phone number 2", "Submitter phone number 2", r[0].Phone[1]},
 		{"Submitter language", "English", r[0].Language},
 		{"Submitter change date", "19 JUN 2000", r[0].Changed.Stamp.Date},
 		{"Submitter change time", "12:34:56.789", r[0].Changed.Stamp.Time},
@@ -252,7 +253,7 @@ func TestSubmission(t *testing.T) {
 	stringTestCases{
 		{"Submission xref", "SUBMISSION", r.Xref},
 		{"Submission family file", "NameOfFamilyFile", r.FamilyFile},
-		{"Submission temple code", "Abreviated temple code", r.TempleCode},
+		{"Submission temple code", "Abbreviated temple code", r.TempleCode},
 		{"Submission ancestors", "1", r.Ancestors},
 		{"Submission descendants", "1", r.Descendants},
 		{"Submission ordinance", "yes", r.Ordinance},

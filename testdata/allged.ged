@@ -35,18 +35,18 @@
 1 LANG language
 1 NOTE A general note about this file:
 2 CONT It demonstrates most of the data which can be submitted using GEDCOM5.5. It shows the relatives of PERSON1:
-2 CONT His 2 wifes (PERSON2, PERSON8), his parents (father: PERSON5, mother not given),
+2 CONT His 2 wives (PERSON2, PERSON8), his parents (father: PERSON5, mother not given),
 2 CONT adoptive parents (mother: PERSON6, father not given) and his 3 children (PERSON3, PERSON4 and PERSON7).
-2 CONT In PERSON1, FAMILY1, SUBMITTER, SUBMISSION and SOURCE1 as many datafields as possible are used.
+2 CONT In PERSON1, FAMILY1, SUBMITTER, SUBMISSION and SOURCE1 as many data fields as possible are used.
 2 CONT All other individuals/families contain no data. Note, that many data tags can appear more than once
 2 CONT (in this transmission this is demonstrated with tags: NAME, OCCU, PLACE and NOTE. Seek the word 'another'.
-2 CONT The data transmitted here do not make sence. Just the HEAD.DATE tag contains the date of the creation
+2 CONT The data transmitted here do not make sense. Just the HEAD.DATE tag contains the date of the creation
 2 CONT of this file and will change in future Versions!
 2 CONT This file is created by H. Eichmann: h.eichmann@@gmx.de. Feel free to copy and use it for any
 2 CONT non-commercial purpose. For the creation the GEDCOM standard Release 5.5 (2 JAN 1996) has been used.
 2 CONT Copyright: The church of Jesus Christ of latter-day saints, gedcom@@gedcom.org
 2 CONT Download it (the GEDCOM 5.5 specs) from: ftp.gedcom.com/pub/genealogy/gedcom.
-2 CONT Some Specials: This line is very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long but not too long (255 caharcters is the limit).
+2 CONT Some Specials: This line is very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long but not too long (255 characters is the limit).
 2 CONT This @@ (commercial at) character may only appear ONCE!
 2 CONT Note continued here. The word TE
 2 CONC ST should not be broken!
@@ -75,10 +75,10 @@
 3 CONC ST should not be broken!
 1 _MYOWNTAG This is a non-standard tag. Not recommended but allowed
 0 @SUBMISSION@ SUBN
-1 _MYOWNTAG SUBN does not allow NOTE tags :-(( so, here is my not: SUBN seems to be LDS internal data. The sample data I put in here are probably nonsence.
+1 _MYOWNTAG SUBN does not allow NOTE tags :-(( so, here is my not: SUBN seems to be LDS internal data. The sample data I put in here are probably nonsense.
 1 SUBM @SUBMITTER@
 1 FAMF NameOfFamilyFile
-1 TEMP Abreviated temple code
+1 TEMP Abbreviated temple code
 1 ANCE 1
 1 DESC 1
 1 ORDI yes
