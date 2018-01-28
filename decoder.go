@@ -571,7 +571,9 @@ func makeFileParser(d *Decoder, f *FileRecord, minLevel int) parser {
 		case "FORM":
 			f.Form = value
 		case "_TEXT":
-			f.Description = value
+			r := &NoteRecord{Note: value}
+			f.Description = r
+			d.pushParser(makeNoteParser(d, r, level))
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)

@@ -332,7 +332,7 @@ func TestObject(t *testing.T) {
 		{"Second object file name", "/Users/test/test.jpg", objects[1].File.Name},
 		{"Second object note 0", "\nObject note here. The word TEST should not be broken!", objects[1].Note[0].Note},
 		{"Third object Title", "A bmp picture", objects[2].File.Title},
-		{"Third object Description", "Description of this fine BMP", objects[2].File.Description},
+		{"Third object Description", "Description of this fine BMP", objects[2].File.Description.Note},
 	}.run(t)
 }
 

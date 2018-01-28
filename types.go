@@ -128,7 +128,7 @@ type FileRecord struct {
 	Name        string
 	Title       string
 	Form        string
-	Description string
+	Description *NoteRecord
 }
 
 // HeaderDataRecord ...
