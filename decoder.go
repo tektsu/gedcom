@@ -448,9 +448,14 @@ func makeEventParser(d *Decoder, e *EventRecord, minLevel int) parser {
 			e.Citation = append(e.Citation, c)
 			d.pushParser(makeCitationParser(d, c, level))
 		case "NOTE":
-			r := &NoteRecord{Note: value}
-			e.Note = append(e.Note, r)
-			d.pushParser(makeNoteParser(d, r, level))
+			if value[0:1] == "@" {
+				r := d.note(stripXref(value))
+				e.Note = append(e.Note, r)
+			} else {
+				r := &NoteRecord{Note: value}
+				e.Note = append(e.Note, r)
+				d.pushParser(makeNoteParser(d, r, level))
+			}
 		case "CAUS":
 			if value[0:1] == "@" {
 				o := d.note(stripXref(value))
