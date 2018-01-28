@@ -737,9 +737,14 @@ func makeIndividualParser(d *Decoder, i *IndividualRecord, minLevel int) parser 
 				d.pushParser(makeObjectParser(d, o, level))
 			}
 		case "NOTE":
-			n := &NoteRecord{Note: value}
-			i.Note = append(i.Note, n)
-			d.pushParser(makeNoteParser(d, n, level))
+			if value[0:1] == "@" {
+				r := d.note(stripXref(value))
+				i.Note = append(i.Note, r)
+			} else {
+				r := &NoteRecord{Note: value}
+				i.Note = append(i.Note, r)
+				d.pushParser(makeNoteParser(d, r, level))
+			}
 		case "CHAN":
 			i.Changed = &ChangedRecord{}
 			d.pushParser(makeChangedParser(d, i.Changed, level))
