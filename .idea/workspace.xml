@@ -10,7 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0bf8f97b-b713-497e-8609-58fcee841363" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/decoder.go" afterPath="$PROJECT_DIR$/decoder.go" />
       <change beforePath="$PROJECT_DIR$/decoder_test.go" afterPath="$PROJECT_DIR$/decoder_test.go" />
       <change beforePath="$PROJECT_DIR$/testdata/allged.ged" afterPath="$PROJECT_DIR$/testdata/allged.ged" />
@@ -31,8 +30,8 @@
       <file leaf-file-name="decoder_test.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/decoder_test.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="203" column="131" lean-forward="false" selection-start-line="203" selection-start-column="131" selection-end-line="203" selection-end-column="131" />
+            <state relative-caret-position="-370">
+              <caret line="172" column="0" lean-forward="false" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -41,8 +40,8 @@
       <file leaf-file-name="decoder.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/decoder.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
-              <caret line="384" column="34" lean-forward="false" selection-start-line="384" selection-start-column="34" selection-end-line="384" selection-end-column="34" />
+            <state relative-caret-position="480">
+              <caret line="723" column="128" lean-forward="false" selection-start-line="723" selection-start-column="128" selection-end-line="723" selection-end-column="128" />
               <folding />
             </state>
           </provider>
@@ -51,8 +50,8 @@
       <file leaf-file-name="allged.ged" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/testdata/allged.ged">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-15836">
-              <caret line="91" column="0" lean-forward="false" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
+            <state relative-caret-position="600">
+              <caret line="553" column="14" lean-forward="false" selection-start-line="553" selection-start-column="14" selection-end-line="553" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -100,8 +99,8 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/types.go" />
         <option value="$PROJECT_DIR$/decoder.go" />
-        <option value="$PROJECT_DIR$/testdata/allged.ged" />
         <option value="$PROJECT_DIR$/decoder_test.go" />
+        <option value="$PROJECT_DIR$/testdata/allged.ged" />
       </list>
     </option>
   </component>
@@ -123,9 +122,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="105" />
+    <option name="x" value="178" />
     <option name="y" value="23" />
-    <option name="width" value="2521" />
+    <option name="width" value="2381" />
     <option name="height" value="1417" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -264,27 +263,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="decoder_test_go - 2018.01.28 at 09h 03m 27s.xml">
-      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="decoder_test_go - 2018.02.25 at 05h 46m 31s.xml">
-      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="decoder_test_go - 2018.02.25 at 05h 48m 58s.xml">
-      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="decoder_test_go - 2018.02.25 at 05h 52m 46s.xml">
-      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="decoder_test_go - 2018.02.25 at 05h 55m 49s.xml">
-      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="decoder_test_go - 2018.02.25 at 05h 58m 29s.xml">
-      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="decoder_test_go - 2018.02.25 at 06h 01m 13s.xml">
-      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
-    </history-entry>
     <history-entry file="decoder_test_go - 2018.02.25 at 06h 02m 39s.xml">
       <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
@@ -292,6 +270,27 @@
       <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
     <history-entry file="decoder_test_go - 2018.02.25 at 06h 04m 09s.xml">
+      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="decoder_test_go - 2018.02.25 at 06h 26m 14s.xml">
+      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="decoder_test_go - 2018.02.25 at 06h 27m 14s.xml">
+      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="decoder_test_go - 2018.02.25 at 06h 28m 03s.xml">
+      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="decoder_test_go - 2018.02.25 at 06h 29m 29s.xml">
+      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="decoder_test_go - 2018.02.25 at 06h 31m 06s.xml">
+      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="decoder_test_go - 2018.02.25 at 06h 32m 42s.xml">
+      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="decoder_test_go - 2018.02.25 at 06h 33m 45s.xml">
       <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
   </component>
@@ -305,11 +304,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="105" y="23" width="2521" height="1417" extended-state="0" />
-    <editor active="true" />
+    <frame x="178" y="23" width="2381" height="1417" extended-state="0" />
     <layout>
       <window_info id="PlantUML" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25574827" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.271056" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5047985" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -563,24 +561,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/decoder.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="384" column="34" lean-forward="false" selection-start-line="384" selection-start-column="34" selection-end-line="384" selection-end-column="34" />
+        <state relative-caret-position="480">
+          <caret line="723" column="128" lean-forward="false" selection-start-line="723" selection-start-column="128" selection-end-line="723" selection-end-column="128" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/testdata/allged.ged">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-15836">
-          <caret line="91" column="0" lean-forward="false" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
+        <state relative-caret-position="600">
+          <caret line="553" column="14" lean-forward="false" selection-start-line="553" selection-start-column="14" selection-end-line="553" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/decoder_test.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="203" column="131" lean-forward="false" selection-start-line="203" selection-start-column="131" selection-end-line="203" selection-end-column="131" />
+        <state relative-caret-position="-370">
+          <caret line="172" column="0" lean-forward="false" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
           <folding />
         </state>
       </provider>

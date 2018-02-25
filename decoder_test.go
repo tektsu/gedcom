@@ -166,6 +166,12 @@ func TestIndividual(t *testing.T) {
 		},
 	}
 
+	military := &EventRecord{
+		Tag:   "_MILT",
+		Date:  "ABT 1862",
+		Value: "Army, Fifth Cavalry",
+	}
+
 	att1 := &EventRecord{
 		Tag:   "CAST",
 		Value: "Cast name",
@@ -186,7 +192,7 @@ func TestIndividual(t *testing.T) {
 		{"Individual list length was [%d]", 8, len(g.Individual)},
 		{"Individual 0 had [%d] names", 2, len(i1.Name)},
 		{"Individual 0 had [%d] events", 24, len(i1.Event)},
-		{"Individual 0 had [%d] attributes", 14, len(i1.Attribute)},
+		{"Individual 0 had [%d] attributes", 15, len(i1.Attribute)},
 		{"Individual 0 had [%d] parent families", 2, len(i1.Parents)},
 		//{"Individual 0 object width was [%d]", 0, i1.Object[0].Width},
 	}.run(t)
@@ -218,6 +224,9 @@ func TestIndividual(t *testing.T) {
 		{"Individual 0 Attribute 0 Date", att1.Date, i1.Attribute[0].Date},
 		{"Individual 0 Attribute 0 Place Name", att1.Place.Name, i1.Attribute[0].Place.Name},
 		{"Individual 0 Attribute 0 Note", att1.Note[0].Note, i1.Attribute[0].Note[0].Note},
+		{"Individual 0 Attribute 1 Tag", military.Tag, i1.Attribute[1].Tag},
+		{"Individual 0 Attribute 1 Date", military.Date, i1.Attribute[1].Date},
+		{"Individual 0 Attribute 1 Value", military.Value, i1.Attribute[1].Value},
 		{"Individual 0 birth father name ", "/Father/", i1.Event[0].Parents[0].Family.Husband.Name[0].Name},
 		{"Individual 0 adopted by", "BOTH", i1.Event[6].Parents[0].AdoptedBy},
 		{"Individual 0 citation page", "42", i1.Citation[0].Page},

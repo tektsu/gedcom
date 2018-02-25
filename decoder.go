@@ -721,7 +721,7 @@ func makeIndividualParser(d *Decoder, i *IndividualRecord, minLevel int) parser 
 			e := &EventRecord{Tag: tag, Value: value}
 			i.Event = append(i.Event, e)
 			d.pushParser(makeEventParser(d, e, level))
-		case "CAST", "DSCR", "EDUC", "IDNO", "NATI", "NCHI", "NMR", "OCCU", "PROP", "RELI", "RESI", "SSN", "TITL", "FACT":
+		case "CAST", "DSCR", "EDUC", "IDNO", "NATI", "NCHI", "NMR", "OCCU", "PROP", "RELI", "RESI", "SSN", "TITL", "FACT", "_MILT":
 			e := &EventRecord{Tag: tag, Value: value}
 			i.Attribute = append(i.Attribute, e)
 			d.pushParser(makeEventParser(d, e, level))
