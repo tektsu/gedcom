@@ -379,6 +379,15 @@ func makeCitationParser(d *Decoder, c *CitationRecord, minLevel int) parser {
 			d.pushParser(makeNoteParser(d, r, level))
 		case "DATA":
 			d.pushParser(makeDataParser(d, &c.Data, level))
+		case "OBJE":
+			if value[0:1] == "@" {
+				o := d.object(stripXref(value))
+				c.Object = append(c.Object, o)
+			} else {
+				o := &ObjectRecord{}
+				c.Object = append(c.Object, o)
+				d.pushParser(makeObjectParser(d, o, level))
+			}
 
 		default:
 			d.cbUnrecognizedTag(level, tag, value, xref)

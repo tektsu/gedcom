@@ -121,6 +121,14 @@ func TestIndividual(t *testing.T) {
 						Note: "A note\nNote continued here. The word TEST should not be broken!",
 					},
 				},
+				Object: []*ObjectRecord{
+					{
+						Xref: "M794",
+						File: &FileRecord{
+							Form: "gif",
+						},
+					},
+				},
 			},
 		},
 		Note: []*NoteRecord{
@@ -192,6 +200,8 @@ func TestIndividual(t *testing.T) {
 		{"Individual 0 Name citation source", name1.Citation[0].Source.Xref, i1.Name[0].Citation[0].Source.Xref},
 		{"Individual 0 Name citation Title", name1.Citation[0].Source.Title, i1.Name[0].Citation[0].Source.Title},
 		{"Individual 0 Name citation Author", name1.Citation[0].Source.Author, i1.Name[0].Citation[0].Source.Author},
+		{"Individual 0 Name citation object", name1.Citation[0].Object[0].Xref, i1.Name[0].Citation[0].Object[0].Xref},
+		{"Individual 0 Name citation object form", name1.Citation[0].Object[0].File.Form, i1.Name[0].Citation[0].Object[0].File.Form},
 		{"Individual 0 Note 0", name1.Note[0].Note, i1.Name[0].Note[0].Note},
 		{"Individual 0 Birth Tag", birth.Tag, i1.Event[0].Tag},
 		{"Individual 0 Birth Date", birth.Date, i1.Event[0].Date},
