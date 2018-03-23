@@ -10,9 +10,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0bf8f97b-b713-497e-8609-58fcee841363" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/decoder.go" afterPath="$PROJECT_DIR$/decoder.go" />
       <change beforePath="$PROJECT_DIR$/decoder_test.go" afterPath="$PROJECT_DIR$/decoder_test.go" />
       <change beforePath="$PROJECT_DIR$/testdata/allged.ged" afterPath="$PROJECT_DIR$/testdata/allged.ged" />
+      <change beforePath="$PROJECT_DIR$/types.go" afterPath="$PROJECT_DIR$/types.go" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -30,8 +32,8 @@
       <file leaf-file-name="decoder_test.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/decoder_test.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-370">
-              <caret line="172" column="0" lean-forward="false" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
+            <state relative-caret-position="354">
+              <caret line="300" column="68" lean-forward="false" selection-start-line="300" selection-start-column="68" selection-end-line="300" selection-end-column="68" />
               <folding />
             </state>
           </provider>
@@ -40,8 +42,8 @@
       <file leaf-file-name="decoder.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/decoder.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="723" column="128" lean-forward="false" selection-start-line="723" selection-start-column="128" selection-end-line="723" selection-end-column="128" />
+            <state relative-caret-position="135">
+              <caret line="535" column="25" lean-forward="false" selection-start-line="535" selection-start-column="25" selection-end-line="535" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -50,8 +52,8 @@
       <file leaf-file-name="allged.ged" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/testdata/allged.ged">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="553" column="14" lean-forward="false" selection-start-line="553" selection-start-column="14" selection-end-line="553" selection-end-column="14" />
+            <state relative-caret-position="795">
+              <caret line="914" column="6" lean-forward="false" selection-start-line="914" selection-start-column="6" selection-end-line="914" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -73,8 +75,8 @@
       <file leaf-file-name="types.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/types.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1382">
-              <caret line="132" column="0" lean-forward="false" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
+            <state relative-caret-position="206">
+              <caret line="99" column="19" lean-forward="false" selection-start-line="99" selection-start-column="19" selection-end-line="99" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -99,8 +101,8 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/types.go" />
         <option value="$PROJECT_DIR$/decoder.go" />
-        <option value="$PROJECT_DIR$/decoder_test.go" />
         <option value="$PROJECT_DIR$/testdata/allged.ged" />
+        <option value="$PROJECT_DIR$/decoder_test.go" />
       </list>
     </option>
   </component>
@@ -122,9 +124,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="178" />
-    <option name="y" value="23" />
-    <option name="width" value="2381" />
+    <option name="x" value="179" />
+    <option name="y" value="28" />
+    <option name="width" value="2037" />
     <option name="height" value="1417" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -206,15 +208,44 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Go Test.decoder_test.go">
-    <configuration name="TestStructuresAreInitialized in decoder_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true">
+  <component name="RunManager" selected="Go Test.TestFamily in decoder_test.go">
+    <configuration name="TestFamily in decoder_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true">
       <module name="gedcom" />
       <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="PACKAGE" />
       <package value="github.com/tektsu/gedcom" />
-      <pattern value="^TestStructuresAreInitialized$" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/decoder_test.go" />
+      <pattern value="^TestFamily$" />
+    </configuration>
+    <configuration name="TestHeader in decoder_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true">
+      <module name="gedcom" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/tektsu/gedcom" />
+      <pattern value="^TestHeader$" />
+    </configuration>
+    <configuration name="TestIndividual in decoder_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true">
+      <module name="gedcom" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/tektsu/gedcom" />
+      <pattern value="^TestIndividual$" />
+    </configuration>
+    <configuration name="TestSubmitter in decoder_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true">
+      <module name="gedcom" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/tektsu/gedcom" />
+      <pattern value="^TestSubmitter$" />
     </configuration>
     <configuration name="decoder_test.go" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="gedcom" />
@@ -234,15 +265,21 @@
       <kind value="PACKAGE" />
       <package value="github.com/tektsu/gedcom" />
     </configuration>
-    <list size="3">
+    <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Go Test.decoder_test.go" />
-      <item index="1" class="java.lang.String" itemvalue="Go Test.TestStructuresAreInitialized in decoder_test.go" />
-      <item index="2" class="java.lang.String" itemvalue="Go Test.go test github.com/tektsu/gedcom" />
+      <item index="1" class="java.lang.String" itemvalue="Go Test.go test github.com/tektsu/gedcom" />
+      <item index="2" class="java.lang.String" itemvalue="Go Test.TestIndividual in decoder_test.go" />
+      <item index="3" class="java.lang.String" itemvalue="Go Test.TestHeader in decoder_test.go" />
+      <item index="4" class="java.lang.String" itemvalue="Go Test.TestSubmitter in decoder_test.go" />
+      <item index="5" class="java.lang.String" itemvalue="Go Test.TestFamily in decoder_test.go" />
     </list>
     <recent_temporary>
-      <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Go Test.go test github.com/tektsu/gedcom" />
-        <item index="1" class="java.lang.String" itemvalue="Go Test.TestStructuresAreInitialized in decoder_test.go" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Go Test.TestFamily in decoder_test.go" />
+        <item index="1" class="java.lang.String" itemvalue="Go Test.TestSubmitter in decoder_test.go" />
+        <item index="2" class="java.lang.String" itemvalue="Go Test.TestIndividual in decoder_test.go" />
+        <item index="3" class="java.lang.String" itemvalue="Go Test.TestHeader in decoder_test.go" />
+        <item index="4" class="java.lang.String" itemvalue="Go Test.go test github.com/tektsu/gedcom" />
       </list>
     </recent_temporary>
   </component>
@@ -263,34 +300,34 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="decoder_test_go - 2018.02.25 at 06h 02m 39s.xml">
+    <history-entry file="TestFamily_in_decoder_test_go - 2018.03.23 at 10h 11m 07s.xml">
+      <configuration name="TestFamily in decoder_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="TestFamily_in_decoder_test_go - 2018.03.23 at 10h 13m 00s.xml">
+      <configuration name="TestFamily in decoder_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="TestFamily_in_decoder_test_go - 2018.03.23 at 10h 14m 25s.xml">
+      <configuration name="TestFamily in decoder_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="TestFamily_in_decoder_test_go - 2018.03.23 at 10h 17m 06s.xml">
+      <configuration name="TestFamily in decoder_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="TestFamily_in_decoder_test_go - 2018.03.23 at 10h 19m 11s.xml">
+      <configuration name="TestFamily in decoder_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="TestFamily_in_decoder_test_go - 2018.03.23 at 10h 19m 57s.xml">
+      <configuration name="TestFamily in decoder_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="decoder_test_go - 2018.03.23 at 09h 58m 27s.xml">
       <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="decoder_test_go - 2018.02.25 at 06h 03m 27s.xml">
+    <history-entry file="decoder_test_go - 2018.03.23 at 10h 03m 32s.xml">
       <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="decoder_test_go - 2018.02.25 at 06h 04m 09s.xml">
+    <history-entry file="decoder_test_go - 2018.03.23 at 10h 06m 35s.xml">
       <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="decoder_test_go - 2018.02.25 at 06h 26m 14s.xml">
-      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="decoder_test_go - 2018.02.25 at 06h 27m 14s.xml">
-      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="decoder_test_go - 2018.02.25 at 06h 28m 03s.xml">
-      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="decoder_test_go - 2018.02.25 at 06h 29m 29s.xml">
-      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="decoder_test_go - 2018.02.25 at 06h 31m 06s.xml">
-      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="decoder_test_go - 2018.02.25 at 06h 32m 42s.xml">
-      <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="decoder_test_go - 2018.02.25 at 06h 33m 45s.xml">
+    <history-entry file="decoder_test_go - 2018.03.23 at 10h 10m 42s.xml">
       <configuration name="decoder_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
   </component>
@@ -304,10 +341,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="178" y="23" width="2381" height="1417" extended-state="0" />
+    <frame x="179" y="28" width="2037" height="1417" extended-state="0" />
     <layout>
       <window_info id="PlantUML" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.271056" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32030076" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5047985" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -315,7 +352,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24969746" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32980332" sideWeight="0.49784946" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39939487" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="JSON Viewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -369,11 +406,54 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="2" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/decoder_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decoder.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10800">
+          <caret line="723" column="128" lean-forward="false" selection-start-line="723" selection-start-column="128" selection-end-line="723" selection-end-column="128" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testdata/allged.ged">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8295">
+          <caret line="553" column="14" lean-forward="false" selection-start-line="553" selection-start-column="14" selection-end-line="553" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/types.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1980">
+          <caret line="132" column="0" lean-forward="false" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="525">
+            <caret line="35" column="239" lean-forward="false" selection-start-line="35" selection-start-column="239" selection-end-line="35" selection-end-column="239" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/decoder_test.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -518,17 +598,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="525">
-            <caret line="35" column="239" lean-forward="false" selection-start-line="35" selection-start-column="239" selection-end-line="35" selection-end-column="239" />
-            <folding />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -551,34 +620,45 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="525">
+            <caret line="35" column="239" lean-forward="false" selection-start-line="35" selection-start-column="239" selection-end-line="35" selection-end-column="239" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/types.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1382">
-          <caret line="132" column="0" lean-forward="false" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
+        <state relative-caret-position="206">
+          <caret line="99" column="19" lean-forward="false" selection-start-line="99" selection-start-column="19" selection-end-line="99" selection-end-column="19" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/decoder.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="723" column="128" lean-forward="false" selection-start-line="723" selection-start-column="128" selection-end-line="723" selection-end-column="128" />
+        <state relative-caret-position="135">
+          <caret line="535" column="25" lean-forward="false" selection-start-line="535" selection-start-column="25" selection-end-line="535" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/testdata/allged.ged">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="553" column="14" lean-forward="false" selection-start-line="553" selection-start-column="14" selection-end-line="553" selection-end-column="14" />
+        <state relative-caret-position="795">
+          <caret line="914" column="6" lean-forward="false" selection-start-line="914" selection-start-column="6" selection-end-line="914" selection-end-column="6" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/decoder_test.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-370">
-          <caret line="172" column="0" lean-forward="false" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
+        <state relative-caret-position="354">
+          <caret line="300" column="68" lean-forward="false" selection-start-line="300" selection-start-column="68" selection-end-line="300" selection-end-column="68" />
           <folding />
         </state>
       </provider>

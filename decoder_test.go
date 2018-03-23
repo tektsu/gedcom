@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"log"
 	"testing"
+	"time"
 )
 
 var (
@@ -140,7 +141,7 @@ func TestIndividual(t *testing.T) {
 
 	birth := &EventRecord{
 		Tag:  "BIRT",
-		Date: "31 DEC 1997",
+		Date: "29 DEC 1997",
 		Place: PlaceRecord{
 			Name:      "The place",
 			Latitude:  "N42.157841",
@@ -155,7 +156,7 @@ func TestIndividual(t *testing.T) {
 
 	death := &EventRecord{
 		Tag:  "DEAT",
-		Date: "BET 31 DEC 1997 AND 1 JAN 1998",
+		Date: "BET 1 JAN 1998 AND 2 JAN 1998",
 		Place: PlaceRecord{
 			Name: "The place",
 		},
@@ -175,7 +176,7 @@ func TestIndividual(t *testing.T) {
 	att1 := &EventRecord{
 		Tag:   "CAST",
 		Value: "Cast name",
-		Date:  "31 DEC 1997",
+		Date:  "30 DEC 1997",
 		Place: PlaceRecord{
 			Name: "The place",
 		},
@@ -215,18 +216,18 @@ func TestIndividual(t *testing.T) {
 		{"Individual 0 Birth Place Latitude", birth.Place.Latitude, i1.Event[0].Place.Latitude},
 		{"Individual 0 Birth Place Longitude", birth.Place.Longitude, i1.Event[0].Place.Longitude},
 		{"Individual 0 Birth Note", birth.Note[0].Note, i1.Event[0].Note[0].Note},
-		{"Individual 0 Death Tag", death.Tag, i1.Event[3].Tag},
-		{"Individual 0 Death Date", death.Date, i1.Event[3].Date},
-		{"Individual 0 Death Place Name", death.Place.Name, i1.Event[3].Place.Name},
-		{"Individual 0 Death Cause", death.Cause[0].Note, i1.Event[3].Cause[0].Note},
-		{"Individual 0 Attribute 0 Tag", att1.Tag, i1.Attribute[0].Tag},
-		{"Individual 0 Attribute 0 Value", att1.Value, i1.Attribute[0].Value},
-		{"Individual 0 Attribute 0 Date", att1.Date, i1.Attribute[0].Date},
-		{"Individual 0 Attribute 0 Place Name", att1.Place.Name, i1.Attribute[0].Place.Name},
-		{"Individual 0 Attribute 0 Note", att1.Note[0].Note, i1.Attribute[0].Note[0].Note},
-		{"Individual 0 Attribute 1 Tag", military.Tag, i1.Attribute[1].Tag},
-		{"Individual 0 Attribute 1 Date", military.Date, i1.Attribute[1].Date},
-		{"Individual 0 Attribute 1 Value", military.Value, i1.Attribute[1].Value},
+		{"Individual 0 Death Tag", death.Tag, i1.Event[22].Tag},
+		{"Individual 0 Death Date", death.Date, i1.Event[22].Date},
+		{"Individual 0 Death Place Name", death.Place.Name, i1.Event[22].Place.Name},
+		{"Individual 0 Death Cause", death.Cause[0].Note, i1.Event[22].Cause[0].Note},
+		{"Individual 0 Attribute 1 Tag", att1.Tag, i1.Attribute[1].Tag},
+		{"Individual 0 Attribute 1 Value", att1.Value, i1.Attribute[1].Value},
+		{"Individual 0 Attribute 1 Date", att1.Date, i1.Attribute[1].Date},
+		{"Individual 0 Attribute 1 Place Name", att1.Place.Name, i1.Attribute[1].Place.Name},
+		{"Individual 0 Attribute 1 Note", att1.Note[0].Note, i1.Attribute[1].Note[0].Note},
+		{"Individual 0 Attribute 0 Tag", military.Tag, i1.Attribute[0].Tag},
+		{"Individual 0 Attribute 0 Date", military.Date, i1.Attribute[0].Date},
+		{"Individual 0 Attribute 0 Value", military.Value, i1.Attribute[0].Value},
 		{"Individual 0 birth father name ", "/Father/", i1.Event[0].Parents[0].Family.Husband.Name[0].Name},
 		{"Individual 0 adopted by", "BOTH", i1.Event[6].Parents[0].AdoptedBy},
 		{"Individual 0 citation page", "42", i1.Citation[0].Page},
@@ -293,9 +294,11 @@ func TestFamily(t *testing.T) {
 	}.run(t)
 
 	stringTestCases{
-		{"Husband's age at annulment", "42y", f[0].Event[0].SpouseInfo[0].Age},
-		{"Wife's age at divorce filing", "CHILD", f[0].Event[3].SpouseInfo[1].Age},
-		{"Wife's spouse type at divorce filing", "WIFE", f[0].Event[3].SpouseInfo[1].Spouse},
+		{"Annulment tag", "ANUL", f[0].Event[8].Tag},
+		{"Husband's age at annulment", "42y", f[0].Event[8].SpouseInfo[0].Age},
+		{"Divorce filing tag", "DIVF", f[0].Event[9].Tag},
+		{"Wife's age at divorce filing", "CHILD", f[0].Event[9].SpouseInfo[1].Age},
+		{"Wife's spouse type at divorce filing", "WIFE", f[0].Event[9].SpouseInfo[1].Spouse},
 		{"Number of children", "42", f[0].NumberOfChildren.Value},
 		{"Family citation quality", "0", f[0].Citation[0].Quality},
 		{"Family citation first file", "file1", f[0].Citation[0].Source.File[0]},
@@ -354,6 +357,36 @@ func TestObject(t *testing.T) {
 		{"Third object Title", "A bmp picture", objects[2].File.Title},
 		{"Third object Description", "Description of this fine BMP", objects[2].File.Description.Note},
 	}.run(t)
+}
+
+func TestSortDates(t *testing.T) {
+
+	dateOnly := func(y int, m time.Month, d int) time.Time {
+		return time.Date(y, m, d, 0, 0, 0, 0, time.UTC)
+	}
+
+	var timeTests = []struct {
+		in      string
+		correct time.Time
+	}{
+		{"1900 45", dateOnly(1900, time.January, 1)},
+		{"1900", dateOnly(1900, time.January, 1)},
+		{"DEC 1901", dateOnly(1901, time.December, 1)},
+		{"31 MAR 1902", dateOnly(1902, time.March, 31)},
+		{"ABT 1900", dateOnly(1900, time.January, 1)},
+		{"ABT DEC 1901", dateOnly(1901, time.December, 1)},
+		{"ABT 31 MAR 1902", dateOnly(1902, time.March, 31)},
+		{"FROM 1900 TO 2003", dateOnly(1900, time.January, 1)},
+		{"FROM DEC 1901 TO APR 1902", dateOnly(1901, time.December, 1)},
+		{"FROM 31 MAR 1902 TO 6 MAY 1959", dateOnly(1902, time.March, 31)},
+	}
+
+	for _, tt := range timeTests {
+		result := getSortDate(tt.in)
+		if result != tt.correct {
+			t.Errorf("%q => %q, want %q", tt.in, result, tt.correct)
+		}
+	}
 }
 
 func TestUTF8BOM(t *testing.T) {

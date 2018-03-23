@@ -6,8 +6,12 @@ information, see <http://unlicense.org/> or the accompanying UNLICENSE file.
 package gedcom
 
 import (
+	"fmt"
 	"io"
+	"regexp"
+	"sort"
 	"strings"
+	"time"
 )
 
 // NewDecoder returns a new decoder that reads from r.
@@ -439,6 +443,9 @@ func makeEncodingParser(d *Decoder, e *EncodingRecord, minLevel int) parser {
 func makeEventParser(d *Decoder, e *EventRecord, minLevel int) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level <= minLevel {
+			if e.Date == "" {
+				e.SortDate = time.Now()
+			}
 			return d.popParser(level, tag, value, xref)
 		}
 		switch tag {
@@ -446,6 +453,7 @@ func makeEventParser(d *Decoder, e *EventRecord, minLevel int) parser {
 			e.Type = value
 		case "DATE":
 			e.Date = value
+			e.SortDate = getSortDate(value)
 		case "PLAC":
 			e.Place.Name = value
 			d.pushParser(makePlaceParser(d, &e.Place, level))
@@ -522,6 +530,9 @@ func makeFamilyLinkParser(d *Decoder, f *FamilyLinkRecord, minLevel int) parser 
 func makeFamilyParser(d *Decoder, f *FamilyRecord, minLevel int) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level <= minLevel {
+			sort.Slice(f.Event, func(j, k int) bool {
+				return f.Event[j].SortDate.Before(f.Event[k].SortDate)
+			})
 			return d.popParser(level, tag, value, xref)
 		}
 		switch tag {
@@ -708,6 +719,12 @@ func makeHeaderSourceParser(d *Decoder, r *HeaderSourceRecord, minLevel int) par
 func makeIndividualParser(d *Decoder, i *IndividualRecord, minLevel int) parser {
 	return func(level int, tag string, value string, xref string) error {
 		if level <= minLevel {
+			sort.Slice(i.Event, func(j, k int) bool {
+				return i.Event[j].SortDate.Before(i.Event[k].SortDate)
+			})
+			sort.Slice(i.Attribute, func(j, k int) bool {
+				return i.Attribute[j].SortDate.Before(i.Attribute[k].SortDate)
+			})
 			return d.popParser(level, tag, value, xref)
 		}
 		switch tag {
@@ -1171,4 +1188,32 @@ func makeSlurkParser(d *Decoder, minLevel int) parser {
 
 func stripXref(value string) string {
 	return strings.Trim(value, "@")
+}
+
+func getSortDate(date string) time.Time {
+	sortDate := time.Now() // Sort date is current date if there is no valid date
+
+	dp := regexp.MustCompile("(?:(\\d{1,2})\\s+)?(?:(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\\s+)?(\\d{4})")
+	matches := dp.FindAllStringSubmatch(date, 1)
+	if len(matches) != 0 {
+		day := matches[0][1]
+		month := matches[0][2]
+		year := matches[0][3]
+		if year != "" {
+			if month == "" {
+				month = "JAN"
+			}
+			if day == "" {
+				day = "1"
+			}
+
+			date = fmt.Sprintf("%02s %s %s", day, month, year)
+			t, err := time.Parse("02 Jan 2006", date)
+			if err == nil {
+				sortDate = t
+			}
+		}
+	}
+
+	return sortDate
 }

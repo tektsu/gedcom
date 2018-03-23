@@ -5,7 +5,10 @@ information, see <http://unlicense.org/> or the accompanying UNLICENSE file.
 
 package gedcom
 
-import "io"
+import (
+	"io"
+	"time"
+)
 
 // A Decoder reads and decodes GEDCOM objects from an input stream.
 type Decoder struct {
@@ -89,6 +92,7 @@ type EventRecord struct {
 	Value      string
 	Type       string
 	Date       string
+	SortDate   time.Time
 	Place      PlaceRecord
 	Address    AddressRecord
 	Age        string
